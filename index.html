@@ -2,19 +2,22 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>মুক্তলিপি ডায়েরি</title>
     
     <!-- PWA Manifest & Meta Tags -->
     <meta name="theme-color" content="#1877f2">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIuKbnOCljeCkpOCmsuCkv+CKr+Ckv+CqpSDgpqHgprLgp9uCprDgpL8iLAogICJzaG9ydF9uYW1lIjogIuKbnOCljeCkpOCmsuCkv+CKr+Ckv+CqpSIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmZmZmZmIiwKICAidGhlbWVfY29xvciI6ICIjMTg3N2YyIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9pLmliYi5jby9WV1ZtMFh5L011a3RvbGlwaS1CYW5uZXIuanBnIiwKICAgICAgInNpemVzIjogIjE5MngxOTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9qcGVnIgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJodHRwczovL2kuaWJiLmNvL1ZXVm0wWHkvTXVrdG9saXBpLUJhbm5lci5qcGciLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL2pwZWciCiAgICB9CiAgXQp9">
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIuKbnOCljeCkpOCmsuCkv+CKr+Ckv+CqpSDgpqHgprLgp9uCprDgpL8iLAogICJzaG9ydF9uYW1lIjogIuKbnOCljeCkpOCmsuCkv+CKr+Ckv+CqpSIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmZmZmZmIiwKICAidGhlbWVfY29sb3IiOiAiIzE4NzdmMiIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImh0dHBzOi8vaS5pYmIuY28vVldWbTBYeS9NdWt0b2xpcGktQmFubmVyLmpwZyIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvanBlZyIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9pLmliYi5jby9WV1ZtMFh5L011a3RvbGlwaS1CYW5uZXIuanBnIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9qcGVnIgogICAgfQogIF0KfQ==">
 
     <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
         :root { 
@@ -24,11 +27,12 @@
             --primary-color: #1877f2; 
             --border-color: #ddd; 
             --secondary-text: #65676b; 
-            --content-font-size: 16px;
-            --highlight-color: #ffe066;
+            --content-font-size: 17px;
+            --highlight-color: #fff3cd; /* Soft yellow for search */
             --nav-bg: #ffffff;
             --shadow-soft: 0 4px 12px rgba(0,0,0,0.05);
             --shadow-card: 0 2px 8px rgba(0,0,0,0.08);
+            --safe-area-bottom: env(safe-area-inset-bottom);
         }
         .dark-theme { 
             --bg-color: #18191a; 
@@ -37,163 +41,192 @@
             --primary-color: #4595ff; 
             --border-color: #3e4042; 
             --secondary-text: #b0b3b8; 
-            --highlight-color: #bfa11e;
+            --highlight-color: #584c06;
             --nav-bg: #242526;
             --shadow-soft: 0 4px 12px rgba(0,0,0,0.3);
             --shadow-card: 0 2px 8px rgba(0,0,0,0.3);
         }
 
-        body { font-family: 'Hind Siliguri', sans-serif; background: var(--bg-color); color: var(--text-color); margin: 0; padding: 10px; transition: 0.3s; user-select: none; -webkit-tap-highlight-color: transparent; padding-bottom: 120px; }
+        body { font-family: 'Hind Siliguri', sans-serif; background: var(--bg-color); color: var(--text-color); margin: 0; padding: 0 0 100px 0; transition: background 0.3s, color 0.3s; user-select: none; -webkit-tap-highlight-color: transparent; overflow-x: hidden; }
 
-        /* Banner & Header */
-        .app-banner { width: 100%; max-width: 981px; margin: 0 auto 20px auto; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-soft); }
-        .app-banner img { width: 100%; height: auto; aspect-ratio: 981 / 363; object-fit: cover; display: block; }
+        /* Reading Progress Bar */
+        #readingProgress { position: fixed; top: 0; left: 0; width: 0%; height: 4px; background: linear-gradient(90deg, #1877f2, #00c6ff); z-index: 9999; transition: width 0.1s; }
 
-        header { text-align: center; padding: 15px; background: var(--card-bg); border-radius: 16px; margin-bottom: 20px; position: relative; box-shadow: var(--shadow-soft); max-width: 800px; margin-left: auto; margin-right: auto; }
+        /* Offline Banner */
+        #offlineBanner { display: none; background: #333; color: white; text-align: center; padding: 8px; font-size: 13px; position: sticky; top: 0; z-index: 1000; }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 10px; }
+
+        /* Banner */
+        .app-banner { width: 100%; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-soft); margin-bottom: 15px; }
+        .app-banner img { width: 100%; height: auto; display: block; }
+
+        /* FIXED HEADER LAYOUT */
+        header { 
+            background: var(--card-bg); 
+            border-radius: 16px; 
+            margin-bottom: 15px; 
+            box-shadow: var(--shadow-soft); 
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .header-title-area { text-align: center; margin-bottom: 10px; width: 100%; }
+        .header-controls { 
+            display: flex; 
+            gap: 20px; 
+            justify-content: center; 
+            width: 100%;
+            padding-top: 5px;
+            border-top: 1px dashed var(--border-color);
+        }
+        .icon-btn { cursor: pointer; font-size: 20px; background: none; border: none; color: var(--text-color); position: relative; padding: 5px; }
         
-        .header-controls { position: absolute; top: 15px; right: 15px; display: flex; gap: 15px; }
-        .icon-btn { cursor: pointer; font-size: 20px; background: none; border: none; color: var(--text-color); transition: 0.2s; }
-        
-        .container { max-width: 800px; margin: 0 auto; }
-        
+        /* Notification Badge */
+        .badge { position: absolute; top: -2px; right: -2px; background: #e74c3c; color: white; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; display: none; justify-content: center; align-items: center; font-weight: bold; border: 2px solid var(--card-bg); }
+        .badge.active { display: flex; }
+
         /* Search */
-        .search-wrapper { position: relative; width: 100%; margin-bottom: 10px; }
-        #searchBar { width: 100%; padding: 12px 40px 12px 20px; border-radius: 30px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-color); outline: none; box-sizing: border-box; box-shadow: var(--shadow-soft); }
-        .search-clear { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--secondary-text); cursor: pointer; display: none; font-size: 16px; }
-        mark { background-color: var(--highlight-color); color: black; border-radius: 2px; padding: 0 2px; }
-
-        /* Category Tabs */
-        .category-tabs { display: flex; gap: 10px; overflow-x: auto; padding: 5px 0 15px 0; scrollbar-width: none; }
-        .category-tabs::-webkit-scrollbar { display: none; }
-        .cat-btn { white-space: nowrap; padding: 8px 18px; border-radius: 20px; border: none; background: var(--card-bg); color: var(--text-color); cursor: pointer; font-size: 14px; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .cat-btn.active { background: var(--primary-color); color: white; box-shadow: 0 4px 10px rgba(24, 119, 242, 0.3); }
-
-        /* Modern Post Card */
-        .post-card { background: var(--card-bg); padding: 20px; border-radius: 20px; margin-bottom: 20px; box-shadow: var(--shadow-card); position: relative; overflow: hidden; border: none; }
-        .pinned-badge { position: absolute; top: 20px; right: 20px; color: #e74c3c; font-size: 18px; transform: rotate(45deg); z-index: 2; }
-        .category-tag { background: rgba(24, 119, 242, 0.1); color: var(--primary-color); padding: 3px 10px; border-radius: 12px; font-size: 11px; margin-left: 8px; font-weight: 600; }
-
-        .author-info { font-size: 15px; font-weight: bold; color: var(--text-color); display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-        .date { font-size: 12px; color: var(--secondary-text); display: block; font-weight: normal; }
-        .post-title { font-size: 22px; margin: 8px 0 12px 0; font-weight: 700; line-height: 1.3; }
+        .search-wrapper { position: relative; margin-bottom: 15px; }
+        #searchBar { width: 100%; padding: 12px 40px 12px 20px; border-radius: 30px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-color); outline: none; box-sizing: border-box; font-size: 16px; box-shadow: var(--shadow-soft); }
+        .search-clear { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--secondary-text); cursor: pointer; display: none; }
         
-        .post-img-container { position: relative; width: 100%; border-radius: 12px; overflow: hidden; margin: 10px 0; }
-        .post-img { width: 100%; display: block; cursor: pointer; max-height: 450px; object-fit: cover; }
-        
-        /* Content & Read More Gradient */
-        .content-preview { white-space: pre-line; line-height: 1.6; font-size: var(--content-font-size); color: var(--text-color); position: relative; transition: font-size 0.2s; }
-        
-        .read-more-wrapper { position: relative; overflow: hidden; max-height: 160px; transition: max-height 0.3s ease; }
-        .read-more-wrapper.expanded { max-height: none; }
-        
-        /* Gradient Overlay */
-        .read-more-overlay::after {
-            content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 80px;
-            background: linear-gradient(to bottom, transparent, var(--card-bg));
-            pointer-events: none;
+        /* Search Highlight Fix */
+        mark { 
+            background-color: var(--highlight-color); 
+            color: inherit; 
+            border-radius: 3px; 
+            padding: 0 1px; 
+            -webkit-box-decoration-break: clone;
+            box-decoration-break: clone;
         }
 
-        .heart-popup { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); color: #e74c3c; font-size: 80px; animation: popHeart 0.8s ease-out; pointer-events: none; z-index: 10; opacity: 0; drop-shadow: 0 0 5px rgba(0,0,0,0.5); }
-        @keyframes popHeart { 0% { transform: translate(-50%, -50%) scale(0); opacity: 0; } 50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 0; } }
+        /* Tabs */
+        .category-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+        .category-tabs::-webkit-scrollbar { display: none; }
+        .cat-btn { white-space: nowrap; padding: 8px 16px; border-radius: 20px; border: 1px solid transparent; background: var(--card-bg); color: var(--text-color); cursor: pointer; font-size: 14px; transition: 0.2s; font-family: inherit; }
+        .cat-btn.active { background: var(--primary-color); color: white; box-shadow: 0 4px 10px rgba(24, 119, 242, 0.3); }
 
-        .read-more-btn { color: var(--primary-color); cursor: pointer; font-weight: bold; border: none; background: none; padding: 5px 0; margin-top: 5px; font-size: 14px; }
+        /* Post Card */
+        .post-card { background: var(--card-bg); padding: 15px; border-radius: 16px; margin-bottom: 20px; box-shadow: var(--shadow-card); position: relative; overflow: hidden; }
+        .pinned-badge { position: absolute; top: 15px; right: 15px; color: #e74c3c; font-size: 16px; transform: rotate(45deg); z-index: 2; }
+        .category-tag { background: rgba(24, 119, 242, 0.1); color: var(--primary-color); padding: 2px 8px; border-radius: 8px; font-size: 11px; margin-left: 8px; font-weight: 600; vertical-align: middle; }
 
-        /* Audio Button */
-        .audio-trigger-btn { display: flex; align-items: center; gap: 10px; background: rgba(24, 119, 242, 0.05); padding: 8px 15px; border-radius: 20px; color: var(--primary-color); font-weight: bold; margin: 10px 0; cursor: pointer; width: fit-content; transition: 0.2s; }
-        .audio-trigger-btn:hover { background: var(--primary-color); color: white; }
+        .author-info { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .avatar-circle { width: 38px; height: 38px; background: #e4e6eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #555; font-size: 16px; }
+        .author-text h4 { margin: 0; font-size: 15px; font-weight: 700; }
+        .post-meta { font-size: 12px; color: var(--secondary-text); display: flex; align-items: center; gap: 8px; margin-top: 2px; }
 
-        /* Interaction Bar */
-        .interaction-bar { display: flex; justify-content: space-between; border-top: 1px solid var(--border-color); padding-top: 12px; margin-top: 15px; }
-        .action-btn { background: none; border: none; cursor: pointer; color: var(--secondary-text); font-size: 15px; display: flex; align-items: center; gap: 8px; padding: 5px; transition: 0.2s; }
-        .action-btn:hover { background: rgba(0,0,0,0.05); border-radius: 5px; }
+        .post-title { font-size: 20px; margin: 5px 0 10px 0; font-weight: 700; line-height: 1.4; color: var(--text-color); }
+        
+        .post-img-container { position: relative; width: 100%; border-radius: 12px; overflow: hidden; margin: 10px 0; background: #eee; }
+        .post-img { width: 100%; display: block; max-height: 450px; object-fit: cover; }
+        
+        /* Animation for Floating Emoji */
+        .emoji-floater { position: absolute; font-size: 30px; pointer-events: none; animation: floatUp 1s ease-out forwards; z-index: 50; }
+        @keyframes floatUp { 0% { transform: translateY(0) scale(0.5); opacity: 0; } 20% { opacity: 1; transform: translateY(-20px) scale(1.2); } 100% { transform: translateY(-100px) scale(1); opacity: 0; } }
+
+        .content-preview { font-size: var(--content-font-size); line-height: 1.7; color: var(--text-color); white-space: pre-wrap; word-wrap: break-word; }
+        
+        /* Rich Text HTML Styles inside Post */
+        .content-preview b, .content-preview strong { font-weight: 700; color: var(--text-color); }
+        .content-preview i, .content-preview em { font-style: italic; }
+        .content-preview h2 { font-size: 1.2em; margin: 10px 0 5px; color: var(--primary-color); }
+        .content-preview a { color: var(--primary-color); text-decoration: underline; }
+
+        .read-more-wrapper { max-height: 180px; overflow: hidden; position: relative; transition: max-height 0.4s ease; }
+        .read-more-wrapper.expanded { max-height: none; }
+        .read-more-overlay::after { content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; background: linear-gradient(to bottom, transparent, var(--card-bg)); pointer-events: none; }
+        .read-more-btn { color: var(--primary-color); border: none; background: none; padding: 5px 0; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 5px; }
+
+        /* Media Buttons */
+        .media-controls { display: flex; gap: 10px; margin: 10px 0; flex-wrap: wrap; }
+        .media-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; background: rgba(24, 119, 242, 0.08); padding: 8px; border-radius: 8px; color: var(--primary-color); font-size: 13px; font-weight: 600; border: none; cursor: pointer; max-width: 150px; }
+        .media-btn.speaking { background: #e74c3c; color: white; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.8; } 100% { opacity: 1; } }
+
+        /* Actions */
+        .interaction-bar { display: flex; justify-content: space-between; border-top: 1px solid var(--border-color); padding-top: 10px; margin-top: 10px; }
+        .action-btn { background: none; border: none; cursor: pointer; color: var(--secondary-text); font-size: 14px; display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 6px; transition: 0.2s; }
+        .action-btn:active { transform: scale(0.95); background: rgba(0,0,0,0.05); }
         .action-btn.liked { color: var(--primary-color); }
         .action-btn.bookmarked { color: #f39c12; }
 
-        /* Skeleton Loader (Shimmer) */
-        .skeleton-card { background: var(--card-bg); padding: 20px; border-radius: 20px; margin-bottom: 20px; box-shadow: var(--shadow-card); }
-        .sk-anim { background: linear-gradient(90deg, var(--bg-color) 25%, var(--border-color) 50%, var(--bg-color) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 4px; }
-        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-        
-        .sk-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
-        .sk-avatar { width: 40px; height: 40px; border-radius: 50%; }
-        .sk-name { width: 120px; height: 14px; }
-        .sk-title { width: 80%; height: 24px; margin-bottom: 15px; }
-        .sk-img { width: 100%; height: 200px; border-radius: 12px; margin-bottom: 15px; }
-        .sk-line { width: 100%; height: 12px; margin-bottom: 8px; }
-        .sk-line.short { width: 60%; }
-
-        /* Bottom Navigation Bar */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--nav-bg); height: 60px; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 1500; border-top-left-radius: 15px; border-top-right-radius: 15px; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--secondary-text); background: none; border: none; font-size: 12px; cursor: pointer; flex: 1; }
-        .nav-item i { font-size: 20px; margin-bottom: 4px; transition: 0.2s; }
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--nav-bg); height: 60px; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 1500; border-top: 1px solid var(--border-color); padding-bottom: var(--safe-area-bottom); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--secondary-text); background: none; border: none; font-size: 10px; cursor: pointer; flex: 1; }
+        .nav-item i { font-size: 20px; margin-bottom: 4px; }
         .nav-item.active { color: var(--primary-color); }
-        .nav-item.active i { transform: translateY(-2px); }
 
-        /* Admin FAB & Modal */
-        #adminFab { position: fixed; bottom: 80px; right: 20px; background: var(--primary-color); color: white; border: none; border-radius: 50%; width: 55px; height: 55px; cursor: pointer; box-shadow: 0 4px 15px rgba(24, 119, 242, 0.4); font-size: 24px; z-index: 1400; display: none; align-items: center; justify-content: center; transition: transform 0.2s; }
-        #adminFab:active { transform: scale(0.9); }
+        /* Zen Mode Class */
+        body.zen-active header, body.zen-active .bottom-nav, body.zen-active .category-tabs, body.zen-active .search-wrapper, body.zen-active .app-banner, body.zen-active #adminFab { display: none !important; }
+        body.zen-active .container { padding-top: 40px; max-width: 600px; }
+        .zen-exit-btn { display: none; position: fixed; top: 20px; right: 20px; background: rgba(0,0,0,0.7); color: white; padding: 10px 15px; border-radius: 30px; z-index: 2000; border: none; cursor: pointer; }
+        body.zen-active .zen-exit-btn { display: block; }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2100; display: none; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; backdrop-filter: blur(5px); }
-        .modal-content { background: var(--card-bg); padding: 25px; border-radius: 16px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.2); animation: slideUp 0.3s ease; }
+        /* Modal & Admin */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2100; display: none; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; backdrop-filter: blur(5px); }
+        .modal-content { background: var(--card-bg); padding: 20px; border-radius: 16px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s ease; display: flex; flex-direction: column; gap: 10px; }
         @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        input, textarea, select { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid var(--border-color); border-radius: 10px; background: var(--bg-color); color: var(--text-color); font-family: inherit; box-sizing: border-box; outline: none; }
-        input:focus, textarea:focus { border-color: var(--primary-color); }
-        .btn { padding: 12px 20px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.2s; width: 100%; font-size: 16px; }
+        input, select { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-color); color: var(--text-color); font-family: inherit; box-sizing: border-box; outline: none; }
+        
+        /* Rich Text Editor */
+        .editor-container { border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background: var(--bg-color); }
+        .editor-toolbar { display: flex; gap: 5px; padding: 8px; background: var(--card-bg); border-bottom: 1px solid var(--border-color); }
+        .editor-btn { background: none; border: none; cursor: pointer; color: var(--text-color); padding: 5px 10px; border-radius: 4px; font-size: 14px; }
+        .editor-btn:hover { background: rgba(0,0,0,0.1); }
+        .rich-editor { min-height: 150px; padding: 12px; outline: none; color: var(--text-color); overflow-y: auto; max-height: 300px; line-height: 1.5; }
+        .rich-editor[placeholder]:empty:before { content: attr(placeholder); color: var(--secondary-text); }
+
+        .btn { padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%; font-size: 15px; }
         .btn-primary { background: var(--primary-color); color: white; }
-
-        /* Audio Visualizer Animation */
-        #stickyPlayer { 
-            position: fixed; bottom: -100px; left: 0; width: 100%; 
-            background: var(--card-bg); border-top: 1px solid var(--border-color);
-            padding: 10px 20px; box-sizing: border-box; box-shadow: 0 -5px 20px rgba(0,0,0,0.15);
-            display: flex; align-items: center; justify-content: space-between; 
-            transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1200;
-            border-top-left-radius: 15px; border-top-right-radius: 15px;
-        }
-        #stickyPlayer.active { bottom: 60px; /* Above Nav Bar */ }
         
-        .visualizer { display: flex; align-items: flex-end; gap: 3px; height: 15px; margin-right: 10px; }
-        .bar { width: 3px; background: var(--primary-color); height: 5px; border-radius: 2px; }
-        .visualizer.playing .bar { animation: sound 0.5s infinite alternate; }
-        .visualizer.playing .bar:nth-child(1) { animation-delay: 0.1s; }
-        .visualizer.playing .bar:nth-child(2) { animation-delay: 0.3s; }
-        .visualizer.playing .bar:nth-child(3) { animation-delay: 0.5s; }
-        @keyframes sound { 0% { height: 5px; } 100% { height: 15px; } }
+        #adminFab { position: fixed; bottom: 80px; right: 20px; background: var(--primary-color); color: white; border: none; border-radius: 50%; width: 55px; height: 55px; cursor: pointer; box-shadow: 0 4px 15px rgba(24, 119, 242, 0.4); font-size: 24px; z-index: 1400; display: none; align-items: center; justify-content: center; }
 
-        /* Comments */
-        .comment-area { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border-color); }
-        .comment-item { background: var(--bg-color); padding: 10px 14px; border-radius: 12px; margin-bottom: 8px; font-size: 14px; width: fit-content; max-width: 90%; }
-        
-        /* Lightbox */
-        .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2200; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; }
-        .lightbox.active { opacity: 1; }
-        .lightbox img { max-width: 95%; max-height: 80vh; border-radius: 8px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
-        .close-lightbox { position: absolute; top: 20px; right: 20px; color: white; font-size: 30px; cursor: pointer; }
+        /* Skeleton */
+        .skeleton { background: var(--card-bg); padding: 20px; border-radius: 16px; margin-bottom: 20px; }
+        .sk-anim { background: linear-gradient(90deg, var(--bg-color) 25%, var(--border-color) 50%, var(--bg-color) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 4px; height: 15px; margin-bottom: 10px; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-        /* Utils */
-        #scrollTopBtn { display: none; } /* Replaced by Bottom Nav functionality or can be kept hidden */
-        #installBtn { display: none; background: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 25px; margin-top: 15px; font-size: 14px; cursor: pointer; font-weight: 600; box-shadow: 0 4px 10px rgba(24, 119, 242, 0.3); }
-        
-        .no-results { text-align: center; padding: 60px 20px; color: var(--secondary-text); }
-        .admin-controls { margin-top: 15px; text-align: right; font-size: 13px; display: flex; justify-content: flex-end; gap: 10px; }
-        .admin-controls button { padding: 5px 10px; border-radius: 5px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); cursor: pointer; }
+        /* Player */
+        #stickyPlayer { position: fixed; bottom: -100px; left: 0; width: 100%; background: var(--card-bg); border-top: 1px solid var(--border-color); padding: 10px 15px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; transition: bottom 0.4s; z-index: 1300; border-radius: 15px 15px 0 0; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); }
+        #stickyPlayer.active { bottom: 60px; }
     </style>
 </head>
 <body>
 
+    <!-- Reading Progress -->
+    <div id="readingProgress"></div>
+
+    <!-- Offline Banner -->
+    <div id="offlineBanner">📡 ইন্টারনেট সংযোগ নেই। অফলাইন মোড চলছে।</div>
+
+    <!-- Zen Mode Exit -->
+    <button class="zen-exit-btn" onclick="toggleZenMode()"><i class="fas fa-compress"></i> ফোকাস বন্ধ করুন</button>
+
     <!-- Lightbox -->
-    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
-        <span class="close-lightbox">&times;</span>
-        <img id="lightbox-img" src="" alt="Full View">
+    <div id="lightbox" class="modal-overlay" onclick="this.style.display='none'">
+        <img id="lightbox-img" src="" style="max-width:95%; max-height:80vh; border-radius:8px; box-shadow:0 0 20px rgba(0,0,0,0.5);">
+    </div>
+
+    <!-- Hidden Quote Area -->
+    <div id="quote-capture-area" style="position:fixed; left:-9999px; width:400px; background:linear-gradient(135deg, #1877f2, #00c6ff); padding:30px; color:white; border-radius:0;">
+        <div style="opacity:0.8; margin-bottom:15px; text-transform:uppercase; letter-spacing:1px; font-size:12px;">মুক্তলিপি ডায়েরি</div>
+        <div id="q-title" style="font-size:24px; font-weight:bold; margin-bottom:10px;"></div>
+        <div id="q-text" style="font-size:18px; font-style:italic; line-height:1.5; margin-bottom:20px;"></div>
+        <div id="q-author" style="font-size:14px; font-weight:bold; text-align:right;"></div>
+        <div style="margin-top:20px; border-top:1px solid rgba(255,255,255,0.3); padding-top:10px; font-size:10px; text-align:center;">muktolipidiary.web.app</div>
     </div>
 
     <!-- Admin Modal -->
     <div id="adminModalWrapper" class="modal-overlay">
         <div class="modal-content">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
                 <h3 id="formTitle" style="margin:0;">নতুন পোস্ট</h3>
-                <button onclick="closeAdminModal()" style="background:none; border:none; font-size:20px; color:var(--text-color); cursor:pointer;"><i class="fas fa-times"></i></button>
+                <button onclick="closeAdminModal()" style="background:none; border:none; font-size:20px; color:var(--text-color);"><i class="fas fa-times"></i></button>
             </div>
             
             <input type="hidden" id="editKey">
@@ -201,7 +234,7 @@
             <input type="text" id="postTitle" placeholder="শিরোনাম">
             
             <select id="postCategory">
-                <option value="অন্যান্য">ক্যাটাগরি নির্বাচন করুন</option>
+                <option value="অন্যান্য">ক্যাটাগরি</option>
                 <option value="গল্প">গল্প</option>
                 <option value="কবিতা">কবিতা</option>
                 <option value="ডায়েরি">ডায়েরি</option>
@@ -209,71 +242,70 @@
                 <option value="অন্যান্য">অন্যান্য</option>
             </select>
 
-            <input type="text" id="postImage" placeholder="ছবির লিংক (Direct Image URL)">
-            <input type="text" id="voiceUrl" placeholder="অডিও লিংক (Direct mp3 URL)">
-            <textarea id="postContent" rows="6" placeholder="লিখুন... (*বোল্ড*, _ইটালিক_)"></textarea>
+            <!-- Image Upload -->
+            <div style="display:flex; gap:5px;">
+                <button onclick="document.getElementById('imgInput').click()" style="flex:1; padding:10px; border:1px dashed var(--primary-color); background:rgba(24,119,242,0.05); color:var(--primary-color); border-radius:8px;"><i class="fas fa-camera"></i> ছবি আপলোড</button>
+                <input type="file" id="imgInput" hidden accept="image/*" onchange="uploadImage(this)">
+            </div>
+            <p id="uploadMsg" style="font-size:11px; margin:0; color:green; display:none;"></p>
+            <input type="text" id="postImage" placeholder="অথবা ছবির লিংক">
+            <input type="text" id="voiceUrl" placeholder="অডিও লিংক (MP3)">
+
+            <!-- Rich Text Editor -->
+            <div class="editor-container">
+                <div class="editor-toolbar">
+                    <button class="editor-btn" onclick="execCmd('bold')"><b>B</b></button>
+                    <button class="editor-btn" onclick="execCmd('italic')"><i>I</i></button>
+                    <button class="editor-btn" onclick="execCmd('formatBlock', '<h2>')">H2</button>
+                    <button class="editor-btn" onclick="addLink()"><i class="fas fa-link"></i></button>
+                </div>
+                <div id="richEditor" class="rich-editor" contenteditable="true" placeholder="এখানে লিখুন..."></div>
+            </div>
             
-            <label style="display:flex; align-items:center; margin-bottom:20px; font-size:14px; color:var(--text-color); cursor:pointer;">
-                <input type="checkbox" id="isPinned" style="width:auto; margin-right:10px; transform:scale(1.2);">
-                📌 এই পোস্টটি সবার উপরে পিন করুন
+            <label style="display:flex; align-items:center; font-size:14px; gap:8px;">
+                <input type="checkbox" id="isPinned"> পিন করে রাখুন
             </label>
 
             <button class="btn btn-primary" id="submitBtn" onclick="savePost()">পাবলিশ করুন</button>
-            <button class="btn" onclick="logout()" style="margin-top:10px; background: #e4e6eb; color: #1c1e21;">লগআউট</button>
+            <button class="btn" onclick="logout()" style="background:#e4e6eb; color:#333;">লগআউট</button>
         </div>
     </div>
 
-    <!-- Sticky Floating Audio Player -->
-    <div id="stickyPlayer">
-        <div style="display:flex; align-items:center;">
-            <!-- Visualizer -->
-            <div class="visualizer" id="audioVisualizer">
-                <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-            </div>
-            <div class="player-info">
-                <div class="p-title" id="globalPlayerTitle" style="font-weight:bold; font-size:14px;">Title</div>
-                <div class="p-author" id="globalPlayerAuthor" style="font-size:12px; color:var(--secondary-text);">Author</div>
-            </div>
-        </div>
-        <div class="player-controls" style="display:flex; gap:15px; align-items:center;">
-            <button onclick="toggleGlobalAudio()" style="background:none; border:none; font-size:26px; color:var(--primary-color); cursor:pointer;">
-                <i class="fas fa-play" id="globalPlayIcon"></i>
-            </button>
-            <button onclick="closeGlobalPlayer()" style="background:none; border:none; font-size:20px; color:var(--secondary-text); cursor:pointer;">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <audio id="globalAudioElement" onended="onAudioEnded()"></audio>
-    </div>
-
-    <!-- Admin FAB -->
-    <button id="adminFab" onclick="openAdminModal()"><i class="fas fa-plus"></i></button>
-
+    <!-- Main App -->
     <div class="container">
+        <!-- Banner -->
         <div class="app-banner">
-            <!-- Replace with your actual banner if available, using placeholder for now -->
             <img src="https://i.ibb.co/VWVm0Xy/Muktolipi-Banner.jpg" alt="Banner" onerror="this.style.display='none'">
         </div>
 
+        <!-- Header -->
         <header>
-            <div class="header-controls">
-                <button class="icon-btn" onclick="toggleFontSize()" title="ফন্ট সাইজ"><i class="fas fa-text-height"></i></button>
-                <button class="icon-btn theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
+            <div class="header-title-area">
+                <h1 style="margin:0; font-size:24px; color:var(--primary-color);">মুক্তলিপি ডায়েরি</h1>
+                <p style="margin:2px 0 0; font-size:13px; color:var(--secondary-text);">মনের কথা, মুক্ত ভাষায়</p>
             </div>
-            <h1 style="margin: 0; color: var(--primary-color);">মুক্তলিপি ডায়েরি</h1>
-            <p style="margin: 5px 0 0 0; font-size: 14px; color: var(--secondary-text);">মনের কথা, মুক্ত ভাষায়</p>
-            <button id="installBtn" onclick="installPWA()"><i class="fas fa-download"></i> অ্যাপ ইন্সটল করুন</button>
+            <div class="header-controls">
+                <button class="icon-btn" onclick="toggleFontSize()" title="ফন্ট"><i class="fas fa-text-height"></i></button>
+                <button class="icon-btn" onclick="toggleZenMode()" title="ফোকাস মোড"><i class="fas fa-expand"></i></button>
+                <button class="icon-btn theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
+                <button class="icon-btn" onclick="showNotifications()">
+                    <i class="fas fa-bell"></i>
+                    <span id="notifBadge" class="badge">0</span>
+                </button>
+            </div>
+            <button id="installBtn" onclick="installPWA()" style="display:none; margin-top:10px; background:var(--primary-color); color:white; border:none; padding:5px 15px; border-radius:20px; font-size:12px;">অ্যাপ নামান</button>
         </header>
 
-        <!-- Search Bar -->
+        <!-- Search -->
         <div class="search-wrapper">
-            <input type="text" id="searchBar" placeholder="🔍 লেখা খুঁজুন..." onkeyup="filterPosts(this.value)">
+            <input type="text" id="searchBar" placeholder="🔍 লেখা খুঁজুন..." oninput="filterPosts(this.value)">
             <button class="search-clear" id="searchClearBtn" onclick="clearSearch()"><i class="fas fa-times"></i></button>
         </div>
 
-        <!-- Categories -->
+        <!-- Tabs -->
         <div class="category-tabs">
             <button class="cat-btn active" onclick="filterCategory('সব', this)">সব</button>
+            <button class="cat-btn" onclick="filterCategory('জনপ্রিয়', this)">🔥 জনপ্রিয়</button>
             <button class="cat-btn" onclick="filterCategory('গল্প', this)">গল্প</button>
             <button class="cat-btn" onclick="filterCategory('কবিতা', this)">কবিতা</button>
             <button class="cat-btn" onclick="filterCategory('ডায়েরি', this)">ডায়েরি</button>
@@ -281,53 +313,40 @@
             <button class="cat-btn" onclick="filterCategory('অন্যান্য', this)">অন্যান্য</button>
         </div>
 
-        <!-- Skeleton Loader -->
+        <!-- Skeleton -->
         <div id="skeletonLoader">
-            <div class="skeleton-card">
-                <div class="sk-header">
-                    <div class="sk-avatar sk-anim"></div>
-                    <div class="sk-name sk-anim"></div>
-                </div>
-                <div class="sk-title sk-anim"></div>
-                <div class="sk-img sk-anim"></div>
-                <div class="sk-line sk-anim"></div>
-                <div class="sk-line sk-anim"></div>
-                <div class="sk-line short sk-anim"></div>
-            </div>
-            <div class="skeleton-card">
-                <div class="sk-header">
-                    <div class="sk-avatar sk-anim"></div>
-                    <div class="sk-name sk-anim"></div>
-                </div>
-                <div class="sk-line sk-anim"></div>
-                <div class="sk-line sk-anim"></div>
-            </div>
+            <div class="skeleton"><div class="sk-anim" style="width:50px; height:50px; border-radius:50%;"></div><div class="sk-anim" style="width:60%;"></div><div class="sk-anim" style="height:150px;"></div></div>
         </div>
 
+        <!-- Feed -->
         <div id="feed"></div>
     </div>
 
-    <!-- Bottom Navigation Bar -->
+    <!-- Sticky Player -->
+    <div id="stickyPlayer">
+        <div style="width:70%;">
+            <div id="playerTitle" style="font-weight:bold; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Title</div>
+            <div id="playerAuthor" style="font-size:11px; color:var(--secondary-text);">Author</div>
+        </div>
+        <div style="display:flex; gap:15px; align-items:center;">
+            <button onclick="toggleAudio()" style="background:none; border:none; font-size:24px; color:var(--primary-color);"><i id="playIcon" class="fas fa-play"></i></button>
+            <button onclick="closePlayer()" style="background:none; border:none; font-size:18px; color:var(--secondary-text);"><i class="fas fa-times"></i></button>
+        </div>
+        <audio id="globalAudio" onended="audioEnded()"></audio>
+    </div>
+
+    <!-- Admin Button -->
+    <button id="adminFab" onclick="openAdminModal()"><i class="fas fa-pen"></i></button>
+
+    <!-- Nav -->
     <nav class="bottom-nav">
-        <button class="nav-item active" onclick="navAction('home', this)">
-            <i class="fas fa-home"></i>
-            <span>হোম</span>
-        </button>
-        <button class="nav-item" onclick="navAction('search', this)">
-            <i class="fas fa-search"></i>
-            <span>খুঁজুন</span>
-        </button>
-        <button class="nav-item" onclick="navAction('saved', this)">
-            <i class="fas fa-bookmark"></i>
-            <span>সংরক্ষিত</span>
-        </button>
-        <button class="nav-item" onclick="navAction('menu', this)">
-            <i class="fas fa-user-cog"></i>
-            <span>অ্যাডমিন</span>
-        </button>
+        <button class="nav-item active" onclick="navTo('home', this)"><i class="fas fa-home"></i>হোম</button>
+        <button class="nav-item" onclick="navTo('search', this)"><i class="fas fa-search"></i>খুঁজুন</button>
+        <button class="nav-item" onclick="navTo('saved', this)"><i class="fas fa-bookmark"></i>সংরক্ষিত</button>
+        <button class="nav-item" onclick="navTo('admin', this)"><i class="fas fa-user-cog"></i>অ্যাডমিন</button>
     </nav>
 
-    <!-- Firebase SDKs -->
+    <!-- Firebase & Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, push, set, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -344,26 +363,73 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        
-        // Export Functions globally
-        window.savePost = savePost;
-        window.deletePost = deletePost;
-        window.handleLike = handleLike;
-        window.addComment = addComment;
-        window.db = db; 
+
+        // Global State
+        window.allPosts = [];
+        window.db = db;
         window.ref = ref;
-        window.update = update;
-        window.remove = remove;
         window.push = push;
         window.set = set;
+        window.update = update;
+        window.remove = remove;
 
-        window.allPosts = [];
-        window.currentSearchQuery = "";
-        
-        // Save/Update Post
-        function savePost() {
+        // Offline Handling
+        window.addEventListener('load', () => {
+            if(!navigator.onLine) {
+                document.getElementById('offlineBanner').style.display = 'block';
+                loadOfflineData();
+            }
+        });
+        window.addEventListener('online', () => document.getElementById('offlineBanner').style.display = 'none');
+        window.addEventListener('offline', () => document.getElementById('offlineBanner').style.display = 'block');
+
+        // Load Posts
+        onValue(ref(db, 'posts'), (snapshot) => {
+            document.getElementById('skeletonLoader').style.display = 'none';
+            const data = snapshot.val();
+            if (data) {
+                // Save for Offline
+                localStorage.setItem('OFFLINE_POSTS', JSON.stringify(data));
+                processData(data);
+            } else {
+                document.getElementById('feed').innerHTML = '<div style="text-align:center; padding:50px;">কোনো লেখা নেই</div>';
+            }
+        }, (error) => {
+            console.log("Firebase Error, loading offline data");
+            loadOfflineData();
+        });
+
+        function loadOfflineData() {
+            document.getElementById('skeletonLoader').style.display = 'none';
+            const cached = localStorage.getItem('OFFLINE_POSTS');
+            if(cached) {
+                processData(JSON.parse(cached));
+            } else {
+                document.getElementById('feed').innerHTML = '<div style="text-align:center; padding:50px;">ইন্টারনেট সংযোগ প্রয়োজন</div>';
+            }
+        }
+
+        function processData(data) {
+            const postsArr = Object.entries(data).map(([key, val]) => ({ key, ...val }));
+            // Sort: Pinned first, then Newest
+            postsArr.sort((a, b) => {
+                if (a.isPinned && !b.isPinned) return -1;
+                if (!a.isPinned && b.isPinned) return 1;
+                return b.timestamp - a.timestamp;
+            });
+            window.allPosts = postsArr;
+            checkNotifications(postsArr);
+            // Refresh current view
+            const activeCat = document.querySelector('.cat-btn.active').innerText.trim();
+            if(activeCat.includes("সংরক্ষিত")) filterCategory('সংরক্ষিত');
+            else if(activeCat.includes("জনপ্রিয়")) filterCategory('জনপ্রিয়');
+            else filterCategory(activeCat);
+        }
+
+        window.savePost = function() {
             const title = document.getElementById('postTitle').value;
-            const content = document.getElementById('postContent').value;
+            // Get HTML from ContentEditable Div
+            const content = document.getElementById('richEditor').innerHTML;
             const author = document.getElementById('authorName').value || "অজ্ঞাত";
             const category = document.getElementById('postCategory').value;
             const image = document.getElementById('postImage').value;
@@ -371,8 +437,10 @@
             const isPinned = document.getElementById('isPinned').checked;
             const editKey = document.getElementById('editKey').value;
 
-            if (!title || !content) {
-                Swal.fire({ icon: 'warning', title: 'উফ!', text: 'শিরোনাম ও লেখা দিতেই হবে!' });
+            // Basic Validation (Strip tags to check if empty)
+            const plainText = document.getElementById('richEditor').innerText.trim();
+            if (!title || !plainText) {
+                Swal.fire('উফ!', 'শিরোনাম ও লেখা প্রয়োজন', 'warning');
                 return;
             }
 
@@ -382,560 +450,515 @@
                 timestamp: Date.now()
             };
 
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.innerText = "অপেক্ষা করুন...";
-            submitBtn.disabled = true;
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerText = "অপেক্ষা করুন...";
 
             if (editKey) {
-                update(ref(db, 'posts/' + editKey), postData).then(() => resetForm("আপডেট হয়েছে!"));
+                update(ref(db, 'posts/' + editKey), postData).then(() => resetForm("আপডেট হয়েছে"));
             } else {
                 postData.likes = 0;
                 postData.views = 0;
-                postData.comments = {};
-                const newPostRef = push(ref(db, 'posts'));
-                set(newPostRef, postData).then(() => resetForm("পাবলিশ হয়েছে!"));
+                push(ref(db, 'posts'), postData).then(() => resetForm("পাবলিশ হয়েছে"));
             }
-        }
+        };
 
-        function resetForm(msg) {
-            Swal.fire({ icon: 'success', title: 'সফল!', text: msg, timer: 1500, showConfirmButton: false });
-            document.getElementById('postTitle').value = "";
-            document.getElementById('postContent').value = "";
-            document.getElementById('postImage').value = "";
-            document.getElementById('voiceUrl').value = "";
-            document.getElementById('editKey').value = "";
-            document.getElementById('postCategory').value = "অন্যান্য";
-            document.getElementById('isPinned').checked = false;
-            document.getElementById('submitBtn').innerText = "পাবলিশ করুন";
-            document.getElementById('submitBtn').disabled = false;
-            document.getElementById('formTitle').innerText = "নতুন পোস্ট";
-            closeAdminModal();
-        }
+        window.deletePost = function(key) {
+            Swal.fire({
+                title: 'মুছে ফেলবেন?',
+                showCancelButton: true,
+                confirmButtonText: 'হ্যাঁ'
+            }).then((result) => {
+                if (result.isConfirmed) remove(ref(db, 'posts/' + key));
+            });
+        };
 
-        // Data Load & Sorting
-        onValue(ref(db, 'posts'), (snapshot) => {
-            // Hide Skeleton
-            document.getElementById('skeletonLoader').style.display = 'none';
+        window.handleLike = function(key, currentLikes, btn) {
+            // Visual Emoji Reaction
+            const emoji = document.createElement('div');
+            emoji.innerText = "❤️"; // You can randomize: ["❤️","👍","🔥"][Math.floor(Math.random()*3)]
+            emoji.className = "emoji-floater";
+            // Position near the button
+            const rect = btn.getBoundingClientRect();
+            emoji.style.left = (rect.left + 10) + 'px';
+            emoji.style.top = (rect.top - 20) + 'px';
+            document.body.appendChild(emoji);
+            setTimeout(() => emoji.remove(), 1000); // Cleanup
+
+            // Logic
+            const liked = JSON.parse(localStorage.getItem('LIKED_' + key));
+            let newCount = currentLikes || 0;
             
-            const data = snapshot.val();
-            const feed = document.getElementById('feed');
-            feed.innerHTML = '';
-            window.allPosts = [];
-
-            if (data) {
-                const postsArr = Object.entries(data).map(([key, value]) => ({ key, ...value }));
-                
-                postsArr.sort((a, b) => {
-                    if (a.isPinned && !b.isPinned) return -1;
-                    if (!a.isPinned && b.isPinned) return 1;
-                    const likesA = a.likes || 0;
-                    const likesB = b.likes || 0;
-                    if (likesB !== likesA) return likesB - likesA;
-                    return b.timestamp - a.timestamp;
-                });
-
-                window.allPosts = postsArr;
-                // Determine what to render based on current active tab
-                const activeTab = document.querySelector('.cat-btn.active');
-                const category = activeTab ? activeTab.innerText.trim() : 'সব';
-                
-                if(category.includes("সংরক্ষিত")) {
-                     filterCategory('সংরক্ষিত', activeTab);
-                } else {
-                     filterCategory(category, activeTab);
-                }
-                
+            if (!liked) {
+                newCount++;
+                localStorage.setItem('LIKED_' + key, true);
+                btn.classList.add('liked');
             } else {
-                feed.innerHTML = '<div class="no-results"><p>কোনো লেখা পাওয়া যায়নি।</p></div>';
+                // Optional: Allow unlike
+                // newCount--;
+                // localStorage.removeItem('LIKED_' + key);
+                // btn.classList.remove('liked');
+                // For "Reaction" style, usually you just react once.
+                return; 
             }
-        });
+            update(ref(db, 'posts/' + key), { likes: newCount });
+        };
+    </script>
 
-        function incrementView(key, currentViews) {
-            const viewedPosts = JSON.parse(sessionStorage.getItem('VIEWED_POSTS')) || {};
-            if (!viewedPosts[key]) {
-                update(ref(db, 'posts/' + key), { views: (currentViews || 0) + 1 });
-                viewedPosts[key] = true;
-                sessionStorage.setItem('VIEWED_POSTS', JSON.stringify(viewedPosts));
+    <script>
+        // --- UI & Logic ---
+
+        // 1. Reading Progress Bar
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("readingProgress").style.width = scrolled + "%";
+        };
+
+        // 2. Draft System (Auto Save)
+        const draftKey = 'MUKTOLIPI_DRAFT';
+        setInterval(() => {
+            const title = document.getElementById('postTitle').value;
+            const content = document.getElementById('richEditor').innerHTML;
+            if(document.getElementById('adminModalWrapper').style.display === 'flex') {
+                if(title || content.length > 10) {
+                    localStorage.setItem(draftKey, JSON.stringify({title, content, date: Date.now()}));
+                }
+            }
+        }, 3000);
+
+        function checkDraft() {
+            const draft = JSON.parse(localStorage.getItem(draftKey));
+            if(draft && (Date.now() - draft.date < 86400000)) { // 24h expiry
+                Swal.fire({
+                    title: 'ড্রাফট পাওয়া গেছে',
+                    text: 'আগের লেখা ফিরিয়ে আনব?',
+                    showCancelButton: true,
+                    confirmButtonText: 'হ্যাঁ'
+                }).then((res) => {
+                    if(res.isConfirmed) {
+                        document.getElementById('postTitle').value = draft.title;
+                        document.getElementById('richEditor').innerHTML = draft.content;
+                    }
+                });
             }
         }
-        window.incrementView = incrementView;
 
-        // Render Function with Improvements
-        window.renderPosts = function(posts) {
+        // 3. Rich Text Commands
+        function execCmd(command, value = null) {
+            document.execCommand(command, false, value);
+        }
+        function addLink() {
+            const url = prompt("লিংক দিন:");
+            if(url) execCmd('createLink', url);
+        }
+
+        // 4. TTS Improvement
+        function speakText(key, btn) {
+            const contentEl = document.getElementById('content-' + key);
+            // Get text without HTML tags for speech
+            const text = contentEl.innerText; 
+            
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+                // If clicking same button, stop.
+                if (btn.classList.contains('speaking')) {
+                    resetTTS();
+                    return;
+                }
+            }
+            
+            resetTTS(); // Reset others
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 0.9;
+            
+            // Try to set Bengali Voice
+            const voices = window.speechSynthesis.getVoices();
+            const bnVoice = voices.find(v => v.lang.includes('bn'));
+            if(bnVoice) utterance.voice = bnVoice;
+            else utterance.lang = 'bn-BD';
+
+            utterance.onend = () => resetTTS();
+            utterance.onerror = (e) => {
+                console.error(e);
+                resetTTS();
+                Swal.fire('সমস্যা', 'ভয়েস সাপোর্ট করছে না', 'error');
+            };
+
+            btn.classList.add('speaking');
+            btn.innerHTML = '<i class="fas fa-stop"></i> থামুন';
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function resetTTS() {
+            document.querySelectorAll('.media-btn').forEach(b => {
+                if(b.innerHTML.includes('থামুন') || b.classList.contains('speaking')) {
+                    b.classList.remove('speaking');
+                    b.innerHTML = '<i class="fas fa-volume-up"></i> শুনুন';
+                }
+            });
+        }
+        // Ensure voices are loaded
+        window.speechSynthesis.onvoiceschanged = () => {};
+
+        // 5. ImgBB Upload
+        function uploadImage(input) {
+            const file = input.files[0];
+            if(!file) return;
+            const msg = document.getElementById('uploadMsg');
+            msg.style.display = 'block';
+            msg.innerText = "আপলোড হচ্ছে...";
+            
+            const formData = new FormData();
+            formData.append('image', file);
+            
+            fetch('https://api.imgbb.com/1/upload?key=d34410bcea20d900a8a8bcc3068ac081', { method: 'POST', body: formData })
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) {
+                    document.getElementById('postImage').value = data.data.url;
+                    msg.innerText = "✅ আপলোড হয়েছে";
+                } else msg.innerText = "❌ ব্যর্থ হয়েছে";
+            })
+            .catch(() => msg.innerText = "❌ নেটওয়ার্ক এরর");
+        }
+
+        // 6. Zen Mode
+        function toggleZenMode() {
+            document.body.classList.toggle('zen-active');
+        }
+
+        // Render Logic
+        function filterPosts(query) {
+            const q = query.toLowerCase();
+            document.getElementById('searchClearBtn').style.display = q ? 'block' : 'none';
+            
+            const filtered = window.allPosts.filter(p => 
+                p.title.toLowerCase().includes(q) || 
+                p.content.toLowerCase().includes(q) || 
+                p.author.toLowerCase().includes(q)
+            );
+            renderFeed(filtered, q);
+        }
+
+        function filterCategory(cat, btn) {
+            if(btn) {
+                document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+            document.getElementById('searchBar').value = '';
+            
+            if(cat === 'সব') renderFeed(window.allPosts);
+            else if(cat === 'জনপ্রিয়') {
+                const trending = [...window.allPosts].sort((a,b) => (b.views||0) - (a.views||0));
+                renderFeed(trending);
+            } else if(cat === 'সংরক্ষিত') {
+                const saved = JSON.parse(localStorage.getItem('SAVED_POSTS')) || [];
+                const list = window.allPosts.filter(p => saved.includes(p.key));
+                renderFeed(list);
+            } else {
+                renderFeed(window.allPosts.filter(p => p.category === cat));
+            }
+        }
+
+        function renderFeed(posts, highlight = "") {
             const feed = document.getElementById('feed');
-            const likedPosts = JSON.parse(localStorage.getItem('LIKED_POSTS')) || {};
-            const savedPosts = JSON.parse(localStorage.getItem('SAVED_POSTS')) || [];
-            let isAdmin = localStorage.getItem('IS_ADMIN') === 'true';
-
-            if(posts.length === 0) {
-                feed.innerHTML = `
-                <div class="no-results">
-                    <i class="fas fa-search-minus" style="font-size:40px; margin-bottom:15px; opacity:0.5;"></i>
-                    <h3>দুঃখিত, কোনো লেখা পাওয়া যায়নি!</h3>
-                    <button class="btn btn-primary" onclick="clearSearch()" style="width:auto; margin-top:10px;">সব লেখা দেখুন</button>
-                </div>`;
+            if(!posts.length) {
+                feed.innerHTML = '<div style="text-align:center; margin-top:50px; color:#999;">কোনো পোস্ট পাওয়া যায়নি</div>';
                 return;
             }
 
+            const isAdmin = localStorage.getItem('IS_ADMIN') === 'true';
+            const savedPosts = JSON.parse(localStorage.getItem('SAVED_POSTS')) || [];
+
             feed.innerHTML = posts.map(post => {
-                const isLong = post.content.length > 250;
-                const commentsArr = post.comments ? Object.values(post.comments) : [];
+                const liked = localStorage.getItem('LIKED_' + post.key);
                 const isSaved = savedPosts.includes(post.key);
                 
-                // Text Formatting
-                let formattedContent = post.content
-                    .replace(/\*(.*?)\*/g, '<b>$1</b>')
-                    .replace(/_(.*?)_/g, '<i>$1</i>');
-
-                // Search Highlighting
-                if (window.currentSearchQuery) {
-                    formattedContent = highlightText(formattedContent, window.currentSearchQuery);
-                    post.title = highlightText(post.title, window.currentSearchQuery);
+                // Content Processing: Handle both Legacy Markdown (*) and New HTML
+                let bodyHtml = post.content;
+                // If it doesn't look like HTML, apply basic markdown parsing
+                if(!bodyHtml.includes('<') && !bodyHtml.includes('>')) {
+                    bodyHtml = bodyHtml.replace(/\*(.*?)\*/g, '<b>$1</b>').replace(/_(.*?)_/g, '<i>$1</i>');
                 }
-                
-                setTimeout(() => incrementView(post.key, post.views), 2000); 
 
-                // Audio Button
-                let audioHtml = '';
-                if(post.voice) {
-                    audioHtml = `
-                    <div class="audio-trigger-btn" onclick="startStickyAudio('${post.key}', '${post.title.replace(/'/g, "\\'")}', '${post.author}', '${post.voice}')">
-                        <i class="fas fa-play-circle"></i> শুনতে ক্লিক করুন
-                    </div>`;
+                // Search Highlighting (Safe)
+                let titleHtml = post.title;
+                if(highlight) {
+                    const regex = new RegExp(`(${highlight})`, 'gi');
+                    // Simple replacement for title
+                    titleHtml = titleHtml.replace(regex, '<mark>$1</mark>');
+                    
+                    // Complex replacement for body (skip HTML tags)
+                    // This is a basic safe implementation.
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = bodyHtml;
+                    highlightNode(tempDiv, regex);
+                    bodyHtml = tempDiv.innerHTML;
                 }
 
                 return `
-                <div class="post-card" id="post-${post.key}">
-                    ${post.isPinned ? `<i class="fas fa-thumbtack pinned-badge" title="Pinned Post"></i>` : ''}
+                <div class="post-card">
+                    ${post.isPinned ? '<i class="fas fa-thumbtack pinned-badge"></i>' : ''}
                     <div class="author-info">
-                        <div style="background:#ddd; width:35px; height:35px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#555;">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div>
-                            <span>${post.author}</span>
-                            <div style="display:flex; align-items:center; gap:5px;">
-                                <span class="date">${post.date}</span>
+                        <div class="avatar-circle"><i class="fas fa-user"></i></div>
+                        <div class="author-text">
+                            <h4>${post.author}</h4>
+                            <div class="post-meta">
+                                <span>${post.date}</span> • 
+                                <span><i class="fas fa-eye"></i> ${post.views || 0}</span>
                                 ${post.category ? `<span class="category-tag">${post.category}</span>` : ''}
                             </div>
                         </div>
                     </div>
-                    <h2 class="post-title">${post.title}</h2>
+
+                    <h2 class="post-title">${titleHtml}</h2>
                     
-                    <div class="post-img-container" ondblclick="triggerDoubleTapLike('${post.key}', event)">
-                        ${post.image ? `<img src="${post.image}" class="post-img" onclick="openLightbox('${post.image}')">` : ''}
-                        <i class="fas fa-heart heart-popup"></i>
+                    ${post.image ? `<div class="post-img-container"><img src="${post.image}" class="post-img" onclick="document.getElementById('lightbox-img').src='${post.image}';document.getElementById('lightbox').style.display='flex'"></div>` : ''}
+
+                    <div class="media-controls">
+                        ${post.voice ? `<button class="media-btn" onclick="playAudio('${post.voice}', '${post.title}', '${post.author}')"><i class="fas fa-play-circle"></i> অডিও</button>` : ''}
+                        <button class="media-btn" onclick="speakText('${post.key}', this)"><i class="fas fa-volume-up"></i> শুনুন</button>
                     </div>
 
-                    ${audioHtml}
-
-                    <!-- Content with Gradient Read More -->
-                    <div class="content-preview" id="text-${post.key}" ondblclick="triggerDoubleTapLike('${post.key}', event)">
-                        <div class="read-more-wrapper ${isLong ? 'read-more-overlay' : 'expanded'}" id="wrapper-${post.key}">
-                             ${formattedContent}
+                    <div class="content-preview">
+                        <div class="read-more-wrapper read-more-overlay" id="wrap-${post.key}">
+                            <div id="content-${post.key}">${bodyHtml}</div>
                         </div>
-                        <i class="fas fa-heart heart-popup"></i>
+                        <button class="read-more-btn" onclick="toggleReadMore('${post.key}', this)">আরও পড়ুন <i class="fas fa-chevron-down"></i></button>
                     </div>
-                    
-                    ${isLong ? `<button class="read-more-btn" onclick="toggleReadMore('${post.key}', this)">আরও পড়ুন <i class="fas fa-chevron-down"></i></button>` : ''}
 
                     <div class="interaction-bar">
-                        <div style="display:flex; gap:10px;">
-                            <button class="action-btn ${likedPosts[post.key] ? 'liked' : ''}" id="like-btn-${post.key}" onclick="handleLike('${post.key}', ${post.likes || 0})">
-                                <i class="fas fa-thumbs-up"></i> <span id="like-count-${post.key}">${post.likes || 0}</span>
-                            </button>
-                            <button class="action-btn" onclick="toggleComments('${post.key}')">
-                                <i class="fas fa-comment-alt"></i> ${commentsArr.length}
+                        <div>
+                            <button class="action-btn ${liked ? 'liked' : ''}" onclick="handleLike('${post.key}', ${post.likes||0}, this)">
+                                <i class="fas fa-heart"></i> ${post.likes || 0}
                             </button>
                         </div>
-                        
-                        <div style="display:flex; gap:10px;">
-                            <button class="action-btn ${isSaved ? 'bookmarked' : ''}" onclick="toggleBookmark('${post.key}', this)">
-                                <i class="fas ${isSaved ? 'fa-bookmark' : 'fa-regular fa-bookmark'}"></i>
-                            </button>
-                            <!-- Share Button Connected -->
-                            <button class="action-btn" onclick="sharePost('${post.key}')">
-                                <i class="fas fa-share-nodes"></i>
-                            </button>
+                        <div style="display:flex;">
+                            <button class="action-btn ${isSaved ? 'bookmarked' : ''}" onclick="toggleSave('${post.key}', this)"><i class="fas ${isSaved?'fa-bookmark':'fa-regular fa-bookmark'}"></i></button>
+                            <button class="action-btn" onclick="sharePost('${post.key}')"><i class="fas fa-share-nodes"></i></button>
+                            ${isAdmin ? `<button class="action-btn" onclick="editPost('${post.key}')" style="color:red;"><i class="fas fa-edit"></i></button>` : ''}
                         </div>
                     </div>
-
-                    <div class="comment-area" id="commentArea-${post.key}">
-                        ${commentsArr.map(c => `<div class="comment-item"><b>User:</b> ${c.text}</div>`).join('')}
-                        <div style="display:flex; gap:5px; margin-top:10px;">
-                            <input type="text" placeholder="মন্তব্য লিখুন..." style="margin:0; padding:10px; font-size:14px; background:var(--bg-color);">
-                            <button onclick="addComment('${post.key}', this)" style="background:var(--primary-color); color:white; border:none; border-radius:10px; width:45px;"><i class="fas fa-paper-plane"></i></button>
-                        </div>
-                    </div>
-
-                    ${isAdmin ? `
-                    <div class="admin-controls">
-                        <button onclick="setupEdit('${post.key}')"><i class="fas fa-edit"></i> Edit</button>
-                        <button onclick="deletePost('${post.key}')" style="color:#e74c3c; border-color:#e74c3c;"><i class="fas fa-trash"></i> Delete</button>
-                    </div>` : ''}
                 </div>`;
             }).join('');
         }
 
-        // Highlight Helper
-        function highlightText(text, query) {
-            if(!query) return text;
-            try {
-                const regex = new RegExp(`(${query})`, 'gi');
-                return text.replace(regex, '<mark>$1</mark>');
-            } catch(e) {
-                return text;
+        // Helper to highlight text without breaking HTML tags
+        function highlightNode(node, regex) {
+            if (node.nodeType === 3) { // Text node
+                const match = node.data.match(regex);
+                if (match) {
+                    const span = document.createElement('span');
+                    span.innerHTML = node.data.replace(regex, '<mark>$1</mark>');
+                    node.parentNode.replaceChild(span, node);
+                }
+            } else if (node.nodeType === 1 && node.nodeName !== 'MARK') {
+                for (let i = 0; i < node.childNodes.length; i++) {
+                    highlightNode(node.childNodes[i], regex);
+                }
             }
         }
 
-        function handleLike(key, currentLikes) {
-            const likedPosts = JSON.parse(localStorage.getItem('LIKED_POSTS')) || {};
-            let newCount = currentLikes;
-            
-            if (!likedPosts[key]) {
-                newCount = (currentLikes || 0) + 1;
-                update(ref(db, 'posts/' + key), { likes: newCount });
-                likedPosts[key] = true;
+        function toggleReadMore(key, btn) {
+            const wrap = document.getElementById('wrap-' + key);
+            if(wrap.classList.contains('read-more-overlay')) {
+                wrap.classList.remove('read-more-overlay');
+                wrap.classList.add('expanded');
+                btn.innerHTML = 'বন্ধ করুন <i class="fas fa-chevron-up"></i>';
+                // Count view
+                const viewed = JSON.parse(sessionStorage.getItem('VIEWED') || '{}');
+                if(!viewed[key]) {
+                    const post = window.allPosts.find(p=>p.key===key);
+                    update(ref(db, 'posts/'+key), {views: (post.views||0)+1});
+                    viewed[key]=true;
+                    sessionStorage.setItem('VIEWED', JSON.stringify(viewed));
+                }
             } else {
-                newCount = (currentLikes || 0) - 1;
-                update(ref(db, 'posts/' + key), { likes: newCount });
-                delete likedPosts[key];
+                wrap.classList.add('read-more-overlay');
+                wrap.classList.remove('expanded');
+                btn.innerHTML = 'আরও পড়ুন <i class="fas fa-chevron-down"></i>';
             }
-            localStorage.setItem('LIKED_POSTS', JSON.stringify(likedPosts));
         }
 
-        function addComment(key, btn) {
-            const input = btn.previousElementSibling;
-            const text = input.value;
-            if(!text) return;
-            const commentRef = push(ref(db, 'posts/' + key + '/comments'));
-            set(commentRef, { text: text, time: Date.now() });
-            input.value = '';
+        // Utils
+        function navTo(page, btn) {
+            document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+            btn.classList.add('active');
+            window.scrollTo(0,0);
+            
+            if(page === 'home') {
+                document.querySelector('.category-tabs .cat-btn').click();
+            } else if(page === 'search') {
+                document.getElementById('searchBar').focus();
+            } else if(page === 'saved') {
+                filterCategory('সংরক্ষিত');
+                document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+            } else if(page === 'admin') {
+                if(localStorage.getItem('IS_ADMIN') === 'true') openAdminModal();
+                else {
+                    Swal.fire({title:'পাসওয়ার্ড', input:'password'}).then(r => {
+                        if(r.value === '1234') {
+                            localStorage.setItem('IS_ADMIN','true');
+                            document.getElementById('adminFab').style.display='flex';
+                            openAdminModal();
+                        }
+                    });
+                }
+            }
         }
 
-        function deletePost(key) {
-            if(confirm("মুছে ফেলবেন?")) remove(ref(db, 'posts/' + key));
+        function toggleSave(key, btn) {
+            let saved = JSON.parse(localStorage.getItem('SAVED_POSTS')) || [];
+            if(saved.includes(key)) {
+                saved = saved.filter(k => k !== key);
+                btn.classList.remove('bookmarked');
+                btn.querySelector('i').className = 'far fa-bookmark';
+            } else {
+                saved.push(key);
+                btn.classList.add('bookmarked');
+                btn.querySelector('i').className = 'fas fa-bookmark';
+                Swal.fire({toast:true, position:'top-end', icon:'success', title:'সংরক্ষিত!', showConfirmButton:false, timer:1000});
+            }
+            localStorage.setItem('SAVED_POSTS', JSON.stringify(saved));
         }
 
-        window.setupEdit = function(key) {
+        function sharePost(key) {
             const post = window.allPosts.find(p => p.key === key);
-            if(post) {
-                document.getElementById('authorName').value = post.author;
-                document.getElementById('postTitle').value = post.title;
-                document.getElementById('postContent').value = post.content;
-                document.getElementById('postImage').value = post.image || "";
-                document.getElementById('voiceUrl').value = post.voice || "";
-                document.getElementById('postCategory').value = post.category || "অন্যান্য";
-                document.getElementById('isPinned').checked = post.isPinned || false;
-                document.getElementById('editKey').value = post.key;
-                document.getElementById('formTitle').innerText = "পোস্ট এডিট";
-                document.getElementById('submitBtn').innerText = "আপডেট করুন";
-                openAdminModal();
-            }
-        }
-    </script>
-
-    <script>
-        // --- 1. UI Interactions & Admin Logic ---
-        function openAdminModal() {
-            document.getElementById('adminModalWrapper').style.display = 'flex';
-        }
-        function closeAdminModal() {
-            document.getElementById('adminModalWrapper').style.display = 'none';
-        }
-        
-        // Show FAB if Admin
-        if(localStorage.getItem('IS_ADMIN') === 'true') {
-            document.getElementById('adminFab').style.display = 'flex';
-        }
-
-        function adminLogin() {
             Swal.fire({
-                title: 'পাসওয়ার্ড দিন',
-                input: 'password',
-                showCancelButton: true,
-                confirmButtonText: 'লগইন',
-            }).then((result) => {
-                if (result.value === "1234") {
-                    localStorage.setItem('IS_ADMIN', 'true');
-                    document.getElementById('adminFab').style.display = 'flex';
-                    Swal.fire('স্বাগতম অ্যাডমিন!', '', 'success');
-                } else if (result.value) Swal.fire('ভুল পাসওয়ার্ড!', '', 'error');
+                title: 'শেয়ার',
+                showDenyButton: true,
+                confirmButtonText: 'লিংক কপি',
+                denyButtonText: 'ছবি ডাউনলোড',
+            }).then(r => {
+                if(r.isConfirmed) {
+                    navigator.clipboard.writeText(`${post.title}\n${window.location.href}`);
+                    Swal.fire('কপি হয়েছে', '', 'success');
+                } else if(r.isDenied) {
+                    // Generate Quote
+                    document.getElementById('q-title').innerText = post.title;
+                    document.getElementById('q-text').innerText = post.content.replace(/<[^>]*>/g, '').substring(0, 300);
+                    document.getElementById('q-author').innerText = post.author;
+                    setTimeout(() => {
+                        html2canvas(document.getElementById('quote-capture-area'), {scale:2}).then(c => {
+                            const a = document.createElement('a');
+                            a.download = 'Muktolipi-'+post.title+'.png';
+                            a.href = c.toDataURL();
+                            a.click();
+                        });
+                    }, 100);
+                }
             });
+        }
+
+        // Admin Helpers
+        function openAdminModal() { 
+            document.getElementById('adminModalWrapper').style.display = 'flex'; 
+            checkDraft();
+        }
+        function closeAdminModal() { document.getElementById('adminModalWrapper').style.display = 'none'; }
+        
+        window.editPost = function(key) {
+            const p = window.allPosts.find(x => x.key === key);
+            document.getElementById('postTitle').value = p.title;
+            document.getElementById('richEditor').innerHTML = p.content; // Load HTML
+            document.getElementById('authorName').value = p.author;
+            document.getElementById('postCategory').value = p.category;
+            document.getElementById('postImage').value = p.image || '';
+            document.getElementById('voiceUrl').value = p.voice || '';
+            document.getElementById('isPinned').checked = p.isPinned || false;
+            document.getElementById('editKey').value = p.key;
+            document.getElementById('formTitle').innerText = 'পোস্ট আপডেট';
+            document.getElementById('submitBtn').innerText = 'আপডেট করুন';
+            openAdminModal();
+        }
+
+        function resetForm(msg) {
+            Swal.fire('সফল!', msg, 'success');
+            closeAdminModal();
+            document.getElementById('postTitle').value = '';
+            document.getElementById('richEditor').innerHTML = '';
+            document.getElementById('editKey').value = '';
+            document.getElementById('submitBtn').innerText = 'পাবলিশ করুন';
+            document.getElementById('submitBtn').disabled = false;
+            localStorage.removeItem(draftKey);
         }
 
         function logout() {
             localStorage.setItem('IS_ADMIN', 'false');
-            document.getElementById('adminFab').style.display = 'none';
-            closeAdminModal();
             location.reload();
         }
 
-        // --- 2. Bottom Navigation Logic ---
-        function navAction(action, btn) {
-            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            if (action === 'home') {
-                document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-                document.querySelector('.cat-btn:first-child').classList.add('active');
-                clearSearch();
-                window.scrollTo({top: 0, behavior: 'smooth'});
-            } else if (action === 'search') {
-                window.scrollTo({top: 0, behavior: 'smooth'});
-                document.getElementById('searchBar').focus();
-            } else if (action === 'saved') {
-                // Trigger saved category logic
-                window.scrollTo({top: 0, behavior: 'smooth'});
-                filterCategory('সংরক্ষিত', null);
-                // Highlight the saved tab in top bar too visually
-                document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-                const savedTab = Array.from(document.querySelectorAll('.cat-btn')).find(b => b.innerText.includes('সংরক্ষিত'));
-                if(savedTab) savedTab.classList.add('active');
-            } else if (action === 'menu') {
-                if(localStorage.getItem('IS_ADMIN') === 'true') {
-                    openAdminModal();
-                } else {
-                    adminLogin();
-                }
-            }
+        // Player
+        const player = document.getElementById('globalAudio');
+        function playAudio(url, title, author) {
+            document.getElementById('stickyPlayer').classList.add('active');
+            document.getElementById('playerTitle').innerText = title;
+            document.getElementById('playerAuthor').innerText = author;
+            player.src = url;
+            player.play();
+            document.getElementById('playIcon').className = 'fas fa-pause';
         }
-
-        // --- 3. Read More Expand Logic ---
-        function toggleReadMore(key, btn) {
-            const wrapper = document.getElementById(`wrapper-${key}`);
-            if (wrapper.classList.contains('read-more-overlay')) {
-                wrapper.classList.remove('read-more-overlay');
-                wrapper.classList.add('expanded');
-                btn.innerHTML = 'কমিয়ে পড়ুন <i class="fas fa-chevron-up"></i>';
-            } else {
-                wrapper.classList.add('read-more-overlay');
-                wrapper.classList.remove('expanded');
-                btn.innerHTML = 'আরও পড়ুন <i class="fas fa-chevron-down"></i>';
-                // Scroll back to card top if needed
-                document.getElementById(`post-${key}`).scrollIntoView({behavior: "smooth", block: "start"});
-            }
+        function toggleAudio() {
+            if(player.paused) { player.play(); document.getElementById('playIcon').className = 'fas fa-pause'; }
+            else { player.pause(); document.getElementById('playIcon').className = 'fas fa-play'; }
         }
-
-        // --- 4. Font Size ---
-        const fontSizes = ['16px', '18px', '20px'];
-        let currentFontIndex = 0;
-        const savedSize = localStorage.getItem('FONT_SIZE');
-        if(savedSize) {
-            document.documentElement.style.setProperty('--content-font-size', savedSize);
-            currentFontIndex = fontSizes.indexOf(savedSize);
-            if(currentFontIndex === -1) currentFontIndex = 0;
+        function closePlayer() {
+            player.pause();
+            document.getElementById('stickyPlayer').classList.remove('active');
         }
+        function audioEnded() { document.getElementById('playIcon').className = 'fas fa-play'; }
 
+        // Settings
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+        }
         function toggleFontSize() {
-            currentFontIndex = (currentFontIndex + 1) % fontSizes.length;
-            const newSize = fontSizes[currentFontIndex];
+            const current = getComputedStyle(document.documentElement).getPropertyValue('--content-font-size').trim();
+            const newSize = current === '17px' ? '20px' : '17px';
             document.documentElement.style.setProperty('--content-font-size', newSize);
-            localStorage.setItem('FONT_SIZE', newSize);
-        }
-
-        // --- 5. Bookmarks ---
-        function toggleBookmark(key, btn) {
-            let savedPosts = JSON.parse(localStorage.getItem('SAVED_POSTS')) || [];
-            const index = savedPosts.indexOf(key);
-            const icon = btn.querySelector('i');
-
-            if(index === -1) {
-                savedPosts.push(key);
-                btn.classList.add('bookmarked');
-                icon.className = "fas fa-bookmark";
-                Swal.fire({toast: true, position: 'top-end', icon: 'success', title: 'সংরক্ষণ করা হয়েছে', showConfirmButton: false, timer: 1500});
-            } else {
-                savedPosts.splice(index, 1);
-                btn.classList.remove('bookmarked');
-                icon.className = "far fa-bookmark";
-            }
-            localStorage.setItem('SAVED_POSTS', JSON.stringify(savedPosts));
-            
-            // Refresh if on saved tab
-            const activeTab = document.querySelector('.cat-btn.active');
-            if(activeTab && activeTab.innerText.includes("সংরক্ষিত")) {
-                filterCategory('সংরক্ষিত', activeTab);
-            }
-        }
-
-        // --- 6. Double Tap Like ---
-        function triggerDoubleTapLike(key, event) {
-            event.preventDefault();
-            const container = event.currentTarget;
-            const heart = container.querySelector('.heart-popup');
-            if(heart) {
-                heart.style.animation = 'none';
-                heart.offsetHeight;
-                heart.style.animation = 'popHeart 0.8s ease-out';
-            }
-            const likedPosts = JSON.parse(localStorage.getItem('LIKED_POSTS')) || {};
-            const countSpan = document.getElementById(`like-count-${key}`);
-            const currentLikes = parseInt(countSpan.innerText) || 0;
-            if(!likedPosts[key]) {
-                window.handleLike(key, currentLikes);
-            }
-        }
-
-        // --- 7. Sticky Audio & Visualizer ---
-        const stickyPlayer = document.getElementById('stickyPlayer');
-        const audioEl = document.getElementById('globalAudioElement');
-        const playIcon = document.getElementById('globalPlayIcon');
-        const pTitle = document.getElementById('globalPlayerTitle');
-        const pAuthor = document.getElementById('globalPlayerAuthor');
-        const visualizer = document.getElementById('audioVisualizer');
-        let currentAudioKey = null;
-
-        function startStickyAudio(key, title, author, url) {
-            if(currentAudioKey === key) {
-                toggleGlobalAudio();
-                return;
-            }
-            currentAudioKey = key;
-            pTitle.innerText = title;
-            pAuthor.innerText = author;
-            audioEl.src = url;
-            stickyPlayer.classList.add('active');
-            
-            audioEl.play().then(() => {
-                playIcon.className = "fas fa-pause";
-                visualizer.classList.add('playing');
-            }).catch(e => console.log(e));
-        }
-
-        function toggleGlobalAudio() {
-            if(audioEl.paused) {
-                audioEl.play();
-                playIcon.className = "fas fa-pause";
-                visualizer.classList.add('playing');
-            } else {
-                audioEl.pause();
-                playIcon.className = "fas fa-play";
-                visualizer.classList.remove('playing');
-            }
-        }
-
-        function closeGlobalPlayer() {
-            audioEl.pause();
-            audioEl.currentTime = 0;
-            stickyPlayer.classList.remove('active');
-            visualizer.classList.remove('playing');
-            currentAudioKey = null;
         }
         
-        function onAudioEnded() {
-            playIcon.className = "fas fa-play";
-            visualizer.classList.remove('playing');
-        }
-
-        // --- 8. Standard Filtering & Search ---
-        window.filterCategory = function(cat, btn) {
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            if(btn) btn.classList.add('active'); else if (cat === 'সংরক্ষিত') {
-                 // manual highlight if called from bottom nav
+        // Notifications
+        function checkNotifications(posts) {
+            const last = localStorage.getItem('LAST_VISIT') || 0;
+            const count = posts.filter(p => p.timestamp > last).length;
+            const badge = document.getElementById('notifBadge');
+            if(count > 0) {
+                badge.innerText = count;
+                badge.classList.add('active');
             }
-
-            document.getElementById('searchBar').value = '';
-            document.getElementById('searchClearBtn').style.display = 'none';
-            window.currentSearchQuery = "";
-            
-            if (cat === 'সব') {
-                window.renderPosts(window.allPosts);
-            } else if (cat === 'সংরক্ষিত') {
-                const savedIds = JSON.parse(localStorage.getItem('SAVED_POSTS')) || [];
-                const filtered = window.allPosts.filter(p => savedIds.includes(p.key));
-                window.renderPosts(filtered);
+        }
+        function showNotifications() {
+            const badge = document.getElementById('notifBadge');
+            if(badge.classList.contains('active')) {
+                Swal.fire('নতুন পোস্ট', `${badge.innerText} টি নতুন লেখা এসেছে!`, 'info');
+                localStorage.setItem('LAST_VISIT', Date.now());
+                badge.classList.remove('active');
             } else {
-                const filtered = window.allPosts.filter(p => p.category === cat);
-                window.renderPosts(filtered);
+                Swal.fire('নোটিফিকেশন', 'কোনো নতুন নোটিফিকেশন নেই', 'info');
             }
         }
 
-        window.filterPosts = function(query) {
-            window.currentSearchQuery = query.toLowerCase();
-            const clearBtn = document.getElementById('searchClearBtn');
-            clearBtn.style.display = query.length > 0 ? 'block' : 'none';
-
-            if(!window.allPosts) return;
-
-            const q = query.toLowerCase();
-            const filtered = window.allPosts.filter(p => 
-                (p.title && p.title.toLowerCase().includes(q)) || 
-                (p.content && p.content.toLowerCase().includes(q)) || 
-                (p.author && p.author.toLowerCase().includes(q))
-            );
-            window.renderPosts(filtered);
-        }
-
-        window.clearSearch = function() {
+        function clearSearch() {
             document.getElementById('searchBar').value = '';
-            document.getElementById('searchClearBtn').style.display = 'none';
-            window.currentSearchQuery = "";
-            window.renderPosts(window.allPosts);
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            document.querySelector('.cat-btn:first-child').classList.add('active');
+            filterPosts('');
         }
 
-        // PWA Install
+        // PWA
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            document.getElementById('installBtn').style.display = 'inline-block';
+            document.getElementById('installBtn').style.display = 'block';
         });
-
         async function installPWA() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    document.getElementById('installBtn').style.display = 'none';
-                }
                 deferredPrompt = null;
             }
-        }
-
-        function toggleTheme() {
-            document.body.classList.toggle('dark-theme');
-            const icon = document.querySelector('.theme-toggle i');
-            icon.classList.toggle('fa-moon');
-            icon.classList.toggle('fa-sun');
-        }
-
-        function toggleComments(key) {
-            const el = document.getElementById(`commentArea-${key}`);
-            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
-        }
-
-        // Share Function (Fixed)
-        function sharePost(key) {
-            const post = window.allPosts.find(p => p.key === key);
-            if (!post) return;
-
-            const shareData = {
-                title: 'মুক্তলিপি ডায়েরি',
-                text: `${post.title}\n\n${post.content.substring(0, 100)}... \nপুরোটা পড়ুন: `,
-                url: window.location.href
-            };
-
-            if (navigator.share) {
-                navigator.share(shareData).catch((error) => console.log('Error sharing', error));
-            } else {
-                navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`)
-                    .then(() => Swal.fire({ icon: 'success', title: 'লিংক কপি হয়েছে!', timer: 1500, showConfirmButton: false }))
-                    .catch(err => Swal.fire('Error copying text'));
-            }
-        }
-
-        function openLightbox(src) {
-            const box = document.getElementById('lightbox');
-            document.getElementById('lightbox-img').src = src;
-            box.style.display = 'flex';
-            setTimeout(() => box.classList.add('active'), 10);
-        }
-        function closeLightbox() {
-            const box = document.getElementById('lightbox');
-            box.classList.remove('active');
-            setTimeout(() => box.style.display = 'none', 300);
         }
     </script>
 </body>
