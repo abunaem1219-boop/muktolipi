@@ -12,7 +12,7 @@
     <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIuKbnOCljeCkpOCmsuCkv+CKr+Ckv+CqpSDgpqHgprLgp9uCprDgpL8iLAogICJzaG9ydF9uYW1lIjogIuKbnOCljeCkpOCmsuCkv+CKr+Ckv+CqpSIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmZmZmZmIiwKICAidGhlbWVfY29xvciI6ICIjMTg3N2YyIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9pLmliYi5jby9WV1ZtMFh5L011a3RvbGlwaS1CYW5uZXIuanBnIiwKICAgICAgInNpemVzIjogIjE5MngxOTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9qcGVnIgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJodHRwczovL2kuaWJiLmNvL1ZXVm0wWHkvTXVrdG9saXBpLUJhbm5lci5qcGciLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL2pwZWciCiAgICB9CiAgXQp9">
 
     <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
@@ -24,175 +24,178 @@
             --primary-color: #1877f2; 
             --border-color: #ddd; 
             --secondary-text: #65676b; 
-            --content-font-size: 16px; /* Default Font Size */
+            --content-font-size: 16px;
+            --highlight-color: #ffe066;
+            --nav-bg: #ffffff;
+            --shadow-soft: 0 4px 12px rgba(0,0,0,0.05);
+            --shadow-card: 0 2px 8px rgba(0,0,0,0.08);
         }
-        .dark-theme { --bg-color: #18191a; --card-bg: #242526; --text-color: #e4e6eb; --primary-color: #2d88ff; --border-color: #3e4042; --secondary-text: #b0b3b8; }
+        .dark-theme { 
+            --bg-color: #18191a; 
+            --card-bg: #242526; 
+            --text-color: #e4e6eb; 
+            --primary-color: #4595ff; 
+            --border-color: #3e4042; 
+            --secondary-text: #b0b3b8; 
+            --highlight-color: #bfa11e;
+            --nav-bg: #242526;
+            --shadow-soft: 0 4px 12px rgba(0,0,0,0.3);
+            --shadow-card: 0 2px 8px rgba(0,0,0,0.3);
+        }
 
-        body { font-family: 'Hind Siliguri', sans-serif; background: var(--bg-color); color: var(--text-color); margin: 0; padding: 10px; transition: 0.3s; user-select: none; -webkit-tap-highlight-color: transparent; padding-bottom: 100px; }
+        body { font-family: 'Hind Siliguri', sans-serif; background: var(--bg-color); color: var(--text-color); margin: 0; padding: 10px; transition: 0.3s; user-select: none; -webkit-tap-highlight-color: transparent; padding-bottom: 120px; }
 
         /* Banner & Header */
-        .app-banner { width: 100%; max-width: 981px; margin: 0 auto 20px auto; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .app-banner { width: 100%; max-width: 981px; margin: 0 auto 20px auto; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-soft); }
         .app-banner img { width: 100%; height: auto; aspect-ratio: 981 / 363; object-fit: cover; display: block; }
 
-        header { text-align: center; padding: 15px; background: var(--card-bg); border-radius: 10px; margin-bottom: 20px; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.1); max-width: 800px; margin-left: auto; margin-right: auto; }
+        header { text-align: center; padding: 15px; background: var(--card-bg); border-radius: 16px; margin-bottom: 20px; position: relative; box-shadow: var(--shadow-soft); max-width: 800px; margin-left: auto; margin-right: auto; }
         
         .header-controls { position: absolute; top: 15px; right: 15px; display: flex; gap: 15px; }
         .icon-btn { cursor: pointer; font-size: 20px; background: none; border: none; color: var(--text-color); transition: 0.2s; }
-        .icon-btn:hover { color: var(--primary-color); }
-
+        
         .container { max-width: 800px; margin: 0 auto; }
         
         /* Search */
         .search-wrapper { position: relative; width: 100%; margin-bottom: 10px; }
-        #searchBar { width: 100%; padding: 12px 40px 12px 15px; border-radius: 25px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-color); outline: none; box-sizing: border-box; }
-        .search-clear { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--secondary-text); cursor: pointer; display: none; font-size: 16px; padding: 5px; }
+        #searchBar { width: 100%; padding: 12px 40px 12px 20px; border-radius: 30px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-color); outline: none; box-sizing: border-box; box-shadow: var(--shadow-soft); }
+        .search-clear { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--secondary-text); cursor: pointer; display: none; font-size: 16px; }
+        mark { background-color: var(--highlight-color); color: black; border-radius: 2px; padding: 0 2px; }
 
         /* Category Tabs */
-        .category-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; scrollbar-width: none; }
+        .category-tabs { display: flex; gap: 10px; overflow-x: auto; padding: 5px 0 15px 0; scrollbar-width: none; }
         .category-tabs::-webkit-scrollbar { display: none; }
-        .cat-btn { white-space: nowrap; padding: 6px 15px; border-radius: 20px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-color); cursor: pointer; font-size: 13px; transition: 0.2s; }
-        .cat-btn.active { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+        .cat-btn { white-space: nowrap; padding: 8px 18px; border-radius: 20px; border: none; background: var(--card-bg); color: var(--text-color); cursor: pointer; font-size: 14px; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .cat-btn.active { background: var(--primary-color); color: white; box-shadow: 0 4px 10px rgba(24, 119, 242, 0.3); }
 
-        /* Admin Panel */
-        #adminPanel { display: none; background: var(--card-bg); padding: 20px; border-radius: 10px; margin-bottom: 20px; border: 2px solid var(--primary-color); }
-        input, textarea, select { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-color); color: var(--text-color); font-family: inherit; box-sizing: border-box; }
-        
-        .btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        .btn-primary { background: var(--primary-color); color: white; width: 100%; font-size: 16px; }
+        /* Modern Post Card */
+        .post-card { background: var(--card-bg); padding: 20px; border-radius: 20px; margin-bottom: 20px; box-shadow: var(--shadow-card); position: relative; overflow: hidden; border: none; }
+        .pinned-badge { position: absolute; top: 20px; right: 20px; color: #e74c3c; font-size: 18px; transform: rotate(45deg); z-index: 2; }
+        .category-tag { background: rgba(24, 119, 242, 0.1); color: var(--primary-color); padding: 3px 10px; border-radius: 12px; font-size: 11px; margin-left: 8px; font-weight: 600; }
 
-        /* Post Card */
-        .post-card { background: var(--card-bg); padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); position: relative; overflow: hidden; }
-        .pinned-badge { position: absolute; top: 20px; right: 20px; color: #e74c3c; font-size: 18px; transform: rotate(45deg); }
-        .category-tag { background: rgba(24, 119, 242, 0.1); color: var(--primary-color); padding: 2px 8px; border-radius: 4px; font-size: 11px; margin-left: 8px; }
-
-        .author-info { font-size: 15px; font-weight: bold; color: var(--text-color); display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
-        .date { font-size: 12px; color: var(--secondary-text); display: block; margin-bottom: 10px; }
-        .post-title { font-size: 22px; margin: 5px 0 10px 0; font-weight: 700; line-height: 1.3; }
+        .author-info { font-size: 15px; font-weight: bold; color: var(--text-color); display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .date { font-size: 12px; color: var(--secondary-text); display: block; font-weight: normal; }
+        .post-title { font-size: 22px; margin: 8px 0 12px 0; font-weight: 700; line-height: 1.3; }
         
-        /* Image & Content with Double Tap */
-        .post-img-container { position: relative; width: 100%; }
-        .post-img { width: 100%; border-radius: 8px; margin: 10px 0; cursor: pointer; transition: 0.3s; max-height: 400px; object-fit: cover; }
+        .post-img-container { position: relative; width: 100%; border-radius: 12px; overflow: hidden; margin: 10px 0; }
+        .post-img { width: 100%; display: block; cursor: pointer; max-height: 450px; object-fit: cover; }
         
-        /* Font Size Controlled via Variable */
+        /* Content & Read More Gradient */
         .content-preview { white-space: pre-line; line-height: 1.6; font-size: var(--content-font-size); color: var(--text-color); position: relative; transition: font-size 0.2s; }
         
-        /* Heart Animation */
+        .read-more-wrapper { position: relative; overflow: hidden; max-height: 160px; transition: max-height 0.3s ease; }
+        .read-more-wrapper.expanded { max-height: none; }
+        
+        /* Gradient Overlay */
+        .read-more-overlay::after {
+            content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 80px;
+            background: linear-gradient(to bottom, transparent, var(--card-bg));
+            pointer-events: none;
+        }
+
         .heart-popup { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); color: #e74c3c; font-size: 80px; animation: popHeart 0.8s ease-out; pointer-events: none; z-index: 10; opacity: 0; drop-shadow: 0 0 5px rgba(0,0,0,0.5); }
         @keyframes popHeart { 0% { transform: translate(-50%, -50%) scale(0); opacity: 0; } 50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 0; } }
 
-        .read-more-btn { color: var(--primary-color); cursor: pointer; font-weight: bold; border: none; background: none; padding: 0; margin-top: 5px; }
+        .read-more-btn { color: var(--primary-color); cursor: pointer; font-weight: bold; border: none; background: none; padding: 5px 0; margin-top: 5px; font-size: 14px; }
 
-        /* Audio Button in Card */
-        .audio-trigger-btn { display: flex; align-items: center; gap: 10px; background: var(--bg-color); padding: 8px 15px; border-radius: 20px; border: 1px solid var(--primary-color); color: var(--primary-color); font-weight: bold; margin: 10px 0; cursor: pointer; width: fit-content; }
+        /* Audio Button */
+        .audio-trigger-btn { display: flex; align-items: center; gap: 10px; background: rgba(24, 119, 242, 0.05); padding: 8px 15px; border-radius: 20px; color: var(--primary-color); font-weight: bold; margin: 10px 0; cursor: pointer; width: fit-content; transition: 0.2s; }
         .audio-trigger-btn:hover { background: var(--primary-color); color: white; }
 
-        /* Interactions */
-        .interaction-bar { display: flex; justify-content: space-between; border-top: 1px solid var(--border-color); padding-top: 10px; margin-top: 15px; }
-        .action-btn { background: none; border: none; cursor: pointer; color: var(--secondary-text); font-size: 14px; display: flex; align-items: center; gap: 6px; padding: 5px; }
+        /* Interaction Bar */
+        .interaction-bar { display: flex; justify-content: space-between; border-top: 1px solid var(--border-color); padding-top: 12px; margin-top: 15px; }
+        .action-btn { background: none; border: none; cursor: pointer; color: var(--secondary-text); font-size: 15px; display: flex; align-items: center; gap: 8px; padding: 5px; transition: 0.2s; }
+        .action-btn:hover { background: rgba(0,0,0,0.05); border-radius: 5px; }
         .action-btn.liked { color: var(--primary-color); }
         .action-btn.bookmarked { color: #f39c12; }
 
-        /* Floating Sticky Player */
+        /* Skeleton Loader (Shimmer) */
+        .skeleton-card { background: var(--card-bg); padding: 20px; border-radius: 20px; margin-bottom: 20px; box-shadow: var(--shadow-card); }
+        .sk-anim { background: linear-gradient(90deg, var(--bg-color) 25%, var(--border-color) 50%, var(--bg-color) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 4px; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        
+        .sk-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .sk-avatar { width: 40px; height: 40px; border-radius: 50%; }
+        .sk-name { width: 120px; height: 14px; }
+        .sk-title { width: 80%; height: 24px; margin-bottom: 15px; }
+        .sk-img { width: 100%; height: 200px; border-radius: 12px; margin-bottom: 15px; }
+        .sk-line { width: 100%; height: 12px; margin-bottom: 8px; }
+        .sk-line.short { width: 60%; }
+
+        /* Bottom Navigation Bar */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--nav-bg); height: 60px; display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 1500; border-top-left-radius: 15px; border-top-right-radius: 15px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--secondary-text); background: none; border: none; font-size: 12px; cursor: pointer; flex: 1; }
+        .nav-item i { font-size: 20px; margin-bottom: 4px; transition: 0.2s; }
+        .nav-item.active { color: var(--primary-color); }
+        .nav-item.active i { transform: translateY(-2px); }
+
+        /* Admin FAB & Modal */
+        #adminFab { position: fixed; bottom: 80px; right: 20px; background: var(--primary-color); color: white; border: none; border-radius: 50%; width: 55px; height: 55px; cursor: pointer; box-shadow: 0 4px 15px rgba(24, 119, 242, 0.4); font-size: 24px; z-index: 1400; display: none; align-items: center; justify-content: center; transition: transform 0.2s; }
+        #adminFab:active { transform: scale(0.9); }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2100; display: none; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; backdrop-filter: blur(5px); }
+        .modal-content { background: var(--card-bg); padding: 25px; border-radius: 16px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.2); animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        input, textarea, select { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid var(--border-color); border-radius: 10px; background: var(--bg-color); color: var(--text-color); font-family: inherit; box-sizing: border-box; outline: none; }
+        input:focus, textarea:focus { border-color: var(--primary-color); }
+        .btn { padding: 12px 20px; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.2s; width: 100%; font-size: 16px; }
+        .btn-primary { background: var(--primary-color); color: white; }
+
+        /* Audio Visualizer Animation */
         #stickyPlayer { 
             position: fixed; bottom: -100px; left: 0; width: 100%; 
-            background: var(--card-bg); border-top: 2px solid var(--primary-color);
-            padding: 10px 15px; box-sizing: border-box; box-shadow: 0 -5px 15px rgba(0,0,0,0.2);
+            background: var(--card-bg); border-top: 1px solid var(--border-color);
+            padding: 10px 20px; box-sizing: border-box; box-shadow: 0 -5px 20px rgba(0,0,0,0.15);
             display: flex; align-items: center; justify-content: space-between; 
-            transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1000;
+            transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1200;
+            border-top-left-radius: 15px; border-top-right-radius: 15px;
         }
-        #stickyPlayer.active { bottom: 0; }
-        .player-info { display: flex; flex-direction: column; max-width: 60%; }
-        .p-title { font-weight: bold; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-color); }
-        .p-author { font-size: 12px; color: var(--secondary-text); }
-        .player-controls { display: flex; gap: 15px; align-items: center; }
-        .player-btn { background: none; border: none; font-size: 20px; color: var(--text-color); cursor: pointer; }
-        .play-toggle { color: var(--primary-color); font-size: 28px; }
+        #stickyPlayer.active { bottom: 60px; /* Above Nav Bar */ }
+        
+        .visualizer { display: flex; align-items: flex-end; gap: 3px; height: 15px; margin-right: 10px; }
+        .bar { width: 3px; background: var(--primary-color); height: 5px; border-radius: 2px; }
+        .visualizer.playing .bar { animation: sound 0.5s infinite alternate; }
+        .visualizer.playing .bar:nth-child(1) { animation-delay: 0.1s; }
+        .visualizer.playing .bar:nth-child(2) { animation-delay: 0.3s; }
+        .visualizer.playing .bar:nth-child(3) { animation-delay: 0.5s; }
+        @keyframes sound { 0% { height: 5px; } 100% { height: 15px; } }
 
         /* Comments */
-        .comment-area { display: none; margin-top: 15px; padding-top: 10px; border-top: 1px dotted var(--border-color); }
-        .comment-item { background: var(--bg-color); padding: 8px 12px; border-radius: 12px; margin-bottom: 5px; font-size: 14px; width: fit-content; max-width: 90%; }
+        .comment-area { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--border-color); }
+        .comment-item { background: var(--bg-color); padding: 10px 14px; border-radius: 12px; margin-bottom: 8px; font-size: 14px; width: fit-content; max-width: 90%; }
         
         /* Lightbox */
-        .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; }
+        .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2200; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; }
         .lightbox.active { opacity: 1; }
-        .lightbox img { max-width: 95%; max-height: 80vh; border-radius: 5px; }
+        .lightbox img { max-width: 95%; max-height: 80vh; border-radius: 8px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
         .close-lightbox { position: absolute; top: 20px; right: 20px; color: white; font-size: 30px; cursor: pointer; }
 
-        /* Scroll To Top */
-        #scrollTopBtn { display: none; position: fixed; bottom: 80px; right: 20px; background: var(--primary-color); color: white; border: none; border-radius: 50%; width: 45px; height: 45px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-size: 18px; z-index: 999; }
+        /* Utils */
+        #scrollTopBtn { display: none; } /* Replaced by Bottom Nav functionality or can be kept hidden */
+        #installBtn { display: none; background: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 25px; margin-top: 15px; font-size: 14px; cursor: pointer; font-weight: 600; box-shadow: 0 4px 10px rgba(24, 119, 242, 0.3); }
         
-        #installBtn { display: none; background: var(--primary-color); color: white; border: none; padding: 8px 15px; border-radius: 20px; margin-top: 10px; font-size: 13px; cursor: pointer; }
-        #loader { text-align: center; padding: 20px; color: var(--secondary-text); display: none; }
-        .spinner { border: 4px solid rgba(0,0,0,0.1); border-left-color: var(--primary-color); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        .no-results { text-align: center; padding: 40px 20px; color: var(--secondary-text); }
-        .admin-controls { margin-top: 10px; text-align: right; font-size: 13px; }
+        .no-results { text-align: center; padding: 60px 20px; color: var(--secondary-text); }
+        .admin-controls { margin-top: 15px; text-align: right; font-size: 13px; display: flex; justify-content: flex-end; gap: 10px; }
+        .admin-controls button { padding: 5px 10px; border-radius: 5px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); cursor: pointer; }
     </style>
 </head>
 <body>
 
+    <!-- Lightbox -->
     <div id="lightbox" class="lightbox" onclick="closeLightbox()">
         <span class="close-lightbox">&times;</span>
         <img id="lightbox-img" src="" alt="Full View">
     </div>
 
-    <!-- Sticky Floating Audio Player -->
-    <div id="stickyPlayer">
-        <div class="player-info">
-            <span class="p-title" id="globalPlayerTitle">Title</span>
-            <span class="p-author" id="globalPlayerAuthor">Author</span>
-        </div>
-        <div class="player-controls">
-            <button class="player-btn play-toggle" onclick="toggleGlobalAudio()">
-                <i class="fas fa-play" id="globalPlayIcon"></i>
-            </button>
-            <button class="player-btn" onclick="closeGlobalPlayer()">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <audio id="globalAudioElement" onended="onAudioEnded()"></audio>
-    </div>
-
-    <button id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"><i class="fas fa-arrow-up"></i></button>
-
-    <div class="container">
-        <div class="app-banner">
-            <img src="my_banner.jpg" alt="Banner">
-        </div>
-
-        <header>
-            <div class="header-controls">
-                <!-- Font Size Resizer -->
-                <button class="icon-btn" onclick="toggleFontSize()" title="ফন্ট সাইজ পরিবর্তন"><i class="fas fa-text-height"></i></button>
-                <button class="icon-btn theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
+    <!-- Admin Modal -->
+    <div id="adminModalWrapper" class="modal-overlay">
+        <div class="modal-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <h3 id="formTitle" style="margin:0;">নতুন পোস্ট</h3>
+                <button onclick="closeAdminModal()" style="background:none; border:none; font-size:20px; color:var(--text-color); cursor:pointer;"><i class="fas fa-times"></i></button>
             </div>
-            <h1 style="margin: 0; color: var(--primary-color);">মুক্তলিপি ডায়েরি</h1>
-            <p style="margin: 5px 0 0 0; font-size: 14px; color: var(--secondary-text);">মনের কথা, মুক্ত ভাষায়</p>
-            <button id="installBtn" onclick="installPWA()"><i class="fas fa-download"></i> অ্যাপ ইন্সটল করুন</button>
-            <button id="adminBtn" onclick="adminLogin()" style="margin-top:10px; background:none; border:none; color:gray; font-size:12px; cursor:pointer; display:block; margin: 5px auto;">Admin Access</button>
-        </header>
-
-        <!-- Search Bar with Close Button -->
-        <div class="search-wrapper">
-            <input type="text" id="searchBar" placeholder="🔍 লেখা খুঁজুন (গল্প, লেখক বা লাইন...)" onkeyup="filterPosts(this.value)">
-            <button class="search-clear" id="searchClearBtn" onclick="clearSearch()"><i class="fas fa-times"></i></button>
-        </div>
-
-        <!-- Category Buttons including SAVED -->
-        <div class="category-tabs">
-            <button class="cat-btn active" onclick="filterCategory('সব', this)">সব</button>
-            <button class="cat-btn" onclick="filterCategory('গল্প', this)">গল্প</button>
-            <button class="cat-btn" onclick="filterCategory('কবিতা', this)">কবিতা</button>
-            <button class="cat-btn" onclick="filterCategory('ডায়েরি', this)">ডায়েরি</button>
-            <button class="cat-btn" onclick="filterCategory('ইসলামিক', this)">ইসলামিক</button>
-            <button class="cat-btn" onclick="filterCategory('সংরক্ষিত', this)"><i class="fas fa-bookmark"></i> সংরক্ষিত</button>
-            <button class="cat-btn" onclick="filterCategory('অন্যান্য', this)">অন্যান্য</button>
-        </div>
-
-        <!-- Admin Panel -->
-        <div id="adminPanel">
-            <h3 id="formTitle" style="margin-top:0;">নতুন পোস্ট</h3>
+            
             <input type="hidden" id="editKey">
             <input type="text" id="authorName" placeholder="লেখকের নাম">
             <input type="text" id="postTitle" placeholder="শিরোনাম">
@@ -208,20 +211,121 @@
 
             <input type="text" id="postImage" placeholder="ছবির লিংক (Direct Image URL)">
             <input type="text" id="voiceUrl" placeholder="অডিও লিংক (Direct mp3 URL)">
-            <textarea id="postContent" rows="5" placeholder="লিখুন... (*বোল্ড*, _ইটালিক_)"></textarea>
+            <textarea id="postContent" rows="6" placeholder="লিখুন... (*বোল্ড*, _ইটালিক_)"></textarea>
             
-            <label style="display:flex; align-items:center; margin-bottom:15px; font-size:14px; color:var(--text-color);">
+            <label style="display:flex; align-items:center; margin-bottom:20px; font-size:14px; color:var(--text-color); cursor:pointer;">
                 <input type="checkbox" id="isPinned" style="width:auto; margin-right:10px; transform:scale(1.2);">
-                📌 এই পোস্টটি সবার উপরে পিন করে রাখুন
+                📌 এই পোস্টটি সবার উপরে পিন করুন
             </label>
 
             <button class="btn btn-primary" id="submitBtn" onclick="savePost()">পাবলিশ করুন</button>
-            <button class="btn" onclick="logout()" style="width:100%; margin-top:10px; background: #e4e6eb; color: black;">প্যানেল বন্ধ করুন</button>
+            <button class="btn" onclick="logout()" style="margin-top:10px; background: #e4e6eb; color: #1c1e21;">লগআউট</button>
+        </div>
+    </div>
+
+    <!-- Sticky Floating Audio Player -->
+    <div id="stickyPlayer">
+        <div style="display:flex; align-items:center;">
+            <!-- Visualizer -->
+            <div class="visualizer" id="audioVisualizer">
+                <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            </div>
+            <div class="player-info">
+                <div class="p-title" id="globalPlayerTitle" style="font-weight:bold; font-size:14px;">Title</div>
+                <div class="p-author" id="globalPlayerAuthor" style="font-size:12px; color:var(--secondary-text);">Author</div>
+            </div>
+        </div>
+        <div class="player-controls" style="display:flex; gap:15px; align-items:center;">
+            <button onclick="toggleGlobalAudio()" style="background:none; border:none; font-size:26px; color:var(--primary-color); cursor:pointer;">
+                <i class="fas fa-play" id="globalPlayIcon"></i>
+            </button>
+            <button onclick="closeGlobalPlayer()" style="background:none; border:none; font-size:20px; color:var(--secondary-text); cursor:pointer;">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <audio id="globalAudioElement" onended="onAudioEnded()"></audio>
+    </div>
+
+    <!-- Admin FAB -->
+    <button id="adminFab" onclick="openAdminModal()"><i class="fas fa-plus"></i></button>
+
+    <div class="container">
+        <div class="app-banner">
+            <!-- Replace with your actual banner if available, using placeholder for now -->
+            <img src="https://i.ibb.co/VWVm0Xy/Muktolipi-Banner.jpg" alt="Banner" onerror="this.style.display='none'">
         </div>
 
-        <div id="loader"><div class="spinner"></div><br>লোড হচ্ছে...</div>
+        <header>
+            <div class="header-controls">
+                <button class="icon-btn" onclick="toggleFontSize()" title="ফন্ট সাইজ"><i class="fas fa-text-height"></i></button>
+                <button class="icon-btn theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
+            </div>
+            <h1 style="margin: 0; color: var(--primary-color);">মুক্তলিপি ডায়েরি</h1>
+            <p style="margin: 5px 0 0 0; font-size: 14px; color: var(--secondary-text);">মনের কথা, মুক্ত ভাষায়</p>
+            <button id="installBtn" onclick="installPWA()"><i class="fas fa-download"></i> অ্যাপ ইন্সটল করুন</button>
+        </header>
+
+        <!-- Search Bar -->
+        <div class="search-wrapper">
+            <input type="text" id="searchBar" placeholder="🔍 লেখা খুঁজুন..." onkeyup="filterPosts(this.value)">
+            <button class="search-clear" id="searchClearBtn" onclick="clearSearch()"><i class="fas fa-times"></i></button>
+        </div>
+
+        <!-- Categories -->
+        <div class="category-tabs">
+            <button class="cat-btn active" onclick="filterCategory('সব', this)">সব</button>
+            <button class="cat-btn" onclick="filterCategory('গল্প', this)">গল্প</button>
+            <button class="cat-btn" onclick="filterCategory('কবিতা', this)">কবিতা</button>
+            <button class="cat-btn" onclick="filterCategory('ডায়েরি', this)">ডায়েরি</button>
+            <button class="cat-btn" onclick="filterCategory('ইসলামিক', this)">ইসলামিক</button>
+            <button class="cat-btn" onclick="filterCategory('অন্যান্য', this)">অন্যান্য</button>
+        </div>
+
+        <!-- Skeleton Loader -->
+        <div id="skeletonLoader">
+            <div class="skeleton-card">
+                <div class="sk-header">
+                    <div class="sk-avatar sk-anim"></div>
+                    <div class="sk-name sk-anim"></div>
+                </div>
+                <div class="sk-title sk-anim"></div>
+                <div class="sk-img sk-anim"></div>
+                <div class="sk-line sk-anim"></div>
+                <div class="sk-line sk-anim"></div>
+                <div class="sk-line short sk-anim"></div>
+            </div>
+            <div class="skeleton-card">
+                <div class="sk-header">
+                    <div class="sk-avatar sk-anim"></div>
+                    <div class="sk-name sk-anim"></div>
+                </div>
+                <div class="sk-line sk-anim"></div>
+                <div class="sk-line sk-anim"></div>
+            </div>
+        </div>
+
         <div id="feed"></div>
     </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="navAction('home', this)">
+            <i class="fas fa-home"></i>
+            <span>হোম</span>
+        </button>
+        <button class="nav-item" onclick="navAction('search', this)">
+            <i class="fas fa-search"></i>
+            <span>খুঁজুন</span>
+        </button>
+        <button class="nav-item" onclick="navAction('saved', this)">
+            <i class="fas fa-bookmark"></i>
+            <span>সংরক্ষিত</span>
+        </button>
+        <button class="nav-item" onclick="navAction('menu', this)">
+            <i class="fas fa-user-cog"></i>
+            <span>অ্যাডমিন</span>
+        </button>
+    </nav>
 
     <!-- Firebase SDKs -->
     <script type="module">
@@ -254,6 +358,7 @@
         window.set = set;
 
         window.allPosts = [];
+        window.currentSearchQuery = "";
         
         // Save/Update Post
         function savePost() {
@@ -304,14 +409,14 @@
             document.getElementById('submitBtn').innerText = "পাবলিশ করুন";
             document.getElementById('submitBtn').disabled = false;
             document.getElementById('formTitle').innerText = "নতুন পোস্ট";
+            closeAdminModal();
         }
 
         // Data Load & Sorting
-        const loader = document.getElementById('loader');
-        loader.style.display = 'block';
-
         onValue(ref(db, 'posts'), (snapshot) => {
-            loader.style.display = 'none';
+            // Hide Skeleton
+            document.getElementById('skeletonLoader').style.display = 'none';
+            
             const data = snapshot.val();
             const feed = document.getElementById('feed');
             feed.innerHTML = '';
@@ -334,7 +439,6 @@
                 const activeTab = document.querySelector('.cat-btn.active');
                 const category = activeTab ? activeTab.innerText.trim() : 'সব';
                 
-                // If currently on saved tab, re-filter saved, otherwise normal filter
                 if(category.includes("সংরক্ষিত")) {
                      filterCategory('সংরক্ষিত', activeTab);
                 } else {
@@ -342,7 +446,7 @@
                 }
                 
             } else {
-                feed.innerHTML = '<p style="text-align:center;">কোনো লেখা পাওয়া যায়নি।</p>';
+                feed.innerHTML = '<div class="no-results"><p>কোনো লেখা পাওয়া যায়নি।</p></div>';
             }
         });
 
@@ -356,7 +460,7 @@
         }
         window.incrementView = incrementView;
 
-        // Render Function
+        // Render Function with Improvements
         window.renderPosts = function(posts) {
             const feed = document.getElementById('feed');
             const likedPosts = JSON.parse(localStorage.getItem('LIKED_POSTS')) || {};
@@ -378,18 +482,25 @@
                 const commentsArr = post.comments ? Object.values(post.comments) : [];
                 const isSaved = savedPosts.includes(post.key);
                 
+                // Text Formatting
                 let formattedContent = post.content
                     .replace(/\*(.*?)\*/g, '<b>$1</b>')
                     .replace(/_(.*?)_/g, '<i>$1</i>');
+
+                // Search Highlighting
+                if (window.currentSearchQuery) {
+                    formattedContent = highlightText(formattedContent, window.currentSearchQuery);
+                    post.title = highlightText(post.title, window.currentSearchQuery);
+                }
                 
                 setTimeout(() => incrementView(post.key, post.views), 2000); 
 
-                // Audio Button Logic (Now Triggers Sticky Player)
+                // Audio Button
                 let audioHtml = '';
                 if(post.voice) {
                     audioHtml = `
-                    <div class="audio-trigger-btn" onclick="startStickyAudio('${post.key}', '${post.key}', '${post.author}', '${post.voice}')">
-                        <i class="fas fa-music"></i> শুনতে ক্লিক করুন
+                    <div class="audio-trigger-btn" onclick="startStickyAudio('${post.key}', '${post.title.replace(/'/g, "\\'")}', '${post.author}', '${post.voice}')">
+                        <i class="fas fa-play-circle"></i> শুনতে ক্লিক করুন
                     </div>`;
                 }
 
@@ -397,16 +508,19 @@
                 <div class="post-card" id="post-${post.key}">
                     ${post.isPinned ? `<i class="fas fa-thumbtack pinned-badge" title="Pinned Post"></i>` : ''}
                     <div class="author-info">
-                        <i class="fas fa-user-circle" style="font-size:20px;"></i> 
+                        <div style="background:#ddd; width:35px; height:35px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#555;">
+                            <i class="fas fa-user"></i>
+                        </div>
                         <div>
                             <span>${post.author}</span>
-                            ${post.category ? `<span class="category-tag">${post.category}</span>` : ''}
-                            <span class="date">${post.date}</span>
+                            <div style="display:flex; align-items:center; gap:5px;">
+                                <span class="date">${post.date}</span>
+                                ${post.category ? `<span class="category-tag">${post.category}</span>` : ''}
+                            </div>
                         </div>
                     </div>
                     <h2 class="post-title">${post.title}</h2>
                     
-                    <!-- Image Container with Double Tap -->
                     <div class="post-img-container" ondblclick="triggerDoubleTapLike('${post.key}', event)">
                         ${post.image ? `<img src="${post.image}" class="post-img" onclick="openLightbox('${post.image}')">` : ''}
                         <i class="fas fa-heart heart-popup"></i>
@@ -414,46 +528,63 @@
 
                     ${audioHtml}
 
-                    <!-- Content with Double Tap -->
+                    <!-- Content with Gradient Read More -->
                     <div class="content-preview" id="text-${post.key}" ondblclick="triggerDoubleTapLike('${post.key}', event)">
-                        ${isLong ? formattedContent.substring(0, 250) + "..." : formattedContent}
+                        <div class="read-more-wrapper ${isLong ? 'read-more-overlay' : 'expanded'}" id="wrapper-${post.key}">
+                             ${formattedContent}
+                        </div>
                         <i class="fas fa-heart heart-popup"></i>
                     </div>
-                    ${isLong ? `<button class="read-more-btn" onclick="this.previousElementSibling.innerHTML=\`${formattedContent.replace(/`/g, '\\`')}\`; this.remove()">আরও পড়ুন</button>` : ''}
+                    
+                    ${isLong ? `<button class="read-more-btn" onclick="toggleReadMore('${post.key}', this)">আরও পড়ুন <i class="fas fa-chevron-down"></i></button>` : ''}
 
                     <div class="interaction-bar">
-                        <button class="action-btn ${likedPosts[post.key] ? 'liked' : ''}" id="like-btn-${post.key}" onclick="handleLike('${post.key}', ${post.likes || 0})">
-                            <i class="fas fa-thumbs-up"></i> <span id="like-count-${post.key}">${post.likes || 0}</span>
-                        </button>
-                        <button class="action-btn" onclick="toggleComments('${post.key}')">
-                            <i class="fas fa-comment-alt"></i> ${commentsArr.length}
-                        </button>
+                        <div style="display:flex; gap:10px;">
+                            <button class="action-btn ${likedPosts[post.key] ? 'liked' : ''}" id="like-btn-${post.key}" onclick="handleLike('${post.key}', ${post.likes || 0})">
+                                <i class="fas fa-thumbs-up"></i> <span id="like-count-${post.key}">${post.likes || 0}</span>
+                            </button>
+                            <button class="action-btn" onclick="toggleComments('${post.key}')">
+                                <i class="fas fa-comment-alt"></i> ${commentsArr.length}
+                            </button>
+                        </div>
                         
-                        <!-- Bookmark Button -->
-                        <button class="action-btn ${isSaved ? 'bookmarked' : ''}" onclick="toggleBookmark('${post.key}', this)">
-                            <i class="fas ${isSaved ? 'fa-bookmark' : 'fa-regular fa-bookmark'}"></i>
-                        </button>
-
-                        <button class="action-btn" onclick="">
-                            <i class="fas fa-share-nodes"></i>
-                        </button>
+                        <div style="display:flex; gap:10px;">
+                            <button class="action-btn ${isSaved ? 'bookmarked' : ''}" onclick="toggleBookmark('${post.key}', this)">
+                                <i class="fas ${isSaved ? 'fa-bookmark' : 'fa-regular fa-bookmark'}"></i>
+                            </button>
+                            <!-- Share Button Connected -->
+                            <button class="action-btn" onclick="sharePost('${post.key}')">
+                                <i class="fas fa-share-nodes"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="comment-area" id="commentArea-${post.key}">
-                        ${commentsArr.map(c => `<div class="comment-item">${c.text}</div>`).join('')}
+                        ${commentsArr.map(c => `<div class="comment-item"><b>User:</b> ${c.text}</div>`).join('')}
                         <div style="display:flex; gap:5px; margin-top:10px;">
-                            <input type="text" placeholder="মন্তব্য লিখুন..." style="margin:0; padding:8px; font-size:13px;">
-                            <button onclick="addComment('${post.key}', this)" style="background:var(--primary-color); color:white; border:none; border-radius:8px; width:40px;"><i class="fas fa-paper-plane"></i></button>
+                            <input type="text" placeholder="মন্তব্য লিখুন..." style="margin:0; padding:10px; font-size:14px; background:var(--bg-color);">
+                            <button onclick="addComment('${post.key}', this)" style="background:var(--primary-color); color:white; border:none; border-radius:10px; width:45px;"><i class="fas fa-paper-plane"></i></button>
                         </div>
                     </div>
 
                     ${isAdmin ? `
                     <div class="admin-controls">
-                        <button onclick="setupEdit('${post.key}')">এডিট</button>
-                        <button onclick="deletePost('${post.key}')" style="color:#e74c3c;">ডিলিট</button>
+                        <button onclick="setupEdit('${post.key}')"><i class="fas fa-edit"></i> Edit</button>
+                        <button onclick="deletePost('${post.key}')" style="color:#e74c3c; border-color:#e74c3c;"><i class="fas fa-trash"></i> Delete</button>
                     </div>` : ''}
                 </div>`;
             }).join('');
+        }
+
+        // Highlight Helper
+        function highlightText(text, query) {
+            if(!query) return text;
+            try {
+                const regex = new RegExp(`(${query})`, 'gi');
+                return text.replace(regex, '<mark>$1</mark>');
+            } catch(e) {
+                return text;
+            }
         }
 
         function handleLike(key, currentLikes) {
@@ -498,18 +629,96 @@
                 document.getElementById('editKey').value = post.key;
                 document.getElementById('formTitle').innerText = "পোস্ট এডিট";
                 document.getElementById('submitBtn').innerText = "আপডেট করুন";
-                document.getElementById('adminPanel').style.display = "block";
-                window.scrollTo(0, 0);
+                openAdminModal();
             }
         }
     </script>
 
     <script>
-        // --- 1. Font Size Resizer Logic ---
+        // --- 1. UI Interactions & Admin Logic ---
+        function openAdminModal() {
+            document.getElementById('adminModalWrapper').style.display = 'flex';
+        }
+        function closeAdminModal() {
+            document.getElementById('adminModalWrapper').style.display = 'none';
+        }
+        
+        // Show FAB if Admin
+        if(localStorage.getItem('IS_ADMIN') === 'true') {
+            document.getElementById('adminFab').style.display = 'flex';
+        }
+
+        function adminLogin() {
+            Swal.fire({
+                title: 'পাসওয়ার্ড দিন',
+                input: 'password',
+                showCancelButton: true,
+                confirmButtonText: 'লগইন',
+            }).then((result) => {
+                if (result.value === "1234") {
+                    localStorage.setItem('IS_ADMIN', 'true');
+                    document.getElementById('adminFab').style.display = 'flex';
+                    Swal.fire('স্বাগতম অ্যাডমিন!', '', 'success');
+                } else if (result.value) Swal.fire('ভুল পাসওয়ার্ড!', '', 'error');
+            });
+        }
+
+        function logout() {
+            localStorage.setItem('IS_ADMIN', 'false');
+            document.getElementById('adminFab').style.display = 'none';
+            closeAdminModal();
+            location.reload();
+        }
+
+        // --- 2. Bottom Navigation Logic ---
+        function navAction(action, btn) {
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            if (action === 'home') {
+                document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+                document.querySelector('.cat-btn:first-child').classList.add('active');
+                clearSearch();
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            } else if (action === 'search') {
+                window.scrollTo({top: 0, behavior: 'smooth'});
+                document.getElementById('searchBar').focus();
+            } else if (action === 'saved') {
+                // Trigger saved category logic
+                window.scrollTo({top: 0, behavior: 'smooth'});
+                filterCategory('সংরক্ষিত', null);
+                // Highlight the saved tab in top bar too visually
+                document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+                const savedTab = Array.from(document.querySelectorAll('.cat-btn')).find(b => b.innerText.includes('সংরক্ষিত'));
+                if(savedTab) savedTab.classList.add('active');
+            } else if (action === 'menu') {
+                if(localStorage.getItem('IS_ADMIN') === 'true') {
+                    openAdminModal();
+                } else {
+                    adminLogin();
+                }
+            }
+        }
+
+        // --- 3. Read More Expand Logic ---
+        function toggleReadMore(key, btn) {
+            const wrapper = document.getElementById(`wrapper-${key}`);
+            if (wrapper.classList.contains('read-more-overlay')) {
+                wrapper.classList.remove('read-more-overlay');
+                wrapper.classList.add('expanded');
+                btn.innerHTML = 'কমিয়ে পড়ুন <i class="fas fa-chevron-up"></i>';
+            } else {
+                wrapper.classList.add('read-more-overlay');
+                wrapper.classList.remove('expanded');
+                btn.innerHTML = 'আরও পড়ুন <i class="fas fa-chevron-down"></i>';
+                // Scroll back to card top if needed
+                document.getElementById(`post-${key}`).scrollIntoView({behavior: "smooth", block: "start"});
+            }
+        }
+
+        // --- 4. Font Size ---
         const fontSizes = ['16px', '18px', '20px'];
         let currentFontIndex = 0;
-
-        // Load saved preference
         const savedSize = localStorage.getItem('FONT_SIZE');
         if(savedSize) {
             document.documentElement.style.setProperty('--content-font-size', savedSize);
@@ -522,14 +731,9 @@
             const newSize = fontSizes[currentFontIndex];
             document.documentElement.style.setProperty('--content-font-size', newSize);
             localStorage.setItem('FONT_SIZE', newSize);
-            
-            // Visual Feedback
-            const btn = document.querySelector('.header-controls .icon-btn');
-            btn.style.color = 'var(--primary-color)';
-            setTimeout(() => btn.style.color = 'var(--text-color)', 300);
         }
 
-        // --- 2. Bookmark / Saved Feature Logic ---
+        // --- 5. Bookmarks ---
         function toggleBookmark(key, btn) {
             let savedPosts = JSON.parse(localStorage.getItem('SAVED_POSTS')) || [];
             const index = savedPosts.indexOf(key);
@@ -539,10 +743,7 @@
                 savedPosts.push(key);
                 btn.classList.add('bookmarked');
                 icon.className = "fas fa-bookmark";
-                Swal.fire({
-                    toast: true, position: 'top-end', icon: 'success', 
-                    title: 'সংরক্ষণ করা হয়েছে', showConfirmButton: false, timer: 1500 
-                });
+                Swal.fire({toast: true, position: 'top-end', icon: 'success', title: 'সংরক্ষণ করা হয়েছে', showConfirmButton: false, timer: 1500});
             } else {
                 savedPosts.splice(index, 1);
                 btn.classList.remove('bookmarked');
@@ -550,61 +751,45 @@
             }
             localStorage.setItem('SAVED_POSTS', JSON.stringify(savedPosts));
             
-            // If currently viewing saved tab, refresh logic
+            // Refresh if on saved tab
             const activeTab = document.querySelector('.cat-btn.active');
             if(activeTab && activeTab.innerText.includes("সংরক্ষিত")) {
                 filterCategory('সংরক্ষিত', activeTab);
             }
         }
 
-        // --- 3. Double Tap to Like Logic ---
+        // --- 6. Double Tap Like ---
         function triggerDoubleTapLike(key, event) {
-            // Prevent default zooming
             event.preventDefault();
-            
-            // Find the heart icon within the container clicked
             const container = event.currentTarget;
             const heart = container.querySelector('.heart-popup');
-            
-            // Trigger animation
             if(heart) {
-                // Reset animation
                 heart.style.animation = 'none';
-                heart.offsetHeight; /* trigger reflow */
+                heart.offsetHeight;
                 heart.style.animation = 'popHeart 0.8s ease-out';
             }
-
-            // Trigger actual like in Firebase
-            // We get current count from the DOM to avoid async delay
+            const likedPosts = JSON.parse(localStorage.getItem('LIKED_POSTS')) || {};
             const countSpan = document.getElementById(`like-count-${key}`);
             const currentLikes = parseInt(countSpan.innerText) || 0;
-            
-            // Check if already liked to prevent double-counting logic visual glitch
-            // The handleLike function toggles, but double tap usually only ADDS like.
-            // Here we just call handleLike which toggles. To make it "Instagram like" (only like), 
-            // check local storage first.
-            const likedPosts = JSON.parse(localStorage.getItem('LIKED_POSTS')) || {};
             if(!likedPosts[key]) {
                 window.handleLike(key, currentLikes);
             }
         }
 
-        // --- 4. Sticky Audio Player Logic ---
+        // --- 7. Sticky Audio & Visualizer ---
         const stickyPlayer = document.getElementById('stickyPlayer');
         const audioEl = document.getElementById('globalAudioElement');
         const playIcon = document.getElementById('globalPlayIcon');
         const pTitle = document.getElementById('globalPlayerTitle');
         const pAuthor = document.getElementById('globalPlayerAuthor');
+        const visualizer = document.getElementById('audioVisualizer');
         let currentAudioKey = null;
 
         function startStickyAudio(key, title, author, url) {
-            // If clicking same song, just toggle
             if(currentAudioKey === key) {
                 toggleGlobalAudio();
                 return;
             }
-
-            // New Song
             currentAudioKey = key;
             pTitle.innerText = title;
             pAuthor.innerText = author;
@@ -613,6 +798,7 @@
             
             audioEl.play().then(() => {
                 playIcon.className = "fas fa-pause";
+                visualizer.classList.add('playing');
             }).catch(e => console.log(e));
         }
 
@@ -620,9 +806,11 @@
             if(audioEl.paused) {
                 audioEl.play();
                 playIcon.className = "fas fa-pause";
+                visualizer.classList.add('playing');
             } else {
                 audioEl.pause();
                 playIcon.className = "fas fa-play";
+                visualizer.classList.remove('playing');
             }
         }
 
@@ -630,45 +818,42 @@
             audioEl.pause();
             audioEl.currentTime = 0;
             stickyPlayer.classList.remove('active');
+            visualizer.classList.remove('playing');
             currentAudioKey = null;
         }
         
         function onAudioEnded() {
             playIcon.className = "fas fa-play";
+            visualizer.classList.remove('playing');
         }
 
-
-        // --- Standard UI Functions ---
+        // --- 8. Standard Filtering & Search ---
         window.filterCategory = function(cat, btn) {
             document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            if(btn) btn.classList.add('active');
+            if(btn) btn.classList.add('active'); else if (cat === 'সংরক্ষিত') {
+                 // manual highlight if called from bottom nav
+            }
+
             document.getElementById('searchBar').value = '';
             document.getElementById('searchClearBtn').style.display = 'none';
+            window.currentSearchQuery = "";
             
             if (cat === 'সব') {
                 window.renderPosts(window.allPosts);
             } else if (cat === 'সংরক্ষিত') {
-                // Filter by LocalStorage keys
                 const savedIds = JSON.parse(localStorage.getItem('SAVED_POSTS')) || [];
                 const filtered = window.allPosts.filter(p => savedIds.includes(p.key));
-                if(filtered.length === 0) {
-                     document.getElementById('feed').innerHTML = '<div class="no-results"><i class="far fa-bookmark" style="font-size:40px;opacity:0.5;margin-bottom:10px;"></i><p>কোনো পোস্ট সংরক্ষিত নেই</p></div>';
-                } else {
-                     window.renderPosts(filtered);
-                }
+                window.renderPosts(filtered);
             } else {
-                // Filter by Category Text (remove icons if any)
-                // The button text might have icon HTML, so we rely on the function arg 'cat'
-                // Note: The category values in Firebase are "গল্প", "কবিতা" etc.
                 const filtered = window.allPosts.filter(p => p.category === cat);
                 window.renderPosts(filtered);
             }
         }
 
         window.filterPosts = function(query) {
+            window.currentSearchQuery = query.toLowerCase();
             const clearBtn = document.getElementById('searchClearBtn');
-            if (query.length > 0) clearBtn.style.display = 'block';
-            else clearBtn.style.display = 'none';
+            clearBtn.style.display = query.length > 0 ? 'block' : 'none';
 
             if(!window.allPosts) return;
 
@@ -684,12 +869,13 @@
         window.clearSearch = function() {
             document.getElementById('searchBar').value = '';
             document.getElementById('searchClearBtn').style.display = 'none';
+            window.currentSearchQuery = "";
             window.renderPosts(window.allPosts);
             document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
             document.querySelector('.cat-btn:first-child').classList.add('active');
         }
 
-        // PWA Install Logic
+        // PWA Install
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -708,16 +894,6 @@
             }
         }
 
-        // Scroll Logic
-        window.onscroll = function() {
-            const btn = document.getElementById('scrollTopBtn');
-            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-                btn.style.display = "block";
-            } else {
-                btn.style.display = "none";
-            }
-        };
-
         function toggleTheme() {
             document.body.classList.toggle('dark-theme');
             const icon = document.querySelector('.theme-toggle i');
@@ -725,84 +901,30 @@
             icon.classList.toggle('fa-sun');
         }
 
-        function adminLogin() {
-            Swal.fire({
-                title: 'পাসওয়ার্ড দিন',
-                input: 'password',
-                showCancelButton: true,
-                confirmButtonText: 'লগইন',
-            }).then((result) => {
-                if (result.value === "1234") {
-                    localStorage.setItem('IS_ADMIN', 'true');
-                    document.getElementById('adminPanel').style.display = "block";
-                    document.getElementById('adminBtn').style.display = "none";
-                    location.reload();
-                } else if (result.value) Swal.fire('ভুল পাসওয়ার্ড!', '', 'error');
-            });
-        }
-
-        function logout() {
-            localStorage.setItem('IS_ADMIN', 'false');
-            document.getElementById('adminPanel').style.display = "none";
-            document.getElementById('adminBtn').style.display = "inline-block";
-            location.reload();
-        }
-
-        if(localStorage.getItem('IS_ADMIN') === 'true') {
-            document.getElementById('adminPanel').style.display = "block";
-            document.getElementById('adminBtn').style.display = "none";
-        }
-
         function toggleComments(key) {
             const el = document.getElementById(`commentArea-${key}`);
             el.style.display = (el.style.display === 'block') ? 'none' : 'block';
         }
 
+        // Share Function (Fixed)
         function sharePost(key) {
-    // ১. সব পোস্ট থেকে নির্দিষ্ট পোস্টটি খুঁজে বের করা
-    const post = window.allPosts.find(p => p.key === key);
-    
-    if (!post) {
-        console.error("পোস্ট পাওয়া যায়নি!");
-        return;
-    }
+            const post = window.allPosts.find(p => p.key === key);
+            if (!post) return;
 
-    // ২. শেয়ার করার জন্য তথ্য সাজানো
-    const shareData = {
-        title: 'মুক্তলিপি ডায়েরি',
-        text: `${post.title}\n\n${post.content.substring(0, 100)}... \nপুরোটা পড়ুন: `,
-        url: window.location.href // এখানে আপনি চাইলে ডাইনামিক লিংকও দিতে পারেন
-    };
+            const shareData = {
+                title: 'মুক্তলিপি ডায়েরি',
+                text: `${post.title}\n\n${post.content.substring(0, 100)}... \nপুরোটা পড়ুন: `,
+                url: window.location.href
+            };
 
-    // ৩. মোবাইল শেয়ার অপশন (Web Share API)
-    if (navigator.share) {
-        navigator.share(shareData)
-            .then(() => console.log('সফলভাবে শেয়ার হয়েছে'))
-            .catch((error) => console.log('শেয়ার বাতিল হয়েছে', error));
-    } 
-    // ৪. যদি পিসি হয় বা শেয়ার সাপোর্ট না করে, তাহলে ক্লিপবোর্ডে কপি হবে
-    else {
-        navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`)
-            .then(() => {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'লিংক কপি হয়েছে!',
-                    text: 'আপনি এখন এটি পেস্ট করতে পারেন।',
-                    timer: 1500,
-                    showConfirmButton: false
-                });
-            })
-            .catch(err => {
-                // যদি কপি করতে না পারে
-                Swal.fire({
-                    icon: 'error',
-                    title: 'সমস্যা!',
-                    text: 'ব্রাউজার পারমিশন দিচ্ছে না। ম্যানুয়ালি কপি করুন।'
-                });
-                console.error('Copy failed', err);
-            });
-    }
-}
+            if (navigator.share) {
+                navigator.share(shareData).catch((error) => console.log('Error sharing', error));
+            } else {
+                navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`)
+                    .then(() => Swal.fire({ icon: 'success', title: 'লিংক কপি হয়েছে!', timer: 1500, showConfirmButton: false }))
+                    .catch(err => Swal.fire('Error copying text'));
+            }
+        }
 
         function openLightbox(src) {
             const box = document.getElementById('lightbox');
