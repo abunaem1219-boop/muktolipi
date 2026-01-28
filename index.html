@@ -4,26 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>মুক্তলিপি ডায়েরি</title>
-    
+
     <!-- PWA Manifest & Meta Tags -->
     <link rel="icon" type="image/png" href="icon.png">
-<link rel="apple-touch-icon" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1877f2">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="description" content="মনের কথা, মুক্ত ভাষায় - মুক্তলিপি ডায়েরি">
-    
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Galada&family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Serif+Bengali:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    
+
     <!-- PWA Service Worker Registration -->
     <script>
         if ('serviceWorker' in navigator) {
@@ -38,7 +37,7 @@
     <style>
         :root { 
             --bg-color: #f0f2f5; 
-            --glass-bg: rgba(255, 255, 255, 0.90); /* Increased opacity for better readability */
+            --glass-bg: rgba(255, 255, 255, 0.90);
             --glass-border: 1px solid rgba(255, 255, 255, 0.6);
             --glass-blur: blur(12px);
             --text-color: #1c1e21; 
@@ -67,7 +66,6 @@
 
         body { font-family: var(--current-font); background: var(--bg-color); color: var(--text-color); margin: 0; padding: 0 0 100px 0; transition: background 0.3s, color 0.3s; user-select: none; -webkit-tap-highlight-color: transparent; overflow-x: hidden; }
 
-        /* Glassmorphism Mixin Class */
         .glass-panel {
             background: var(--glass-bg);
             backdrop-filter: var(--glass-blur);
@@ -76,24 +74,29 @@
             box-shadow: var(--shadow-card);
         }
 
-        /* Reading Progress Bar */
         #readingProgress { position: fixed; top: 0; left: 0; width: 0%; height: 4px; background: linear-gradient(90deg, #1877f2, #00c6ff); z-index: 9999; transition: width 0.1s; }
-
-        /* Offline Banner */
         #offlineBanner { display: none; background: #333; color: white; text-align: center; padding: 8px; font-size: 13px; position: sticky; top: 0; z-index: 1000; }
-
         .container { max-width: 800px; margin: 0 auto; padding: 75px 10px 10px 10px; }
 
-        /* View Animation */
+        /* Banner Style */
+        .header-banner {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-soft);
+            display: block;
+        }
+
         .animate-view { animation: slideUpFade 0.4s ease-out forwards; }
         @keyframes slideUpFade {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* HEADER & CONTROLS */
         .header-title-block { padding: 5px 15px 10px 15px; text-align: center; background: transparent; margin-bottom: 10px; cursor: pointer; }
-        
+
         .sticky-controls { 
             padding: 10px; display: flex; justify-content: center; gap: 20px; 
             position: fixed; top: 0; left: 0; width: 100%; box-sizing: border-box; 
@@ -104,36 +107,12 @@
         .badge { position: absolute; top: -2px; right: -2px; background: #e74c3c; color: white; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; display: none; justify-content: center; align-items: center; font-weight: bold; border: 2px solid var(--bg-color); }
         .badge.active { display: flex; }
 
-        /* STORIES BAR */
-        .stories-container {
-            display: flex; gap: 12px; overflow-x: auto; padding: 10px 5px; margin-bottom: 15px;
-            scrollbar-width: none; -webkit-overflow-scrolling: touch;
-        }
-        .stories-container::-webkit-scrollbar { display: none; }
-        .story-item {
-            display: flex; flex-direction: column; align-items: center; cursor: pointer; min-width: 65px;
-        }
-        .story-ring {
-            width: 55px; height: 55px; border-radius: 50%; padding: 2px;
-            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888, #232323); 
-            display: flex; align-items: center; justify-content: center; margin-bottom: 5px;
-            transition: transform 0.2s;
-        }
-        .story-item:active .story-ring { transform: scale(0.9); }
-        .story-img {
-            width: 100%; height: 100%; border-radius: 50%; border: 2px solid var(--bg-color); object-fit: cover; background: #fff;
-        }
-        .story-name {
-            font-size: 11px; color: var(--text-color); text-align: center; max-width: 70px;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        }
-
         /* Search & Filter */
         .search-wrapper { position: relative; margin-bottom: 15px; display: flex; gap:10px; align-items: center;}
         #searchBar { width: 100%; padding: 12px 40px 12px 20px; border-radius: 30px; border: 1px solid var(--border-color); background: var(--glass-bg); backdrop-filter: var(--glass-blur); color: var(--text-color); outline: none; box-sizing: border-box; font-size: 16px; box-shadow: var(--shadow-soft); }
         .search-clear { position: absolute; right: 55px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--secondary-text); cursor: pointer; display: none; }
         .leaderboard-btn { background: var(--glass-bg); border: 1px solid var(--border-color); border-radius: 50%; width: 45px; height: 45px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #f1c40f; font-size: 18px; cursor: pointer; box-shadow: var(--shadow-soft); backdrop-filter: var(--glass-blur); }
-        
+
         mark { background-color: var(--highlight-color); color: inherit; border-radius: 3px; padding: 0 1px; }
         .category-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
         .category-tabs::-webkit-scrollbar { display: none; }
@@ -153,27 +132,25 @@
         .avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
         .author-text h4 { margin: 0; font-size: 15px; font-weight: 700; }
         .post-meta { font-size: 12px; color: var(--secondary-text); display: flex; align-items: center; gap: 8px; margin-top: 2px; }
-        
+
         .post-title { font-size: 20px; margin: 5px 0 5px 0; font-weight: 700; line-height: 1.3; color: var(--text-color); }
-        .post-img-container { position: relative; width: 100%; border-radius: 12px; overflow: hidden; margin: 8px 0; background: #eee; cursor: pointer; }
-        .post-img { width: 100%; display: block; max-height: 450px; object-fit: cover; }
         
-        /* Content & Whitespace */
+        /* Fixed Image Spacing */
+        .post-img-container { position: relative; width: 100%; border-radius: 12px; overflow: hidden; margin: 8px 0; background: transparent; cursor: pointer; line-height: 0; }
+        .post-img { width: 100%; display: block; max-height: 450px; object-fit: cover; }
+
         .content-preview { font-size: var(--content-font-size); line-height: 1.6; color: var(--text-color); white-space: pre-wrap; word-wrap: break-word; position: relative; margin-top: 0; font-family: var(--current-font); }
         .content-preview b { font-weight: 700; color: var(--text-color); }
         .content-preview i { font-style: italic; }
         .content-preview a { color: var(--primary-color); text-decoration: underline; }
         .content-preview p { margin: 4px 0; }
-        
-        /* Media Buttons */
-        .media-controls { display: flex; gap: 10px; margin: 5px 0; flex-wrap: wrap; }
+
+        .media-controls { display: flex; gap: 10px; margin: 10px 0; flex-wrap: wrap; }
         .media-controls:empty { display: none; margin: 0; }
         .media-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; background: rgba(24, 119, 242, 0.08); padding: 8px; border-radius: 12px; color: var(--primary-color); font-size: 13px; font-weight: 600; border: none; cursor: pointer; max-width: 150px; transition: 0.2s; }
-        .media-btn:active { transform: scale(0.95); }
         .media-btn.speaking { background: #e74c3c; color: white; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.8; } 100% { opacity: 1; } }
 
-        /* Read More */
         .read-more-wrapper { overflow: hidden; transition: max-height 0.4s ease; }
         .read-more-overlay { max-height: 180px; position: relative; }
         .read-more-overlay::after { content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; background: linear-gradient(to bottom, transparent, var(--bg-color)); pointer-events: none; opacity: 0.8; }
@@ -182,30 +159,26 @@
         .read-more-btn { color: var(--primary-color); border: none; background: none; padding: 5px 0; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 5px; display: none; }
         .read-more-btn.visible { display: block; }
 
-        /* Actions */
         .interaction-bar { display: flex; justify-content: space-between; border-top: 1px solid var(--border-color); padding-top: 10px; margin-top: 8px; }
         .action-btn { background: none; border: none; cursor: pointer; color: var(--secondary-text); font-size: 14px; display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 6px; transition: 0.2s; }
         .action-btn:active { transform: scale(0.95); background: rgba(0,0,0,0.05); }
         .action-btn.bookmarked { color: #f39c12; }
-        
-        /* Modern Like Button Animation */
         @keyframes heartPop { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
         .like-anim { animation: heartPop 0.3s ease; }
         .action-btn.liked { color: #e74c3c; }
 
-        /* COMMENTS SECTION */
         .comments-container { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border-color); animation: fadeIn 0.3s; }
         .comment-input-area { display: flex; gap: 8px; margin-bottom: 10px; }
         .comment-input { flex: 1; padding: 8px 12px; border-radius: 20px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.03); outline: none; font-size: 14px; color: var(--text-color); font-family: inherit;}
         .comment-send-btn { background: var(--primary-color); color: white; border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .comments-list { max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
         .comment-item { display: flex; gap: 8px; font-size: 13px; }
-        .comment-avatar { width: 24px; height: 24px; border-radius: 50%; background: #ccc; flex-shrink: 0; }
-        .comment-box { background: rgba(0,0,0,0.04); padding: 6px 10px; border-radius: 12px; }
+        .comment-avatar { width: 24px; height: 24px; border-radius: 50%; background: #ccc; flex-shrink: 0; object-fit: cover; }
+        .comment-box { background: rgba(0,0,0,0.04); padding: 6px 10px; border-radius: 12px; flex: 1; }
         .comment-author { font-weight: 700; font-size: 12px; margin-right: 5px; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* UPDATED: Bottom Nav */
+        /* Bottom Nav */
         .bottom-nav { 
             position: fixed; bottom: 0; left: 0; width: 100%; height: 65px; 
             display: flex; justify-content: space-around; align-items: center; 
@@ -222,26 +195,14 @@
             position: relative; overflow: hidden;
         }
         .nav-item i { font-size: 20px; margin-bottom: 5px; transition: color 0.3s; }
-        
-        /* Active State */
-        .nav-item.active { 
-            color: var(--primary-color); 
-            transform: translateY(-6px);
-            font-weight: 600;
-        }
-        .nav-item.active i {
-            filter: drop-shadow(0 3px 5px rgba(24, 119, 242, 0.3));
-            transform: scale(1.1);
-        }
-        
-        /* Ripple Effect */
+        .nav-item.active { color: var(--primary-color); transform: translateY(-6px); font-weight: 600; }
+        .nav-item.active i { filter: drop-shadow(0 3px 5px rgba(24, 119, 242, 0.3)); transform: scale(1.1); }
         .nav-item:after {
             content: ''; position: absolute; width: 100%; height: 100%; top: 0; left: 0;
             background: radial-gradient(circle, rgba(24,119,242,0.1) 1%, transparent 70%);
             opacity: 0; transform: scale(0); transition: transform 0.4s, opacity 0.4s;
         }
         .nav-item:active:after { opacity: 1; transform: scale(2); }
-
         .nav-center-btn { 
             background: var(--primary-color); color: white; border: none; 
             width: 55px; height: 55px; border-radius: 50%; 
@@ -254,7 +215,6 @@
         }
         .nav-center-btn:active { transform: translateY(-22px) scale(0.95); box-shadow: 0 4px 10px rgba(24, 119, 242, 0.3); }
 
-        /* Profile View Styles */
         #profileView { display: none; }
         .profile-header { display: flex; flex-direction: column; align-items: center; padding: 20px; text-align: center; }
         .profile-pic-large { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-color); box-shadow: var(--shadow-soft); margin-bottom: 10px; }
@@ -265,19 +225,16 @@
         .stat-val { font-size: 18px; font-weight: bold; display: block; color: var(--primary-color); }
         .stat-label { font-size: 12px; color: var(--secondary-text); }
 
-        /* Zen Mode */
-        body.zen-active .main-header, body.zen-active .bottom-nav, body.zen-active .category-tabs, body.zen-active .search-wrapper, body.zen-active .sticky-controls, body.zen-active .stories-container { display: none !important; }
+        body.zen-active .main-header, body.zen-active .bottom-nav, body.zen-active .category-tabs, body.zen-active .search-wrapper, body.zen-active .sticky-controls, body.zen-active .header-banner { display: none !important; }
         body.zen-active .container { padding-top: 40px; max-width: 600px; }
         .zen-exit-btn { display: none; position: fixed; top: 20px; right: 20px; background: rgba(0,0,0,0.7); color: white; padding: 10px 15px; border-radius: 30px; z-index: 2000; border: none; cursor: pointer; }
         body.zen-active .zen-exit-btn { display: block; }
 
-        /* Animations */
         .emoji-floater { position: absolute; font-size: 30px; pointer-events: none; animation: floatUp 1s ease-out forwards; z-index: 50; }
         @keyframes floatUp { 0% { transform: translateY(0) scale(0.5); opacity: 0; } 20% { opacity: 1; transform: translateY(-20px) scale(1.2); } 100% { transform: translateY(-100px) scale(1); opacity: 0; } }
         .heart-popup { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 80px; color: #e74c3c; pointer-events: none; z-index: 100; text-shadow: 0 0 10px rgba(0,0,0,0.3); animation: popHeart 0.8s ease-out forwards; }
         @keyframes popHeart { 0% { transform: translate(-50%, -50%) scale(0); opacity: 0; } 40% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 0; } }
 
-        /* Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2100; display: none; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; backdrop-filter: blur(8px); }
         .modal-content { background: var(--bg-color); padding: 20px; border-radius: 16px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s ease; display: flex; flex-direction: column; gap: 10px; border: 1px solid var(--border-color); }
         @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
@@ -291,31 +248,28 @@
 
         .btn { padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%; font-size: 15px; }
         .btn-primary { background: var(--primary-color); color: white; }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-        /* Auth UI */
         .auth-card { display: flex; align-items: center; gap: 10px; padding: 10px; background: var(--bg-color); border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 10px; }
         .auth-card img { width: 40px; height: 40px; border-radius: 50%; }
         .google-btn { background: #4285F4; color: white; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        
-        /* Toast Message */
+
         .toast-box { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); color: white; padding: 10px 20px; border-radius: 30px; font-size: 13px; z-index: 3000; opacity: 0; transition: opacity 0.3s; pointer-events: none; display: flex; align-items: center; gap: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); white-space: nowrap; backdrop-filter: blur(5px); }
         .toast-box.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-        /* Pending List & Tabs */
         .pending-item { background: var(--bg-color); padding: 10px; border-radius: 8px; margin-bottom: 10px; border: 1px solid var(--border-color); }
-        .pending-actions { display: flex; gap: 10px; margin-top: 10px; }
+        .pending-actions { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;}
         .p-btn { flex: 1; border: none; padding: 8px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold; color: white; }
         .approve-btn { background: #2ecc71; }
         .reject-btn { background: #e74c3c; }
+        .edit-approve-btn { background: #f39c12; }
         .tab-group { display: flex; gap: 10px; margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
         .tab-btn { flex: 1; padding: 8px; background: none; border: none; cursor: pointer; color: var(--secondary-text); border-bottom: 2px solid transparent; }
         .tab-btn.active { color: var(--primary-color); border-bottom-color: var(--primary-color); font-weight: bold; }
 
-        /* Drafts */
         .draft-item { padding: 10px; border-bottom: 1px solid var(--border-color); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
         .draft-item:hover { background: var(--bg-color); }
 
-        /* Sticky Player & Visualizer */
         #stickyPlayer { 
             position: fixed; bottom: -100px; left: 0; width: 100%; 
             background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border-top: var(--glass-border);
@@ -323,7 +277,7 @@
             transition: bottom 0.4s; z-index: 1300; border-radius: 15px 15px 0 0; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); 
         }
         #stickyPlayer.active { bottom: 60px; }
-        
+
         .visualizer { display: flex; align-items: flex-end; gap: 3px; height: 20px; width: 20px; margin-right: 10px; opacity: 0.5; }
         .bar { width: 4px; background: var(--primary-color); border-radius: 2px; height: 5px; transition: 0.1s; }
         .playing .bar:nth-child(1) { animation: bounce 0.6s infinite ease-in-out; }
@@ -331,17 +285,21 @@
         .playing .bar:nth-child(3) { animation: bounce 0.6s infinite ease-in-out 0.4s; }
         @keyframes bounce { 0%, 100% { height: 5px; } 50% { height: 20px; } }
 
-        /* Skeleton */
         .skeleton { background: var(--glass-bg); padding: 20px; border-radius: 16px; margin-bottom: 20px; border: var(--glass-border); }
         .sk-anim { background: linear-gradient(90deg, var(--bg-color) 25%, var(--border-color) 50%, var(--bg-color) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 4px; height: 15px; margin-bottom: 10px; }
         @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        /* Quote Capture Area Updated */
+        #quote-capture-area { position:fixed; left:-9999px; width:400px; height: 400px; display: flex; flex-direction: column; justify-content: center; align-items: center; background-size: cover; background-position: center; border-radius:0; }
+        .quote-overlay { background: rgba(0,0,0,0.6); width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; padding: 40px; box-sizing: border-box; text-align: center; color: white; }
+        .q-brand { margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.4); padding-top: 10px; font-size: 11px; display: flex; align-items: center; justify-content: center; gap: 5px; opacity: 0.8; font-family: 'Hind Siliguri', sans-serif;}
     </style>
 </head>
 <body>
 
     <!-- Reading Progress -->
     <div id="readingProgress"></div>
-    
+
     <!-- Toast Notification -->
     <div id="toast" class="toast-box"><i class="fas fa-info-circle"></i> <span id="toastMsg">Notification</span></div>
 
@@ -356,13 +314,15 @@
         <img id="lightbox-img" src="" style="max-width:95%; max-height:80vh; border-radius:8px; box-shadow:0 0 20px rgba(0,0,0,0.5);">
     </div>
 
-    <!-- Quote Capture Area -->
-    <div id="quote-capture-area" style="position:fixed; left:-9999px; width:400px; background:linear-gradient(135deg, #1877f2, #00c6ff); padding:30px; color:white; border-radius:0;">
-        <div style="opacity:0.8; margin-bottom:15px; text-transform:uppercase; letter-spacing:1px; font-size:12px;">মুক্তলিপি ডায়েরি</div>
-        <div id="q-title" style="font-size:24px; font-weight:bold; margin-bottom:10px;"></div>
-        <div id="q-text" style="font-size:18px; font-style:italic; line-height:1.5; margin-bottom:20px;"></div>
-        <div id="q-author" style="font-size:14px; font-weight:bold; text-align:right;"></div>
-        <div style="margin-top:20px; border-top:1px solid rgba(255,255,255,0.3); padding-top:10px; font-size:10px; text-align:center;">muktolipidiary.web.app</div>
+    <!-- Updated Quote Capture Area -->
+    <div id="quote-capture-area">
+        <div class="quote-overlay">
+            <div id="q-text" style="font-family: 'Galada', cursive; font-size: 22px; line-height: 1.6; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);"></div>
+            <div id="q-author" style="font-family: 'Noto Serif Bengali', serif; font-size: 16px; font-weight: bold; color: #f1c40f;"></div>
+            <div class="q-brand">
+                <i class="fas fa-pen-nib"></i> মুক্তলিপি ডায়েরি
+            </div>
+        </div>
     </div>
 
     <!-- Edit Profile Modal -->
@@ -390,7 +350,7 @@
                 <h3 id="formTitle" style="margin:0;">লেখা জমা দিন</h3>
                 <button onclick="closeAdminModal()" style="background:none; border:none; font-size:20px; color:var(--text-color);"><i class="fas fa-times"></i></button>
             </div>
-            
+
             <!-- Admin Tabs -->
             <div id="adminTabs" class="tab-group" style="display:none;">
                 <button class="tab-btn active" onclick="switchAdminTab('new')">নতুন পোস্ট</button>
@@ -400,7 +360,8 @@
             <!-- Write Form Container -->
             <div id="writeFormContainer">
                 <input type="hidden" id="editKey">
-                
+                <input type="hidden" id="pendingKey"> <!-- New hidden input for approval flow -->
+
                 <!-- Auth Section -->
                 <div id="authSection">
                     <button id="googleLoginBtn" class="btn google-btn">
@@ -422,7 +383,7 @@
                 <div id="draftsList" style="display:none; background:var(--bg-color); border:1px solid var(--border-color); border-radius:8px; margin-bottom:10px; max-height:150px; overflow-y:auto;"></div>
 
                 <input type="text" id="postTitle" placeholder="শিরোনাম" style="margin-top:5px;">
-                
+
                 <select id="postCategory" style="margin-top:10px;">
                     <option value="অন্যান্য">ক্যাটাগরি বাছাই করুন</option>
                     <option value="গল্প">গল্প</option>
@@ -443,8 +404,8 @@
                 </div>
 
                 <!-- Shared Image Upload -->
-                <div style="display:flex; gap:5px; margin-top:5px;">
-                    <button onclick="document.getElementById('imgInput').click()" style="flex:1; padding:10px; border:1px dashed var(--primary-color); background:rgba(24,119,242,0.05); color:var(--primary-color); border-radius:8px;"><i class="fas fa-camera"></i> ছবি যোগ করুন</button>
+                <div style="display:flex; gap:5px; margin-top:5px; align-items: center;">
+                    <button onclick="document.getElementById('imgInput').click()" style="flex:1; padding:10px; border:1px dashed var(--primary-color); background:rgba(24,119,242,0.05); color:var(--primary-color); border-radius:8px;"><i class="fas fa-camera"></i> ছবি যোগ করুন <span id="uploadPct" style="font-size:11px; font-weight:bold;"></span></button>
                     <input type="file" id="imgInput" hidden accept="image/*">
                 </div>
                 <p id="uploadMsg" style="font-size:11px; margin:0; color:green; display:none;"></p>
@@ -495,8 +456,8 @@
 
         <button id="installBtn" onclick="installPWA()" style="display:none; margin: 0 auto 15px auto; background:var(--primary-color); color:white; border:none; padding:8px 20px; border-radius:20px; font-size:13px; cursor:pointer;">অ্যাপ নামান ⬇️</button>
 
-        <!-- Stories Section -->
-        <div id="storiesBar" class="stories-container"></div>
+        <!-- New Header Banner -->
+        <img src="https://images.unsplash.com/photo-1510936111840-65e151ad71bb?q=80&w=1000&auto=format&fit=crop" class="header-banner" alt="Banner">
 
         <!-- Search & Leaderboard -->
         <div class="search-wrapper">
@@ -522,7 +483,7 @@
                 <img id="profilePic" src="" class="profile-pic-large">
                 <h2 id="profileNameDisplay" class="profile-name">Name</h2>
                 <div id="profileBioDisplay" class="profile-bio">Bio...</div>
-                
+
                 <div class="stats-row">
                     <div class="stat-box">
                         <span id="statPosts" class="stat-val">0</span>
@@ -533,7 +494,7 @@
                         <span class="stat-label">লাইক</span>
                     </div>
                 </div>
-                
+
                 <button class="btn" onclick="openEditProfile()" style="background:rgba(0,0,0,0.05); color:var(--text-color); width:auto; padding:8px 20px;"><i class="fas fa-pen"></i> এডিট প্রোফাইল</button>
             </div>
             <div style="padding:10px; border-top:1px solid var(--border-color);">
@@ -572,25 +533,25 @@
         <audio id="globalAudio" onended="audioEnded()"></audio>
     </div>
 
-    <!-- UPDATED: Bottom Nav -->
+    <!-- Bottom Nav -->
     <nav class="bottom-nav glass-panel">
         <button class="nav-item active" onclick="navTo('home', this)">
             <i class="fas fa-home"></i>হোম
         </button>
-        
+
         <button class="nav-item" onclick="showLibraryToast()">
             <i class="fas fa-book"></i>লাইব্রেরি
         </button>
-        
+
         <!-- Center Write Button -->
         <button class="nav-center-btn" onclick="openWriteModal()">
             <i class="fas fa-pen-nib"></i>
         </button>
-        
+
         <button class="nav-item" onclick="navTo('saved', this)">
             <i class="fas fa-bookmark"></i>সংরক্ষিত
         </button>
-        
+
         <button class="nav-item" onclick="navTo('profile', this)">
             <i class="fas fa-user"></i>প্রোফাইল
         </button>
@@ -661,7 +622,6 @@
         window.logoutFunc = () => {
             signOut(auth).then(() => {
                 showToast("লগআউট হয়েছে");
-                // If on profile page, go home
                 if(document.getElementById('profileView').style.display === 'block') {
                     navTo('home', document.querySelector('.nav-item.active'));
                 }
@@ -681,28 +641,24 @@
             }
         }
 
-        // --- NEW: Profile Logic ---
         window.loadProfile = function() {
             if(!window.currentUser) {
                 signInWithPopup(auth, provider).then(() => navTo('profile', document.querySelectorAll('.bottom-nav .nav-item')[4]));
                 return;
             }
             const uid = window.currentUser.uid;
-            
-            // Fetch User Data
             get(ref(db, 'users/' + uid)).then(snap => {
                 const data = snap.val() || {};
                 document.getElementById('profilePic').src = data.photoURL || window.currentUser.photoURL;
                 document.getElementById('profileNameDisplay').innerText = data.displayName || window.currentUser.displayName;
                 document.getElementById('profileBioDisplay').innerText = data.bio || "No bio yet.";
-                
-                // Calculate Stats
-                const myPosts = window.allPosts.filter(p => p.author === (data.displayName || window.currentUser.displayName));
+
+                const myPosts = window.allPosts.filter(p => p.uid === uid || p.author === (data.displayName || window.currentUser.displayName));
                 const totalLikes = myPosts.reduce((sum, p) => sum + (p.likes || 0), 0);
-                
+
                 document.getElementById('statPosts').innerText = myPosts.length;
                 document.getElementById('statLikes').innerText = totalLikes;
-                
+
                 renderUserPosts(myPosts);
             });
         };
@@ -710,7 +666,6 @@
         function renderUserPosts(posts) {
             const feed = document.getElementById('userPostsFeed');
             if(!posts.length) return feed.innerHTML = '<p style="text-align:center; color:#999;">কোনো লেখা নেই</p>';
-            // Re-use a simplified card for the profile
             feed.innerHTML = posts.map(p => `
                 <div style="background:rgba(255,255,255,0.5); padding:10px; border-radius:10px; margin-bottom:10px; border:1px solid var(--border-color);">
                     <div style="font-weight:bold; font-size:15px;">${p.title}</div>
@@ -723,7 +678,7 @@
             const name = document.getElementById('profileNameDisplay').innerText;
             const bio = document.getElementById('profileBioDisplay').innerText;
             const img = document.getElementById('profilePic').src;
-            
+
             document.getElementById('editDisplayName').value = name;
             document.getElementById('editBio').value = bio;
             document.getElementById('editProfileImgPreview').src = img;
@@ -733,7 +688,7 @@
         document.getElementById('profileImgInput').addEventListener('change', function() {
             if(this.files[0]) {
                 document.getElementById('editProfileImgPreview').style.opacity = '0.5';
-                uploadToImgBB(this.files[0]).then(url => {
+                uploadImageXHR(this.files[0]).then(url => {
                     document.getElementById('editProfileImgPreview').src = url;
                     document.getElementById('editProfileImgPreview').style.opacity = '1';
                 }).catch(() => showToast('ছবি আপলোড ব্যর্থ হয়েছে'));
@@ -744,7 +699,7 @@
             const newName = document.getElementById('editDisplayName').value;
             const newBio = document.getElementById('editBio').value;
             const newImg = document.getElementById('editProfileImgPreview').src;
-            
+
             update(ref(db, 'users/' + window.currentUser.uid), {
                 displayName: newName,
                 bio: newBio,
@@ -764,7 +719,6 @@
                 localStorage.setItem('OFFLINE_POSTS', JSON.stringify(data));
                 processData(data);
                 checkUserApprovals(data);
-                renderStories(data);
             } else {
                 document.getElementById('feed').innerHTML = '<div style="text-align:center; padding:50px;">কোনো লেখা নেই</div>';
             }
@@ -785,7 +739,6 @@
             if(cached) {
                 const data = JSON.parse(cached);
                 processData(data);
-                renderStories(data);
             }
             else document.getElementById('offlineBanner').style.display = 'block';
         }
@@ -799,10 +752,9 @@
             });
             window.allPosts = postsArr;
             checkNotifications(postsArr);
-            
+
             const activeCat = document.querySelector('.cat-btn.active')?.innerText.trim() || 'সব';
             if(activeCat.includes("জনপ্রিয়")) filterCategory('জনপ্রিয়');
-            // Check if we are in saved view by checking active bottom nav
             else if(document.querySelectorAll('.bottom-nav .nav-item')[3].classList.contains('active')) filterCategory('সংরক্ষিত');
             else if(document.getElementById('profileView').style.display === 'none') filterCategory(activeCat);
         }
@@ -818,18 +770,32 @@
             });
         }
 
-        // Handle Submission
+        // Handle Submission with Admin Edit/Approve Logic
         window.handleSubmission = function() {
             const title = document.getElementById('postTitle').value;
             const content = document.getElementById('richEditor').innerHTML;
             const category = document.getElementById('postCategory').value;
+            const pendingKey = document.getElementById('pendingKey').value;
+            const editKey = document.getElementById('editKey').value;
             const isAdmin = localStorage.getItem('IS_ADMIN') === 'true';
-            
+
             let author = "বেনামী";
             let userImg = "";
             let uid = null;
-            
-            if(window.currentUser) {
+
+            // Priority: Existing post data (for edits) -> Current User -> Default
+            if (pendingKey || editKey) {
+                // Keep original author data if we are editing
+                // We will fetch this inside the logic below if needed, 
+                // but usually the form doesn't expose author editing.
+                // For simplified flow, we use the original logic or current admin overriding.
+                // However, to persist userImg correctly:
+                if(window.currentUser) {
+                    author = window.currentUser.displayName;
+                    userImg = window.currentUser.photoURL;
+                    uid = window.currentUser.uid;
+                }
+            } else if(window.currentUser) {
                 author = window.currentUser.displayName;
                 userImg = window.currentUser.photoURL;
                 uid = window.currentUser.uid;
@@ -858,40 +824,108 @@
             btn.disabled = true;
             btn.innerText = "অপেক্ষা করুন...";
 
-            if(isAdmin) {
+            // Case 1: Admin Approving a Pending Post
+            if (isAdmin && pendingKey) {
+                 // Preserve original author info from the pending post if possible
+                 const originalPending = window.pendingPosts.find(p => p.key === pendingKey);
+                 if (originalPending) {
+                     postData.author = originalPending.author;
+                     postData.userImg = originalPending.userImg || '';
+                     postData.uid = originalPending.uid || null;
+                     postData.deviceId = originalPending.deviceId;
+                 }
+                 
+                 postData.voice = document.getElementById('voiceUrl').value;
+                 postData.isPinned = document.getElementById('isPinned').checked;
+                 postData.likes = 0;
+                 postData.views = 0;
+
+                 push(ref(db, 'posts'), postData)
+                    .then(() => remove(ref(db, 'pending_posts/' + pendingKey)))
+                    .then(() => resetForm("পোস্ট অনুমোদিত ও প্রকাশিত হয়েছে ✅"));
+            }
+            // Case 2: Admin Editing Live Post
+            else if (isAdmin && editKey) {
+                postData.voice = document.getElementById('voiceUrl').value;
+                postData.isPinned = document.getElementById('isPinned').checked;
+                // Don't overwrite stats
+                delete postData.likes; delete postData.views; delete postData.timestamp; delete postData.date;
+                update(ref(db, 'posts/' + editKey), postData).then(() => resetForm("আপডেট হয়েছে ✅"));
+            }
+            // Case 3: Admin Creating New Post
+            else if (isAdmin) {
                 postData.voice = document.getElementById('voiceUrl').value;
                 postData.isPinned = document.getElementById('isPinned').checked;
                 postData.likes = 0;
                 postData.views = 0;
-
-                const editKey = document.getElementById('editKey').value;
-                if (editKey) {
-                    update(ref(db, 'posts/' + editKey), postData).then(() => resetForm("আপডেট হয়েছে ✅"));
-                } else {
-                    push(ref(db, 'posts'), postData).then(() => resetForm("পাবলিশ হয়েছে ✅"));
-                }
-            } else {
+                push(ref(db, 'posts'), postData).then(() => resetForm("পাবলিশ হয়েছে ✅"));
+            }
+            // Case 4: User Submitting (Always Pending)
+            else {
                 push(ref(db, 'pending_posts'), postData).then(() => {
                     resetForm("জমা হয়েছে! অনুমোদনের জন্য অপেক্ষা করুন।");
+                    Swal.fire('সফল!', 'আপনার লেখাটি জমা হয়েছে। এডমিন অ্যাপ্রুভ করলে এটি প্রকাশ পাবে।', 'success');
                 });
             }
         };
-        
-        // --- NEW: Universal ImgBB Upload ---
+
+        // --- NEW: XHR Image Upload with Progress ---
         document.getElementById('imgInput').addEventListener('change', function() {
             if(!this.files[0]) return;
+            const btn = document.getElementById('submitBtn');
+            const pctSpan = document.getElementById('uploadPct');
             const msg = document.getElementById('uploadMsg');
-            msg.style.display = 'block'; msg.innerText = 'আপলোড হচ্ছে...';
             
-            uploadToImgBB(this.files[0]).then(url => {
+            btn.disabled = true;
+            msg.style.display = 'block';
+            msg.innerText = 'আপলোড হচ্ছে...';
+            msg.style.color = '#e67e22';
+
+            uploadImageXHR(this.files[0], (percent) => {
+                pctSpan.innerText = percent + '%';
+            }).then(url => {
                 document.getElementById('postImage').value = url;
-                msg.innerText = '✅ ছবি আপলোড হয়েছে';
+                msg.innerText = '✅ ছবি আপলোড সম্পন্ন';
+                msg.style.color = 'green';
+                pctSpan.innerText = '';
+                btn.disabled = false;
             }).catch(() => {
                 msg.innerText = '❌ আপলোড ব্যর্থ হয়েছে';
+                msg.style.color = 'red';
+                pctSpan.innerText = '';
+                btn.disabled = false;
             });
         });
 
+        function uploadImageXHR(file, onProgress) {
+            return new Promise((resolve, reject) => {
+                const formData = new FormData();
+                formData.append('image', file);
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'https://api.imgbb.com/1/upload?key=d34410bcea20d900a8a8bcc3068ac081');
+                
+                xhr.upload.onprogress = (e) => {
+                    if (e.lengthComputable && onProgress) {
+                        const percent = Math.round((e.loaded / e.total) * 100);
+                        onProgress(percent);
+                    }
+                };
+
+                xhr.onload = () => {
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.success) resolve(response.data.url);
+                        else reject(response.error);
+                    } else reject(xhr.statusText);
+                };
+
+                xhr.onerror = () => reject(xhr.statusText);
+                xhr.send(formData);
+            });
+        }
+
         window.approvePost = function(key) {
+            // Quick approve without edit
             const post = window.pendingPosts.find(p => p.key === key);
             if(!post) return;
             const { key: _, ...data } = post;
@@ -901,6 +935,25 @@
                 .then(() => remove(ref(db, 'pending_posts/' + key)))
                 .then(() => showToast('অনুমোদিত ✅'));
         };
+
+        window.editAndApprove = function(key) {
+            const post = window.pendingPosts.find(p => p.key === key);
+            if(!post) return;
+            
+            // Switch to form tab
+            switchAdminTab('new');
+            
+            // Populate Fields
+            document.getElementById('formTitle').innerText = "এডিট ও অ্যাপ্রুভ";
+            document.getElementById('postTitle').value = post.title;
+            document.getElementById('richEditor').innerHTML = post.content;
+            document.getElementById('postCategory').value = post.category || 'অন্যান্য';
+            document.getElementById('postImage').value = post.image || '';
+            document.getElementById('pendingKey').value = post.key; // Flag for transition
+            
+            document.getElementById('submitBtn').innerText = "প্রকাশ করুন";
+            showToast("তথ্য লোড হয়েছে। এডিট করে প্রকাশ করুন।");
+        }
 
         window.rejectPost = function(key) {
             if(confirm('বাতিল করবেন?')) remove(ref(db, 'pending_posts/' + key));
@@ -921,30 +974,27 @@
             if (isLiked) {
                 update(postRef, { likes: (currentLikes > 0 ? currentLikes - 1 : 0) });
                 localStorage.removeItem(storageKey);
-                // UI update via RenderFeed but for instant feel:
                 btn.classList.remove('liked');
                 btn.innerHTML = `<i class="far fa-heart"></i> ${currentLikes > 0 ? currentLikes - 1 : 0}`;
             } else {
-                // Animation
                 btn.classList.add('like-anim');
                 setTimeout(() => btn.classList.remove('like-anim'), 400);
-                
-                // Float Emoji
+
                 const emoji = document.createElement('div');
                 emoji.innerText = "❤️"; emoji.className = "emoji-floater";
                 const rect = btn.getBoundingClientRect();
                 emoji.style.left = (rect.left + 10) + 'px'; emoji.style.top = (rect.top - 20) + 'px';
                 document.body.appendChild(emoji);
                 setTimeout(() => emoji.remove(), 1000);
-                
+
                 btn.classList.add('liked');
                 btn.innerHTML = `<i class="fas fa-heart"></i> ${(currentLikes || 0) + 1}`;
-                
+
                 update(postRef, { likes: (currentLikes || 0) + 1 });
                 localStorage.setItem(storageKey, true);
             }
         };
-        
+
         // --- COMMENTS SYSTEM ---
         window.toggleComments = function(key) {
             const container = document.getElementById(`comments-${key}`);
@@ -966,7 +1016,7 @@
                 }
                 list.innerHTML = Object.values(data).map(c => `
                     <div class="comment-item">
-                        ${c.userImg ? `<img src="${c.userImg}" class="comment-avatar">` : '<div class="comment-avatar"></div>'}
+                        <img src="${c.userImg || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" class="comment-avatar">
                         <div class="comment-box">
                             <span class="comment-author">${c.author}</span>
                             <span>${c.text}</span>
@@ -982,7 +1032,8 @@
             if(!text) return;
 
             const author = window.currentUser ? window.currentUser.displayName : "বেনামী";
-            const userImg = window.currentUser ? window.currentUser.photoURL : "";
+            // Persist User Image in Comment
+            const userImg = window.currentUser ? window.currentUser.photoURL : "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 
             push(ref(db, 'comments/' + key), {
                 text, author, userImg, timestamp: Date.now()
@@ -1000,16 +1051,16 @@
                 if(!stats[p.author]) stats[p.author] = 0;
                 stats[p.author] += (p.views || 0);
             });
-            
+
             const sorted = Object.entries(stats).sort((a,b) => b[1] - a[1]).slice(0, 5);
-            
+
             const html = sorted.length ? sorted.map((s, i) => 
                 `<div style="display:flex; justify-content:space-between; padding:8px; border-bottom:1px solid #eee;">
                     <span>${['🥇','🥈','🥉','4️⃣','5️⃣'][i]} <b>${s[0]}</b></span>
                     <span>👁️ ${s[1]}</span>
                 </div>`
             ).join('') : '<p>কোনো তথ্য নেই</p>';
-            
+
             Swal.fire({
                 title: '🏆 সেরা লেখক (ভিউ অনুযায়ী)',
                 html: html,
@@ -1021,7 +1072,6 @@
     <script>
         // --- UI & Logic ---
 
-        // 1. Toast System
         function showToast(msg) {
             const t = document.getElementById('toast');
             document.getElementById('toastMsg').innerText = msg;
@@ -1029,7 +1079,6 @@
             setTimeout(() => t.classList.remove('show'), 2000);
         }
 
-        // Library Toast
         function showLibraryToast() {
             Swal.fire({
                 icon: 'info',
@@ -1040,13 +1089,12 @@
             });
         }
 
-        // 2. Draft System (Multiple)
         const DRAFTS_KEY = 'MUKTOLIPI_DRAFTS_V2';
         function saveDraft() {
             const title = document.getElementById('postTitle').value;
             const content = document.getElementById('richEditor').innerHTML;
             if(!title && !content) return showToast("খালি ড্রাফট রাখা যাবে না");
-            
+
             const drafts = JSON.parse(localStorage.getItem(DRAFTS_KEY) || '[]');
             drafts.unshift({ title: title || 'Untitled', content, date: new Date().toLocaleString() });
             localStorage.setItem(DRAFTS_KEY, JSON.stringify(drafts));
@@ -1080,11 +1128,9 @@
             }
         };
 
-        // 3. Rich Text
         function execCmd(command, value = null) { document.execCommand(command, false, value); }
         function addLink() { const url = prompt("লিংক দিন:"); if(url) execCmd('createLink', url); }
 
-        // 4. TTS
         function speakText(key, btn) {
             if (!('speechSynthesis' in window)) return showToast('ভয়েস সাপোর্ট নেই');
             const text = document.getElementById('content-' + key).innerText;
@@ -1102,22 +1148,6 @@
         function resetTTS() { document.querySelectorAll('.media-btn').forEach(b => { if(b.innerHTML.includes('থামুন')) { b.classList.remove('speaking'); b.innerHTML = '<i class="fas fa-volume-up"></i> শুনুন'; }}); }
         if('speechSynthesis' in window) window.speechSynthesis.onvoiceschanged = () => {};
 
-        // 5. ImgBB Upload (Global)
-        function uploadToImgBB(file) {
-            return new Promise((resolve, reject) => {
-                const formData = new FormData();
-                formData.append('image', file);
-                fetch('https://api.imgbb.com/1/upload?key=d34410bcea20d900a8a8bcc3068ac081', { method: 'POST', body: formData })
-                .then(res => res.json())
-                .then(data => {
-                    if(data.success) resolve(data.data.url);
-                    else reject(data.error);
-                })
-                .catch(err => reject(err));
-            });
-        }
-
-        // 6. Zen Mode & Double Tap
         function toggleZenMode() { document.body.classList.toggle('zen-active'); }
         window.handleDoubleTap = function(key, element) {
             window.handleLike(key, null, element.closest('.post-card').querySelector('.action-btn'));
@@ -1127,19 +1157,17 @@
             setTimeout(() => heart.remove(), 1000);
         }
 
-        // 7. Security: Secret Gesture & Password
         let tapCount = 0;
         let tapTimer;
         window.handleSecretTap = function() {
             tapCount++;
             clearTimeout(tapTimer);
             tapTimer = setTimeout(() => { tapCount = 0; }, 2000); 
-            
+
             if(tapCount === 5) {
                 if(navigator.vibrate) navigator.vibrate(200);
                 tapCount = 0;
-                
-                // Password Prompt
+
                 Swal.fire({
                     title: 'অ্যাডমিন প্যানেল',
                     input: 'password',
@@ -1159,35 +1187,6 @@
             }
         }
 
-        // 8. Feed Rendering & Stories
-        function renderStories(data) {
-            const container = document.getElementById('storiesBar');
-            const uniqueAuthors = new Map();
-            Object.values(data).forEach(p => {
-                if(p.isPinned && !uniqueAuthors.has('pinned-'+p.key)) {
-                    uniqueAuthors.set('pinned-'+p.key, { name: p.title.substring(0,10)+"...", img: p.image || p.userImg || 'https://via.placeholder.com/50?text=Pin', isPin: true, id: p.key });
-                } else if(!uniqueAuthors.has(p.author)) {
-                    uniqueAuthors.set(p.author, { name: p.author, img: p.userImg || 'https://via.placeholder.com/50?text='+p.author.charAt(0), isPin: false });
-                }
-            });
-            const stories = Array.from(uniqueAuthors.values()).slice(0, 10);
-            container.innerHTML = stories.map(s => `
-                <div class="story-item" onclick="filterByStory('${s.isPin ? s.id : s.name}', ${s.isPin})">
-                    <div class="story-ring" style="border-color:${s.isPin?'#e74c3c':'var(--primary-color)'}">
-                        <img src="${s.img}" class="story-img" onerror="this.src='https://via.placeholder.com/50'">
-                    </div>
-                    <span class="story-name">${s.name}</span>
-                </div>
-            `).join('');
-        }
-
-        window.filterByStory = function(val, isPin) {
-            document.getElementById('searchBar').value = '';
-            document.getElementById('searchClearBtn').style.display = 'block';
-            if(isPin) renderFeed(window.allPosts.filter(p => p.key === val));
-            else renderFeed(window.allPosts.filter(p => p.author === val));
-        };
-
         function filterPosts(query) {
             const q = query.toLowerCase();
             document.getElementById('searchClearBtn').style.display = q ? 'block' : 'none';
@@ -1197,10 +1196,9 @@
         function filterCategory(cat, btn) {
             if(btn) { document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); }
             document.getElementById('searchBar').value = '';
-            // Ensure feed is visible
             document.getElementById('profileView').style.display = 'none';
             document.getElementById('feed').style.display = 'block';
-            
+
             if(cat === 'সব') renderFeed(window.allPosts);
             else if(cat === 'জনপ্রিয়') renderFeed([...window.allPosts].sort((a,b) => (b.views||0) - (a.views||0)));
             else if(cat === 'সংরক্ষিত') renderFeed(window.allPosts.filter(p => (JSON.parse(localStorage.getItem('SAVED_POSTS'))||[]).includes(p.key)));
@@ -1210,7 +1208,7 @@
         function renderFeed(posts, highlight = "") {
             const feed = document.getElementById('feed');
             if(!posts.length) return feed.innerHTML = '<div style="text-align:center; margin-top:50px; color:#999;">কোনো পোস্ট নেই</div>';
-            
+
             const isAdmin = localStorage.getItem('IS_ADMIN') === 'true';
             const savedPosts = JSON.parse(localStorage.getItem('SAVED_POSTS')) || [];
 
@@ -1227,12 +1225,10 @@
                     bodyHtml = bodyHtml.replace(new RegExp(`(${highlight})`, 'gi'), '<mark>$1</mark>');
                 }
 
-                // Conditional Image Rendering
                 const imageHtml = (post.image && post.image.startsWith('http')) 
                     ? `<div class="post-img-container" ondblclick="handleDoubleTap('${post.key}', this)"><img src="${post.image}" class="post-img" onclick="document.getElementById('lightbox-img').src='${post.image}';document.getElementById('lightbox').style.display='flex'"></div>` 
                     : '';
 
-                // Modern Like Button
                 const likeIcon = liked ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>';
 
                 return `
@@ -1240,7 +1236,7 @@
                     ${post.isPinned ? '<i class="fas fa-thumbtack pinned-badge"></i>' : ''}
                     <div class="author-info">
                         <div class="avatar-circle">
-                            ${post.userImg ? `<img src="${post.userImg}">` : '<i class="fas fa-user"></i>'}
+                            <img src="${post.userImg || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
                         </div>
                         <div class="author-text">
                             <h4>${post.author}</h4>
@@ -1305,24 +1301,17 @@
             }
         }
 
-        // Utils
         function navTo(page, btn) {
             if(btn.classList.contains('nav-center-btn')) return; 
-            
-            // UI Update for Nav Items
+
             document.querySelectorAll('.bottom-nav .nav-item').forEach(b=>b.classList.remove('active')); 
             btn.classList.add('active'); 
             window.scrollTo(0,0);
-            
-            // View Handling with Animation
+
             const feed = document.getElementById('feed');
             const profile = document.getElementById('profileView');
-            
-            // Remove previous animation classes
             feed.classList.remove('animate-view');
             profile.classList.remove('animate-view');
-
-            // Force reflow
             void feed.offsetWidth;
 
             if(page === 'home') {
@@ -1330,14 +1319,14 @@
                 feed.style.display = 'block';
                 feed.classList.add('animate-view');
                 filterCategory('সব', document.querySelector('.cat-btn'));
-                
+
             } else if(page === 'saved') { 
                 profile.style.display = 'none';
                 feed.style.display = 'block';
                 feed.classList.add('animate-view');
                 filterCategory('সংরক্ষিত'); 
                 document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active')); 
-                
+
             } else if(page === 'profile') {
                 feed.style.display = 'none';
                 profile.style.display = 'block';
@@ -1362,6 +1351,7 @@
             localStorage.setItem('SAVED_POSTS', JSON.stringify(saved));
         }
 
+        // Updated Share with Random Backgrounds
         function sharePost(key) {
             const post = window.allPosts.find(p => p.key === key);
             Swal.fire({ title: 'শেয়ার', showDenyButton: true, confirmButtonText: 'লিংক কপি', denyButtonText: 'ছবি ডাউনলোড' }).then(r => {
@@ -1370,15 +1360,31 @@
                     showToast("লিংক কপি হয়েছে 📋");
                 }
                 else if(r.isDenied) {
-                    document.getElementById('q-title').innerText = post.title;
+                    const backgrounds = [
+                        'https://images.unsplash.com/photo-1577724856379-063130fdde1c?auto=format&fit=crop&w=500', // Paper
+                        'https://images.unsplash.com/photo-1524334228333-0f6db392f8a1?auto=format&fit=crop&w=500', // Dark
+                        'https://images.unsplash.com/photo-1516541196182-6bdb0516ed27?auto=format&fit=crop&w=500', // Nature
+                        'https://images.unsplash.com/photo-1507842217153-e52fbc591327?auto=format&fit=crop&w=500'  // Abstract
+                    ];
+                    const randBg = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+                    const capArea = document.getElementById('quote-capture-area');
+                    
+                    capArea.style.backgroundImage = `url('${randBg}')`;
                     document.getElementById('q-text').innerText = post.content.replace(/<[^>]*>/g, '').substring(0, 300);
-                    document.getElementById('q-author').innerText = post.author;
-                    setTimeout(() => html2canvas(document.getElementById('quote-capture-area'), {scale:2}).then(c => { const a = document.createElement('a'); a.download = 'Muktolipi-'+post.title+'.png'; a.href = c.toDataURL(); a.click(); }), 100);
+                    document.getElementById('q-author').innerText = "- " + post.author;
+
+                    setTimeout(() => {
+                        html2canvas(capArea, {scale: 2, useCORS: true}).then(c => { 
+                            const a = document.createElement('a'); 
+                            a.download = 'Muktolipi-'+post.title+'.png'; 
+                            a.href = c.toDataURL(); 
+                            a.click(); 
+                        });
+                    }, 500); // Wait for image load
                 }
             });
         }
 
-        // Modal Logic
         function openWriteModal() {
             document.getElementById('adminModalWrapper').style.display = 'flex';
             document.getElementById('adminTabs').style.display = 'none';
@@ -1388,10 +1394,12 @@
             document.getElementById('formTitle').innerText = "লেখা জমা দিন";
             document.getElementById('submitBtn').innerText = "জমা দিন";
             document.getElementById('adminLogoutBtn').style.display = 'none';
-            // Reset fields
+            // Reset
             document.getElementById('postTitle').value = '';
             document.getElementById('richEditor').innerHTML = '';
             document.getElementById('postImage').value = '';
+            document.getElementById('editKey').value = '';
+            document.getElementById('pendingKey').value = '';
             document.getElementById('uploadMsg').style.display = 'none';
         }
 
@@ -1404,19 +1412,21 @@
                 document.getElementById('authSection').style.display = 'none'; 
                 switchAdminTab('pending');
             } else {
-                handleSecretTap(); // Re-trigger password prompt if session lost but called
+                handleSecretTap();
             }
         }
 
         function switchAdminTab(tab) {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
-            
+
             if(tab === 'new') {
                 document.getElementById('writeFormContainer').style.display = 'block';
                 document.getElementById('pendingListContainer').style.display = 'none';
                 document.getElementById('formTitle').innerText = "নতুন পোস্ট";
                 document.getElementById('submitBtn').innerText = "পাবলিশ করুন";
+                document.getElementById('pendingKey').value = ''; // Reset
+                document.getElementById('editKey').value = ''; 
             } else {
                 document.getElementById('writeFormContainer').style.display = 'none';
                 document.getElementById('pendingListContainer').style.display = 'block';
@@ -1438,6 +1448,7 @@
                     <div style="font-size:12px; color:#555; margin:5px 0;">${p.content.replace(/<[^>]*>/g, '').substring(0, 80)}...</div>
                     <div class="pending-actions">
                         <button class="p-btn approve-btn" onclick="approvePost('${p.key}')">✔ অনুমোদন</button>
+                        <button class="p-btn edit-approve-btn" onclick="editAndApprove('${p.key}')">✏️ এডিট ও অ্যাপ্রুভ</button>
                         <button class="p-btn reject-btn" onclick="rejectPost('${p.key}')">✘ বাতিল</button>
                     </div>
                 </div>
@@ -1445,7 +1456,7 @@
         }
 
         function closeAdminModal() { document.getElementById('adminModalWrapper').style.display = 'none'; }
-        
+
         window.editPost = function(key) {
             if(localStorage.getItem('IS_ADMIN') !== 'true') return;
             const p = window.allPosts.find(x => x.key === key);
@@ -1458,6 +1469,7 @@
             document.getElementById('voiceUrl').value = p.voice || '';
             document.getElementById('isPinned').checked = p.isPinned || false;
             document.getElementById('editKey').value = p.key;
+            document.getElementById('pendingKey').value = '';
             document.getElementById('submitBtn').innerText = 'আপডেট করুন';
         }
 
@@ -1467,13 +1479,13 @@
             document.getElementById('postTitle').value = '';
             document.getElementById('richEditor').innerHTML = '';
             document.getElementById('editKey').value = '';
+            document.getElementById('pendingKey').value = '';
             document.getElementById('postImage').value = '';
             document.getElementById('submitBtn').disabled = false;
         }
 
         window.adminLogout = function() { localStorage.setItem('IS_ADMIN', 'false'); location.reload(); }
 
-        // Audio Player with Visualizer Control
         const player = document.getElementById('globalAudio');
         function playAudio(url, title, author) {
             document.getElementById('stickyPlayer').classList.add('active');
@@ -1504,14 +1516,12 @@
             document.getElementById('audioViz').classList.remove('playing');
         }
 
-        // Settings & PWA
         function toggleTheme() { document.body.classList.toggle('dark-theme'); }
         function toggleFontSize() {
             const current = getComputedStyle(document.documentElement).getPropertyValue('--content-font-size').trim();
             document.documentElement.style.setProperty('--content-font-size', current === '17px' ? '20px' : '17px');
         }
-        
-        // Font Switcher
+
         let fontIndex = 0;
         const fonts = ["'Hind Siliguri', sans-serif", "'Noto Serif Bengali', serif", "'Galada', cursive"];
         function toggleFontFamily() {
@@ -1532,12 +1542,11 @@
             else showToast('কোনো নতুন নোটিফিকেশন নেই');
         }
         function clearSearch() { document.getElementById('searchBar').value = ''; filterPosts(''); }
-        
+
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; document.getElementById('installBtn').style.display = 'block'; });
         async function installPWA() { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; document.getElementById('installBtn').style.display = 'none'; } }
-        
-        // Reading Progress
+
         window.onscroll = function() {
             let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
