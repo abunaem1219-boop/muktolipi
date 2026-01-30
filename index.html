@@ -838,10 +838,31 @@
             window.allPosts = postsArr;
             checkNotifications(postsArr);
 
-            const activeCat = document.querySelector('.cat-btn.active')?.innerText.trim() || 'সব';
-            if(activeCat.includes("জনপ্রিয়")) filterCategory('জনপ্রিয়');
-            else if(document.querySelectorAll('.bottom-nav .nav-item')[3].classList.contains('active')) filterCategory('সংরক্ষিত');
-            else if(document.getElementById('profileView').style.display === 'none') filterCategory(activeCat);
+            // FIX: Initial Load Logic for Blank Screen
+            const isSavedActive = document.querySelectorAll('.bottom-nav .nav-item')[3].classList.contains('active');
+            const isProfileActive = document.getElementById('profileView').classList.contains('active-view');
+
+            if (isSavedActive) {
+                filterCategory('সংরক্ষিত');
+            } 
+            else if (isProfileActive) {
+                // Do nothing to feed, user is on profile
+                if(window.currentUser) loadProfile();
+            } 
+            else {
+                // Default: Home Feed
+                const feed = document.getElementById('feed');
+                
+                // Ensure visibility immediately (bypass transition delays for first paint)
+                if(feed.style.display !== 'block') {
+                    feed.style.display = 'block';
+                    setTimeout(() => feed.classList.add('active-view'), 10);
+                }
+
+                const activeCat = document.querySelector('.cat-btn.active')?.innerText.trim() || 'সব';
+                if(activeCat.includes("জনপ্রিয়")) filterCategory('জনপ্রিয়');
+                else filterCategory(activeCat);
+            }
         }
 
         function checkUserApprovals(data) {
