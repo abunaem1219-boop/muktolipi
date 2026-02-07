@@ -131,7 +131,18 @@
             transform-origin: center center;
             box-sizing: border-box; cursor: pointer;
         }
-        /* .post-card:active { transform: scale(0.98); } Removed to prevent conflict with long press */
+        
+        /* Admin Actions in Post */
+        .admin-actions {
+            position: absolute; top: 10px; right: 10px; z-index: 5;
+            display: none; /* Hidden by default */
+        }
+        .admin-mode .admin-actions { display: block; }
+        .admin-btn-del {
+            background: rgba(231, 76, 60, 0.9); color: white; border: none;
+            width: 25px; height: 25px; border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; font-size: 12px;
+        }
 
         .header-title-block { padding: 5px; cursor: pointer; display: block; }
 
@@ -175,7 +186,6 @@
         
         .interaction-bar { display: flex; justify-content: space-between; border-top: 1px solid var(--border-color); padding-top: 10px; margin-top: auto; position: relative; }
         
-        /* Updated Action Button Styling with Counts */
         .action-btn-wrapper { position: relative; display: inline-block; }
         .action-btn { 
             background: none; border: none; cursor: pointer; color: var(--secondary-text); 
@@ -186,7 +196,7 @@
         .action-btn:hover { color: var(--primary-color); }
         .count-text { font-size: 12px; font-weight: 600; }
 
-        /* --- NEW: Reaction Bar (Facebook Style) --- */
+        /* Reaction Bar */
         .reaction-bar {
             position: absolute;
             bottom: 40px; left: -10px;
@@ -194,7 +204,7 @@
             border-radius: 50px;
             padding: 5px 8px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-            display: none; /* Hidden by default */
+            display: none;
             gap: 8px;
             z-index: 100;
             border: 1px solid var(--border-color);
@@ -210,15 +220,10 @@
             from { opacity: 0; transform: translateY(10px) scale(0.8); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
-        /* Reaction Colors */
-        .r-love { color: #e74c3c; }
-        .r-haha { color: #f7b928; }
-        .r-sad { color: #f7b928; }
-        .r-angry { color: #e74c3c; }
-        .r-care { color: #e6683c; }
+        .r-love { color: #e74c3c; } .r-haha { color: #f7b928; } .r-sad { color: #f7b928; }
+        .r-angry { color: #e74c3c; } .r-care { color: #e6683c; }
 
-
-        /* --- NEW: DETAIL VIEW (Read Mode) --- */
+        /* Detail View */
         #detailView {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-color); z-index: 2000;
@@ -246,7 +251,7 @@
         .detail-action { font-size: 20px; display: flex; flex-direction: column; align-items: center; color: var(--secondary-text); background: none; border: none; }
         .detail-action span { font-size: 10px; margin-top: 3px; }
 
-        /* Bottom Nav (Dock) */
+        /* Bottom Nav */
         .bottom-nav { 
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             width: 90%; max-width: 400px; height: 65px; 
@@ -274,7 +279,7 @@
         }
         .nav-center-btn:active { transform: translateY(-2px) scale(0.95); }
 
-        /* --- PROFILE PAGE --- */
+        /* Profile & Edit */
         #profileView { display: none; padding-bottom: 20px; }
         .profile-cover {
             height: 160px; width: 100%; background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
@@ -296,12 +301,10 @@
         .profile-info { text-align: center; padding: 0 20px; margin-bottom: 20px; }
         .profile-name { font-size: 22px; font-weight: 700; margin: 0; color: var(--text-color); }
         .profile-bio { font-size: 14px; color: var(--secondary-text); margin: 5px 0 0; max-width: 400px; margin: 5px auto; }
-
         .profile-stats-grid { display: flex; justify-content: center; gap: 15px; margin-bottom: 20px; }
         .stat-card { background: var(--glass-bg); padding: 10px 20px; border-radius: 12px; text-align: center; box-shadow: var(--shadow-soft); border: var(--glass-border); min-width: 80px; }
         .stat-val { font-size: 18px; font-weight: 800; color: var(--primary-color); display: block; }
         .stat-label { font-size: 11px; color: var(--secondary-text); font-weight: 600; text-transform: uppercase; }
-
         .profile-tabs {
             display: flex; justify-content: center; gap: 5px; margin-bottom: 15px; background: rgba(0,0,0,0.03);
             padding: 5px; border-radius: 12px; width: fit-content; margin-left: auto; margin-right: auto;
@@ -312,7 +315,7 @@
         }
         .p-tab-btn.active { background: var(--sheet-bg); color: var(--primary-color); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 
-        /* --- BOTTOM SHEET & MODALS --- */
+        /* Bottom Sheet & Modals */
         .bottom-sheet-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); z-index: 2000;
@@ -328,7 +331,6 @@
             display: flex; flex-direction: column; overflow: hidden;
         }
         .bottom-sheet-overlay.active .sheet-content { transform: translateY(0); }
-        
         .sheet-drag-handle { width: 40px; height: 4px; background: rgba(0,0,0,0.1); border-radius: 10px; margin: 12px auto; flex-shrink: 0; }
         .sheet-body { overflow-y: auto; padding: 0 20px 20px 20px; flex: 1; }
 
@@ -338,7 +340,7 @@
         .share-icon-circle { width: 50px; height: 50px; border-radius: 50%; background: rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; font-size: 20px; transition: 0.2s; }
         .share-item:active .share-icon-circle { transform: scale(0.95); background: rgba(0,0,0,0.1); }
 
-        /* --- Loaders & Uploads --- */
+        /* Loaders & Uploads */
         .upload-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); border-radius: 50%;
@@ -360,7 +362,6 @@
         }
         .btn-progress.uploading { color: white; cursor: not-allowed; }
 
-        /* Misc UI */
         input, select, textarea { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 12px; background: rgba(0,0,0,0.02); color: var(--text-color); font-family: inherit; box-sizing: border-box; outline: none; }
         .btn { padding: 12px; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; width: 100%; font-size: 15px; margin-top: 10px; }
         .btn-primary { background: var(--gradient-primary); color: white; box-shadow: 0 5px 15px rgba(24, 119, 242, 0.3); }
@@ -393,6 +394,16 @@
         .editor-container { border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background: rgba(0,0,0,0.02); }
         .editor-toolbar { display: flex; gap: 5px; padding: 8px; background: rgba(0,0,0,0.05); border-bottom: 1px solid var(--border-color); }
         .rich-editor { min-height: 150px; padding: 12px; outline: none; color: var(--text-color); overflow-y: auto; max-height: 300px; line-height: 1.5; }
+
+        /* Login Required Modal */
+        #loginModal .modal-content { text-align: center; }
+        .google-btn { background:#4285F4; color:white; display:flex; align-items:center; justify-content:center; gap:10px; width:100%; padding:12px; border:none; border-radius:30px; font-weight:bold; cursor:pointer; font-size:15px; box-shadow:0 4px 10px rgba(66,133,244,0.3); }
+
+        /* Admin/Pending Item Styles */
+        .pending-item { background: var(--glass-bg); padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid var(--border-color); }
+        .pending-actions { display:flex; gap:10px; margin-top:5px; }
+        .btn-approve { background: #2ecc71; color: white; flex:1; border:none; border-radius:5px; padding:5px; cursor:pointer; }
+        .btn-reject { background: #e74c3c; color: white; flex:1; border:none; border-radius:5px; padding:5px; cursor:pointer; }
     </style>
 </head>
 <body>
@@ -413,13 +424,23 @@
             </div>
         </div>
         <div style="display:flex; gap:5px;">
-            <!-- 1. NEW: Font Changer Button -->
             <button class="icon-btn" onclick="toggleFont()" title="ফন্ট পরিবর্তন"><i class="fas fa-font"></i></button>
             <button class="icon-btn" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
             <button class="icon-btn" onclick="showNotifications()">
                 <i class="fas fa-bell"></i>
                 <span id="notifBadge" class="badge">0</span>
             </button>
+        </div>
+    </div>
+
+    <!-- LOGIN MODAL (Gatekeeper) -->
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal-content glass-panel" style="width:300px;">
+            <i class="fas fa-lock" style="font-size:40px; color:var(--primary-color); margin-bottom:15px;"></i>
+            <h3 style="margin:0 0 10px 0;">লগিন প্রয়োজন</h3>
+            <p style="color:var(--secondary-text); font-size:14px; margin-bottom:20px;">এই কাজটি করতে হলে আপনাকে লগিন করতে হবে।</p>
+            <button class="google-btn" onclick="performLogin()"><i class="fab fa-google"></i> গুগল দিয়ে লগিন</button>
+            <button class="btn" onclick="document.getElementById('loginModal').style.display='none'" style="background:transparent; color:var(--secondary-text);">বন্ধ করুন</button>
         </div>
     </div>
 
@@ -466,9 +487,9 @@
                 <p id="dateText" class="date-text">আজকের দিনটি আপনার ভালো কাটুক</p>
             </div>
 
-            <!-- Banner Image (Restored) -->
+            <!-- Banner Image -->
             <div class="header-banner-container">
-                <img src="my_banner.jpg" class="header-banner">
+                <img src="https://images.unsplash.com/photo-1499750310159-54f0f29752f3?q=80&w=1000&auto=format&fit=crop" class="header-banner">
                 <div class="banner-text">মনের কথা, মুক্ত ভাষায়</div>
             </div>
 
@@ -629,16 +650,18 @@
                 <button onclick="closeAdminModal()" style="background:none; border:none; font-size:20px; color:var(--text-color);"><i class="fas fa-times"></i></button>
             </div>
 
+            <!-- Admin Tabs (Visible only to Admin) -->
+            <div id="adminTabs" style="display:none; gap:10px; margin:10px 0;">
+                <button class="btn" onclick="switchAdminTab('new')" style="padding:8px; font-size:12px; flex:1;">নতুন পোস্ট</button>
+                <button class="btn" onclick="switchAdminTab('pending')" style="padding:8px; font-size:12px; flex:1; background:var(--highlight-color); color:var(--text-color);">পেন্ডিং তালিকা</button>
+            </div>
+
             <div id="writeFormContainer">
                 <input type="hidden" id="editKey"><input type="hidden" id="pendingKey">
                 
-                <!-- Login/Auth -->
-                <div id="authSection" style="margin:10px 0;">
-                    <button id="googleLoginBtn" class="btn" style="background:#4285F4; color:white; display:flex; align-items:center; justify-content:center; gap:10px;"><i class="fab fa-google"></i> গুগল দিয়ে লিখুন</button>
-                    <div id="userProfile" style="display:none; align-items:center; gap:10px;">
-                        <img id="userAvatar" src="" style="width:30px; height:30px; border-radius:50%;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
-                        <span id="userName" style="font-weight:600; font-size:13px;"></span>
-                    </div>
+                <div id="userProfile" style="display:flex; align-items:center; gap:10px; margin:10px 0;">
+                    <img id="userAvatar" src="" style="width:30px; height:30px; border-radius:50%;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
+                    <span id="userName" style="font-weight:600; font-size:13px;"></span>
                 </div>
 
                 <input type="text" id="postTitle" placeholder="শিরোনাম" style="margin-top:5px;">
@@ -673,10 +696,6 @@
                     <label style="display:flex; align-items:center; font-size:13px; gap:8px; margin-top:5px;">
                         <input type="checkbox" id="isPinned" style="width:auto;"> পিন পোস্ট
                     </label>
-                    <div style="display:flex; gap:10px; margin-top:5px;">
-                        <button class="btn" onclick="switchAdminTab('new')" style="flex:1; padding:5px; font-size:12px;">নতুন</button>
-                        <button class="btn" onclick="switchAdminTab('pending')" style="flex:1; padding:5px; font-size:12px;">অপেক্ষমান</button>
-                    </div>
                 </div>
 
                 <div style="display:flex; gap:10px; margin-top:15px;">
@@ -686,7 +705,7 @@
             </div>
 
             <!-- Pending List -->
-            <div id="pendingListContainer" style="display:none; margin-top:10px;">
+            <div id="pendingListContainer" style="display:none; margin-top:10px; max-height:400px; overflow-y:auto;">
                 <div id="pendingFeed"></div>
             </div>
         </div>
@@ -706,7 +725,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, push, set, onValue, update, remove, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBZtycgadrngON2WEwvIE7ERPYxdkDVfFM",
@@ -724,32 +743,24 @@
         const provider = new GoogleAuthProvider();
 
         window.allPosts = [];
-        window.allComments = {}; // Global comments store
+        window.allComments = {}; 
         window.pendingPosts = [];
         window.db = db; window.ref = ref; window.push = push; window.set = set; window.update = update; window.remove = remove;
         window.currentUser = null;
         const DEVICE_ID = localStorage.getItem('USER_DEVICE_ID') || 'u_' + Date.now();
         localStorage.setItem('USER_DEVICE_ID', DEVICE_ID);
 
-        // --- 1. NEW FEATURE: FONT CHANGER ---
-        const fontFamilies = [
-            "'Hind Siliguri', sans-serif",
-            "'Noto Serif Bengali', serif",
-            "'Galada', cursive"
-        ];
-        
+        // --- FONT CHANGER ---
+        const fontFamilies = ["'Hind Siliguri', sans-serif", "'Noto Serif Bengali', serif", "'Galada', cursive"];
         window.toggleFont = function() {
             let current = localStorage.getItem('userFont') || fontFamilies[0];
             let idx = fontFamilies.indexOf(current);
             let nextIdx = (idx + 1) % fontFamilies.length;
             let nextFont = fontFamilies[nextIdx];
-            
             document.documentElement.style.setProperty('--current-font', nextFont);
             localStorage.setItem('userFont', nextFont);
             showToast("ফন্ট পরিবর্তন হয়েছে");
         };
-
-        // Initialize Font on Load
         (function initFont() {
             const savedFont = localStorage.getItem('userFont');
             if(savedFont) document.documentElement.style.setProperty('--current-font', savedFont);
@@ -759,8 +770,15 @@
         onAuthStateChanged(auth, (user) => {
             window.currentUser = user;
             updateAuthUI(user);
-            if(user) syncUserProfile(user);
+            if(user) {
+                syncUserProfile(user);
+                document.getElementById('loginModal').style.display = 'none'; // Close modal if logged in
+                // If profile view is active, reload it
+                if(document.getElementById('profileView').style.display === 'block') loadProfile();
+            }
         });
+
+        window.performLogin = () => signInWithPopup(auth, provider).catch(console.error);
 
         function syncUserProfile(user) {
             const userRef = ref(db, 'users/' + user.uid);
@@ -770,26 +788,27 @@
                 }
             });
         }
-        document.getElementById('googleLoginBtn').addEventListener('click', () => signInWithPopup(auth, provider).catch(console.error));
+        
         window.logoutFunc = () => signOut(auth).then(() => { showToast("লগআউট হয়েছে"); navTo('home', document.querySelector('.nav-item')); });
 
         function updateAuthUI(user) {
             if(user) {
-                document.getElementById('googleLoginBtn').style.display = 'none';
-                document.getElementById('userProfile').style.display = 'flex';
                 document.getElementById('userAvatar').src = user.photoURL;
                 document.getElementById('userName').innerText = user.displayName;
                 document.getElementById('submitBtn').disabled = false;
-            } else {
-                document.getElementById('googleLoginBtn').style.display = 'flex';
-                document.getElementById('userProfile').style.display = 'none';
             }
         }
 
-        // --- GLOBAL COMMENTS LISTENER (For Counts) ---
+        // --- GATEKEEPER CHECK ---
+        window.checkAuth = function() {
+            if (window.currentUser) return true;
+            document.getElementById('loginModal').style.display = 'flex';
+            return false;
+        };
+
+        // --- GLOBAL COMMENTS LISTENER ---
         onValue(ref(db, 'comments'), (snapshot) => {
             window.allComments = snapshot.val() || {};
-            // If feed is already rendered, re-render to update counts
             if(window.allPosts.length > 0) {
                 const activeCat = document.querySelector('.cat-btn.active')?.innerText.trim() || 'সব';
                 filterCategory(activeCat);
@@ -810,6 +829,7 @@
         onValue(ref(db, 'pending_posts'), (snapshot) => {
             const data = snapshot.val();
             window.pendingPosts = data ? Object.entries(data).map(([key, val]) => ({ key, ...val })) : [];
+            // If admin is in pending tab, auto refresh
             if(document.getElementById('pendingListContainer').style.display === 'block') renderPendingList();
         });
 
@@ -823,7 +843,6 @@
             window.allPosts = postsArr;
             renderStories(postsArr);
             
-            // Initial render
             const isProfile = document.getElementById('profileView').style.display === 'block';
             if(!isProfile) {
                 const activeCat = document.querySelector('.cat-btn.active')?.innerText.trim() || 'সব';
@@ -846,20 +865,14 @@
             
             const name = window.currentUser ? window.currentUser.displayName.split(' ')[0] : "বন্ধু";
             document.getElementById('greetingText').innerHTML = `${greet}, ${name}`;
-            
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById('dateText').innerText = new Date().toLocaleDateString('bn-BD', options);
         }
 
         function renderStories(posts) {
             const authors = {};
-            posts.forEach(p => {
-                if(p.author && p.userImg && !authors[p.author]) {
-                    authors[p.author] = p.userImg;
-                }
-            });
+            posts.forEach(p => { if(p.author && p.userImg && !authors[p.author]) authors[p.author] = p.userImg; });
             const top = Object.entries(authors).slice(0, 10);
-            
             const html = top.map(([name, img]) => `
                 <div class="story-item" onclick="filterPosts('${name}')">
                     <div class="story-ring"><img src="${img}" class="story-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'"></div>
@@ -869,109 +882,87 @@
             document.getElementById('storiesBar').innerHTML = html;
         }
 
-        // --- 3. NEW FEATURE: LONG PRESS LOGIC & RENDER FEED ---
+        // --- LONG PRESS LOGIC ---
         let pressTimer;
         window.startLongPress = function(e, key, likes, el) {
-            // Prevent default click propagation
+            if(!checkAuth()) return; // Gatekeeper
             e.stopPropagation();
-            pressTimer = setTimeout(() => {
-                showReactions(key, el);
-            }, 600); // 600ms long press
+            pressTimer = setTimeout(() => { showReactions(key, el); }, 600);
         };
-
         window.endLongPress = function(e, key, likes, el) {
             e.stopPropagation();
             if (pressTimer) {
                 clearTimeout(pressTimer);
-                // If the popup is NOT visible, treat it as a normal click
                 const popup = el.parentElement.querySelector('.reaction-bar');
-                if (!popup || !popup.classList.contains('show')) {
-                     handleLike(key, likes, el);
-                }
+                if (!popup || !popup.classList.contains('show')) handleLike(key, likes, el);
                 pressTimer = null;
             }
         };
-
         window.showReactions = function(key, btnEl) {
-            // Hide all other open reactions
             document.querySelectorAll('.reaction-bar').forEach(b => b.classList.remove('show'));
-            
-            // Show current one
             const wrapper = btnEl.closest('.action-btn-wrapper');
             const bar = wrapper.querySelector('.reaction-bar');
             if(bar) {
                 bar.classList.add('show');
-                // Auto hide after 3 seconds if no selection
                 setTimeout(() => bar.classList.remove('show'), 4000);
             }
-            pressTimer = null; // Prevent normal click trigger
+            pressTimer = null;
         };
-
         window.selectReaction = function(e, type, key) {
-            e.stopPropagation(); // Prevent card click
+            e.stopPropagation();
             const myReaction = { type: type, timestamp: Date.now() };
             localStorage.setItem('REACTION_' + key, JSON.stringify(myReaction));
-            
-            // Trigger Like (with visual update handled inside handleLike based on type)
-            // We need to fetch current likes count element to increment
             const btn = document.querySelector(`#post-${key} .action-btn.like-btn`);
-            
-            // Close bar
             const bar = e.target.closest('.reaction-bar');
             if(bar) bar.classList.remove('show');
             
-            // Logic: If already liked, update type. If not, increment likes + type.
             const alreadyLiked = localStorage.getItem('LIKED_' + key);
-            if(!alreadyLiked) {
-                handleLike(key, null, btn); // This triggers the increment
-            } else {
-                // Just update visual
-                updateLikeVisual(btn, key);
-                showToast("Reacted!");
-            }
+            if(!alreadyLiked) handleLike(key, null, btn);
+            else { updateLikeVisual(btn, key); showToast("Reacted!"); }
         };
-
         function getReactionIcon(type) {
             const map = {
-                'love': {icon: 'fas fa-heart', color: '#e74c3c'},
-                'haha': {icon: 'fas fa-laugh-squint', color: '#f7b928'},
-                'sad': {icon: 'fas fa-sad-tear', color: '#f7b928'},
-                'angry': {icon: 'fas fa-angry', color: '#e74c3c'},
-                'care': {icon: 'fas fa-face-smile-beam', color: '#e6683c'}
+                'love': {icon: 'fas fa-heart', color: '#e74c3c'}, 'haha': {icon: 'fas fa-laugh-squint', color: '#f7b928'},
+                'sad': {icon: 'fas fa-sad-tear', color: '#f7b928'}, 'angry': {icon: 'fas fa-angry', color: '#e74c3c'}, 'care': {icon: 'fas fa-face-smile-beam', color: '#e6683c'}
             };
             return map[type] || {icon: 'fas fa-heart', color: '#e74c3c'};
         }
 
+        // --- RENDER FEED & ADMIN BUTTONS ---
         window.renderFeed = function(posts, targetId = 'feed') {
             const feed = document.getElementById(targetId);
             if(!posts.length) return feed.innerHTML = '<div style="text-align:center; padding:30px; width:100%;">কোনো পোস্ট নেই</div>';
-
+            
+            const isAdmin = localStorage.getItem('IS_ADMIN') === 'true';
+            
             feed.innerHTML = posts.map(post => {
                 const liked = localStorage.getItem('LIKED_' + post.key);
                 let content = post.content || '';
                 let cleanText = content.replace(/<[^>]*>/g, '');
                 let shortText = cleanText.length > 120 ? cleanText.substring(0, 120) + '...' : cleanText;
                 const authorImg = post.userImg || 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
-                
-                // 2. NEW FEATURE: Interaction Counts
                 const commentCount = window.allComments[post.key] ? Object.keys(window.allComments[post.key]).length : 0;
                 const shareCount = parseInt(localStorage.getItem('SHARE_COUNT_' + post.key) || '0');
 
-                // Determine Like Icon based on Reaction
                 let reactionData = JSON.parse(localStorage.getItem('REACTION_' + post.key) || 'null');
                 let likeIconClass = liked ? 'fas fa-heart' : 'far fa-heart';
                 let likeColorStyle = liked ? 'color:#e74c3c' : '';
-                
                 if(liked && reactionData) {
                     const style = getReactionIcon(reactionData.type);
-                    likeIconClass = style.icon;
-                    likeColorStyle = `color:${style.color}`;
+                    likeIconClass = style.icon; likeColorStyle = `color:${style.color}`;
                 }
 
+                // Admin Class Toggle
+                const adminClass = isAdmin ? 'admin-mode' : '';
+
                 return `
-                <div class="post-card glass-panel" id="post-${post.key}" onclick="openDetailView('${post.key}')">
+                <div class="post-card glass-panel ${adminClass}" id="post-${post.key}" onclick="openDetailView('${post.key}')">
                     ${post.isPinned ? '<i class="fas fa-thumbtack pinned-badge"></i>' : ''}
                     
+                    <div class="admin-actions">
+                         <button class="admin-btn-del" onclick="event.stopPropagation(); deletePost('${post.key}')"><i class="fas fa-trash"></i></button>
+                    </div>
+
                     <div class="author-info">
                         <div class="avatar-circle"><img src="${authorImg}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'"></div>
                         <div class="author-text">
@@ -986,9 +977,7 @@
                     <div class="content-preview">${shortText}</div>
 
                     <div class="interaction-bar">
-                        <!-- Like Button with Long Press -->
                         <div class="action-btn-wrapper">
-                            <!-- Reaction Popup -->
                             <div class="reaction-bar">
                                 <span class="reaction-icon r-love" onclick="selectReaction(event, 'love', '${post.key}')"><i class="fas fa-heart"></i></span>
                                 <span class="reaction-icon r-haha" onclick="selectReaction(event, 'haha', '${post.key}')"><i class="fas fa-laugh-squint"></i></span>
@@ -996,15 +985,13 @@
                                 <span class="reaction-icon r-sad" onclick="selectReaction(event, 'sad', '${post.key}')"><i class="fas fa-sad-tear"></i></span>
                                 <span class="reaction-icon r-angry" onclick="selectReaction(event, 'angry', '${post.key}')"><i class="fas fa-angry"></i></span>
                             </div>
-
                             <button class="action-btn like-btn ${liked ? 'liked' : ''}" 
                                 onmousedown="startLongPress(event, '${post.key}', ${post.likes||0}, this)" 
                                 onmouseup="endLongPress(event, '${post.key}', ${post.likes||0}, this)"
                                 ontouchstart="startLongPress(event, '${post.key}', ${post.likes||0}, this)"
                                 ontouchend="endLongPress(event, '${post.key}', ${post.likes||0}, this)"
                                 oncontextmenu="return false;">
-                                <i class="${likeIconClass}" style="${likeColorStyle}"></i> 
-                                <span class="count-text">${post.likes||0}</span>
+                                <i class="${likeIconClass}" style="${likeColorStyle}"></i> <span class="count-text">${post.likes||0}</span>
                             </button>
                         </div>
 
@@ -1019,7 +1006,6 @@
             }).join('');
         }
 
-        // --- NEW: Share Counter Logic ---
         window.incrementShare = function(key) {
             let count = parseInt(localStorage.getItem('SHARE_COUNT_' + key) || '0');
             count++;
@@ -1028,160 +1014,140 @@
             if(el) el.innerText = count;
         };
 
-        // --- NEW: Update Visuals for Like/Reaction ---
         window.updateLikeVisual = function(btn, key) {
-            const likesCount = parseInt(btn.querySelector('.count-text').innerText);
             const liked = localStorage.getItem('LIKED_' + key);
             const reactionData = JSON.parse(localStorage.getItem('REACTION_' + key) || 'null');
-            
             let iconClass = liked ? 'fas fa-heart' : 'far fa-heart';
             let color = liked ? '#e74c3c' : '';
-
             if(liked && reactionData) {
                  const style = getReactionIcon(reactionData.type);
-                 iconClass = style.icon;
-                 color = style.color;
+                 iconClass = style.icon; color = style.color;
             }
-
             btn.querySelector('i').className = iconClass;
             btn.querySelector('i').style.color = color;
             if(liked) btn.classList.add('liked'); else btn.classList.remove('liked');
         };
 
-        // --- DETAIL VIEW LOGIC ---
-        window.openDetailView = function(key) {
-            const post = window.allPosts.find(p => p.key === key);
+        // --- GATEKEEPED ACTIONS ---
+        window.handleLike = (key, count, btn) => {
+            if(!checkAuth()) return;
+            const alreadyLiked = localStorage.getItem('LIKED_'+key);
+            let newCount = count || 0;
+            if (alreadyLiked) {
+                newCount = Math.max(0, newCount - 1);
+                update(ref(db, 'posts/'+key), {likes: newCount});
+                localStorage.removeItem('LIKED_'+key); localStorage.removeItem('REACTION_'+key);
+            } else {
+                newCount = newCount + 1;
+                update(ref(db, 'posts/'+key), {likes: newCount});
+                localStorage.setItem('LIKED_'+key, true);
+                showToast("লাইক দিয়েছেন ❤️");
+            }
+            if (btn && btn.id === 'detailLikeBtn') {
+                btn.querySelector('span').innerText = newCount; updateLikeVisual(btn, key);
+            } else if (btn) {
+                const txt = btn.querySelector('.count-text');
+                if(txt) txt.innerText = newCount; updateLikeVisual(btn, key);
+            }
+        };
+
+        window.openCommentsSheet = (key) => {
+            if(!checkAuth()) return;
+            document.getElementById('sheetTitle').innerText = 'মন্তব্য';
+            document.getElementById('sheetBody').innerHTML = '<p style="text-align:center;">লোড হচ্ছে...</p>';
+            document.getElementById('sheetFooter').style.display = 'flex';
+            document.getElementById('universalBottomSheet').classList.add('active');
+            onValue(ref(db, 'comments/'+key), snap => {
+                const data = snap.val();
+                const html = data ? Object.values(data).map(c => `
+                    <div style="margin-bottom:10px; border-bottom:1px solid var(--border-color); padding-bottom:5px;">
+                        <div style="font-weight:bold; font-size:12px;">${c.author}</div>
+                        <div style="font-size:14px;">${c.text}</div>
+                    </div>`).join('') : '<p style="text-align:center; color:var(--secondary-text);">কোনো মন্তব্য নেই</p>';
+                document.getElementById('sheetBody').innerHTML = html;
+            });
+            document.getElementById('sheetSendBtn').onclick = () => {
+                const txt = document.getElementById('sheetInput').value;
+                if(!txt) return;
+                push(ref(db, 'comments/'+key), { text: txt, author: window.currentUser.displayName, timestamp: Date.now() });
+                document.getElementById('sheetInput').value = '';
+            };
+        };
+
+        // --- ADMIN & WRITE LOGIC ---
+        window.openWriteModal = function() {
+             if(!checkAuth()) return; // Gatekeeper
+
+             document.getElementById('adminModalWrapper').style.display = 'flex';
+             const isAdmin = localStorage.getItem('IS_ADMIN') === 'true';
+             
+             // Toggle Admin Fields
+             if(isAdmin) {
+                 document.getElementById('adminFields').style.display = 'block';
+                 document.getElementById('adminTabs').style.display = 'flex';
+             } else {
+                 document.getElementById('adminFields').style.display = 'none';
+                 document.getElementById('adminTabs').style.display = 'none';
+             }
+        };
+        window.closeAdminModal = () => document.getElementById('adminModalWrapper').style.display = 'none';
+
+        window.switchAdminTab = function(tab) {
+            if(tab === 'new') {
+                document.getElementById('writeFormContainer').style.display = 'block';
+                document.getElementById('pendingListContainer').style.display = 'none';
+            } else {
+                document.getElementById('writeFormContainer').style.display = 'none';
+                document.getElementById('pendingListContainer').style.display = 'block';
+                renderPendingList();
+            }
+        };
+
+        window.renderPendingList = function() {
+            const feed = document.getElementById('pendingFeed');
+            if(!window.pendingPosts.length) {
+                feed.innerHTML = '<p style="text-align:center;">কোনো পেন্ডিং পোস্ট নেই</p>';
+                return;
+            }
+            feed.innerHTML = window.pendingPosts.map(p => `
+                <div class="pending-item">
+                    <div style="font-weight:bold;">${p.title}</div>
+                    <div style="font-size:12px; color:#666;">${p.author} - ${p.date}</div>
+                    <div class="pending-actions">
+                        <button class="btn-approve" onclick="approvePost('${p.key}')">অনুমোদন</button>
+                        <button class="btn-reject" onclick="rejectPost('${p.key}')">বাতিল</button>
+                    </div>
+                </div>
+            `).join('');
+        };
+
+        window.approvePost = function(key) {
+            const post = window.pendingPosts.find(p => p.key === key);
             if(!post) return;
-
-            document.getElementById('detailTitle').innerText = post.title;
-            document.getElementById('detailDate').innerText = post.date;
-            document.getElementById('detailBody').innerHTML = post.content;
-            document.getElementById('detailAuthorName').innerText = post.author;
-            document.getElementById('detailAuthorImg').src = post.userImg || 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
-            
-            const imgEl = document.getElementById('detailMainImg');
-            if(post.image) {
-                imgEl.src = post.image;
-                imgEl.style.display = 'block';
-            } else {
-                imgEl.style.display = 'none';
-            }
-
-            // Bind Actions
-            const liked = localStorage.getItem('LIKED_' + key);
-            const likeBtn = document.getElementById('detailLikeBtn');
-            likeBtn.onclick = () => handleLike(key, post.likes, likeBtn);
-            
-            // Sync Reaction icon in detail view
-            let iconClass = liked ? 'fas fa-heart' : 'far fa-heart';
-            let colorStyle = liked ? 'color:#e74c3c' : '';
-            const reactionData = JSON.parse(localStorage.getItem('REACTION_' + key));
-            if(liked && reactionData) {
-                const s = getReactionIcon(reactionData.type);
-                iconClass = s.icon; colorStyle = `color:${s.color}`;
-            }
-
-            likeBtn.innerHTML = `<i class="${iconClass}" style="${colorStyle}"></i> <span id="detailLikeCount" style="font-size:10px; margin-top:3px;">${post.likes||0}</span>`;
-
-            document.getElementById('detailCommentBtn').onclick = () => openCommentsSheet(key);
-            document.getElementById('detailShareBtn').onclick = () => openShareSheet(key);
-            
-            const saved = (JSON.parse(localStorage.getItem('SAVED_POSTS') || '[]')).includes(key);
-            const saveBtn = document.getElementById('detailSaveBtn');
-            saveBtn.innerHTML = `<i class="${saved ? 'fas' : 'far'} fa-bookmark" style="${saved?'color:#f39c12':''}"></i> <span>${saved?'সেভড':'সেভ'}</span>`;
-            saveBtn.onclick = () => toggleSave(key, saveBtn);
-
-            document.getElementById('detailView').style.display = 'flex';
-            document.getElementById('mainHeader').style.display = 'none'; // Hide main header
+            // Move to 'posts'
+            const { key: _, ...postData } = post; // remove key
+            push(ref(db, 'posts'), postData).then(() => {
+                remove(ref(db, 'pending_posts/'+key));
+                showToast("পোস্ট অনুমোদিত হয়েছে ✅");
+                renderPendingList(); // auto refresh happens via onValue but good to be safe
+            });
         };
 
-        window.closeDetailView = function() {
-            document.getElementById('detailView').style.display = 'none';
-            document.getElementById('mainHeader').style.display = 'flex';
+        window.rejectPost = function(key) {
+            remove(ref(db, 'pending_posts/'+key)).then(() => showToast("পোস্ট বাতিল করা হয়েছে ❌"));
         };
 
-        window.toggleSave = function(key, btn) {
-            let saved = JSON.parse(localStorage.getItem('SAVED_POSTS') || '[]');
-            if(!saved.includes(key)) {
-                saved.push(key);
-                showToast("সেভ হয়েছে ✅");
-                btn.innerHTML = `<i class="fas fa-bookmark" style="color:#f39c12"></i> <span>সেভড</span>`;
-            } else {
-                saved = saved.filter(k => k !== key);
-                showToast("সেভ বাতিল হয়েছে ❌");
-                btn.innerHTML = `<i class="far fa-bookmark"></i> <span>সেভ</span>`;
-            }
-            localStorage.setItem('SAVED_POSTS', JSON.stringify(saved));
+        window.deletePost = function(key) {
+            Swal.fire({
+                title: 'ডিলিট করবেন?', text: "এটি ফিরে পাওয়া যাবে না!", icon: 'warning',
+                showCancelButton: true, confirmButtonText: 'হ্যাঁ, ডিলিট'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    remove(ref(db, 'posts/'+key)).then(() => showToast("ডিলিট হয়েছে"));
+                }
+            });
         };
-        
-        // --- 2. ADVANCED UPLOAD SYSTEM (Loader Logic) ---
-        // Post Image Button Loader
-        document.getElementById('imgInput').addEventListener('change', function() {
-            if(!this.files[0]) return;
-            const btn = document.getElementById('uploadBtnArea');
-            btn.classList.add('uploading');
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> আপলোড হচ্ছে... [0%]`;
-            
-            uploadImageXHR(this.files[0], (percent) => {
-                // Update Button Gradient and Text
-                btn.style.backgroundImage = `linear-gradient(to right, #2ecc71 ${percent}%, rgba(24, 119, 242, 0.1) ${percent}%)`;
-                btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> আপলোড হচ্ছে... [${percent}%]`;
-            }).then(url => {
-                document.getElementById('postImage').value = url;
-                btn.classList.remove('uploading');
-                btn.style.background = '#2ecc71'; // Solid green
-                btn.style.color = 'white';
-                btn.innerHTML = `<i class="fas fa-check"></i> ছবি যুক্ত হয়েছে`;
-            }).catch(() => {
-                btn.classList.remove('uploading');
-                btn.style.background = 'rgba(231, 76, 60, 0.1)';
-                btn.style.color = 'red';
-                btn.innerHTML = `<i class="fas fa-times"></i> ব্যর্থ হয়েছে`;
-            });
-        });
 
-        // Profile Pic Circular Loader
-        document.getElementById('profileImgInput').addEventListener('change', function() {
-            if(!this.files[0]) return;
-            const loader = document.getElementById('profileLoader');
-            const txt = document.getElementById('profileLoadText');
-            loader.style.display = 'flex';
-            
-            uploadImageXHR(this.files[0], (percent) => {
-                txt.innerText = percent + '%';
-            }).then(url => {
-                document.getElementById('editProfileImgPreview').src = url;
-                loader.style.display = 'none';
-            }).catch(() => {
-                loader.style.display = 'none';
-                showToast("আপলোড ব্যর্থ");
-            });
-        });
-
-        function uploadImageXHR(file, onProgress) {
-            return new Promise((resolve, reject) => {
-                const formData = new FormData();
-                formData.append('image', file);
-                const xhr = new XMLHttpRequest();
-                xhr.open('POST', 'https://api.imgbb.com/1/upload?key=d34410bcea20d900a8a8bcc3068ac081');
-                xhr.upload.onprogress = (e) => {
-                    if (e.lengthComputable && onProgress) {
-                        const percent = Math.round((e.loaded / e.total) * 100);
-                        onProgress(percent);
-                    }
-                };
-                xhr.onload = () => {
-                    if (xhr.status === 200) {
-                        const res = JSON.parse(xhr.responseText);
-                        if (res.success) resolve(res.data.url); else reject();
-                    } else reject();
-                };
-                xhr.onerror = () => reject();
-                xhr.send(formData);
-            });
-        }
-
-        // --- SUBMISSION LOGIC ---
         window.handleSubmission = function() {
             const title = document.getElementById('postTitle').value;
             const content = document.getElementById('richEditor').innerHTML;
@@ -1217,6 +1183,43 @@
             }
         };
 
+        // --- UPLOADERS ---
+        document.getElementById('imgInput').addEventListener('change', function() {
+            if(!this.files[0]) return;
+            const btn = document.getElementById('uploadBtnArea');
+            btn.classList.add('uploading');
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> আপলোড হচ্ছে...`;
+            uploadImageXHR(this.files[0]).then(url => {
+                document.getElementById('postImage').value = url;
+                btn.classList.remove('uploading'); btn.style.background = '#2ecc71'; btn.innerHTML = `<i class="fas fa-check"></i> ছবি যুক্ত হয়েছে`;
+            }).catch(() => {
+                btn.classList.remove('uploading'); btn.innerHTML = `ব্যর্থ হয়েছে`;
+            });
+        });
+
+        document.getElementById('profileImgInput').addEventListener('change', function() {
+            if(!this.files[0]) return;
+            const loader = document.getElementById('profileLoader');
+            loader.style.display = 'flex';
+            uploadImageXHR(this.files[0], (p)=>document.getElementById('profileLoadText').innerText=p+'%')
+            .then(url => {
+                document.getElementById('editProfileImgPreview').src = url;
+                loader.style.display = 'none';
+            }).catch(() => { loader.style.display = 'none'; showToast("আপলোড ব্যর্থ"); });
+        });
+
+        function uploadImageXHR(file, onProgress) {
+            return new Promise((resolve, reject) => {
+                const formData = new FormData(); formData.append('image', file);
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'https://api.imgbb.com/1/upload?key=d34410bcea20d900a8a8bcc3068ac081');
+                xhr.upload.onprogress = (e) => { if (e.lengthComputable && onProgress) onProgress(Math.round((e.loaded/e.total)*100)); };
+                xhr.onload = () => { if (xhr.status === 200) resolve(JSON.parse(xhr.responseText).data.url); else reject(); };
+                xhr.onerror = () => reject();
+                xhr.send(formData);
+            });
+        }
+
         // --- PROFILE & TABS ---
         window.loadProfile = function() {
             if(!window.currentUser) {
@@ -1226,20 +1229,17 @@
             const uid = window.currentUser.uid;
             get(ref(db, 'users/' + uid)).then(snap => {
                 const data = snap.val() || {};
-                const pPic = data.photoURL || window.currentUser.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+                const pPic = data.photoURL || window.currentUser.photoURL;
                 document.getElementById('profilePic').src = pPic;
                 document.getElementById('editProfileImgPreview').src = pPic;
                 document.getElementById('profileNameDisplay').innerText = data.displayName || window.currentUser.displayName;
                 document.getElementById('profileBioDisplay').innerText = data.bio || "No bio yet.";
                 document.getElementById('editDisplayName').value = data.displayName || window.currentUser.displayName;
                 document.getElementById('editBio').value = data.bio || "";
-
-                // Stats
+                
                 const myPosts = window.allPosts.filter(p => p.uid === uid);
                 document.getElementById('statPosts').innerText = myPosts.length;
                 document.getElementById('statLikes').innerText = myPosts.reduce((s, p) => s + (p.likes||0), 0);
-                
-                // Default Tab
                 switchProfileTab('posts', document.querySelector('.p-tab-btn.active'));
             });
         };
@@ -1247,121 +1247,70 @@
         window.switchProfileTab = function(tab, btn) {
             document.querySelectorAll('.p-tab-btn').forEach(b => b.classList.remove('active'));
             if(btn) btn.classList.add('active');
-            
             const feed = document.getElementById('profileContentFeed');
             if(tab === 'posts') {
                 const myPosts = window.allPosts.filter(p => p.uid === window.currentUser?.uid);
                 renderFeed(myPosts, 'profileContentFeed');
             } else if(tab === 'drafts') {
                 const drafts = JSON.parse(localStorage.getItem('MUKTOLIPI_DRAFTS_V2') || '[]');
-                if(!drafts.length) feed.innerHTML = '<div style="text-align:center; padding:20px; color:#999;">কোনো ড্রাফট নেই</div>';
-                else feed.innerHTML = drafts.map((d, i) => `
-                    <div class="glass-panel" style="padding:15px; margin-bottom:10px; border-radius:12px; cursor:pointer;">
-                        <div style="font-weight:bold;">${d.title}</div>
-                        <div style="font-size:12px; color:#666;">${d.date}</div>
-                    </div>`).join('');
+                feed.innerHTML = drafts.length ? drafts.map(d => `<div class="glass-panel" style="padding:15px; margin-bottom:10px; border-radius:12px;"><div style="font-weight:bold;">${d.title}</div><div style="font-size:12px;">${d.date}</div></div>`).join('') : '<div style="text-align:center;">কোনো ড্রাফট নেই</div>';
             } else if(tab === 'saved') {
                 const savedKeys = JSON.parse(localStorage.getItem('SAVED_POSTS') || '[]');
-                const saved = window.allPosts.filter(p => savedKeys.includes(p.key));
-                renderFeed(saved, 'profileContentFeed');
+                renderFeed(window.allPosts.filter(p => savedKeys.includes(p.key)), 'profileContentFeed');
             }
         };
 
-        window.openEditProfileSheet = function() {
-            document.getElementById('editProfileSheet').classList.add('active');
-        };
-        window.closeEditProfileSheet = function(e) {
-            if(e && e.target !== e.currentTarget) return;
-            document.getElementById('editProfileSheet').classList.remove('active');
-        };
+        window.openEditProfileSheet = () => document.getElementById('editProfileSheet').classList.add('active');
+        window.closeEditProfileSheet = (e) => { if(!e || e.target === e.currentTarget) document.getElementById('editProfileSheet').classList.remove('active'); };
 
         document.getElementById('saveProfileBtn').addEventListener('click', function() {
             if(!window.currentUser) return;
             const newName = document.getElementById('editDisplayName').value;
             const newBio = document.getElementById('editBio').value;
             const newImg = document.getElementById('editProfileImgPreview').src;
-
-            update(ref(db, 'users/' + window.currentUser.uid), {
-                displayName: newName, bio: newBio, photoURL: newImg
-            }).then(() => {
+            
+            // Wait for Auth update, then DB update, then UI refresh
+            updateProfile(auth.currentUser, { displayName: newName, photoURL: newImg })
+            .then(() => {
+                return update(ref(db, 'users/' + window.currentUser.uid), { displayName: newName, bio: newBio, photoURL: newImg });
+            })
+            .then(() => {
                 document.getElementById('editProfileSheet').classList.remove('active');
-                loadProfile();
                 showToast('প্রোফাইল আপডেট হয়েছে ✅');
+                // Immediate Visual Update
+                document.getElementById('profilePic').src = newImg;
+                document.getElementById('profileNameDisplay').innerText = newName;
+                document.getElementById('profileBioDisplay').innerText = newBio;
             });
         });
 
-        // --- NAVIGATION & UI HELPERS ---
+        // --- NAVIGATION & ADMIN TAP ---
         window.navTo = function(page, btn) {
+            // Smart Profile Login Logic
+            if (page === 'profile' && !window.currentUser) {
+                performLogin();
+                return;
+            }
+
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
             if(btn) btn.classList.add('active');
-            
-            closeDetailView(); // Close detail view on nav
-
+            closeDetailView();
             const feedView = document.getElementById('feedView');
             const profileView = document.getElementById('profileView');
-            feedView.style.display = 'none'; 
-            profileView.style.display = 'none';
+            feedView.style.display = 'none'; profileView.style.display = 'none';
 
             if(page === 'home') {
-                feedView.style.display = 'block';
-                filterCategory('সব', document.querySelector('.cat-btn'));
+                feedView.style.display = 'block'; filterCategory('সব', document.querySelector('.cat-btn'));
             } else if(page === 'saved') {
-                feedView.style.display = 'block';
-                filterCategory('সংরক্ষিত');
-                document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+                feedView.style.display = 'block'; filterCategory('সংরক্ষিত');
             } else if(page === 'profile') {
-                profileView.style.display = 'block';
-                loadProfile();
+                profileView.style.display = 'block'; loadProfile();
             }
         };
 
-        window.filterCategory = function(cat, btn) {
-            if(btn) { document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); }
-            document.getElementById('searchBar').value = '';
-            
-            if(cat === 'সব') renderFeed(window.allPosts);
-            else if(cat === 'জনপ্রিয়') renderFeed([...window.allPosts].sort((a,b) => (b.views||0) - (a.views||0)));
-            else if(cat === 'সংরক্ষিত') {
-                const s = JSON.parse(localStorage.getItem('SAVED_POSTS') || '[]');
-                renderFeed(window.allPosts.filter(p => s.includes(p.key)));
-            }
-            else renderFeed(window.allPosts.filter(p => p.category === cat));
-        };
-
-        // --- LOGIC FIX: Search by Title OR Author ---
-        window.filterPosts = function(q) {
-            q = q.toLowerCase();
-            document.getElementById('searchClearBtn').style.display = q ? 'block' : 'none';
-            renderFeed(window.allPosts.filter(p => 
-                p.title.toLowerCase().includes(q) || 
-                p.author.toLowerCase().includes(q)
-            ));
-        };
-        window.clearSearch = function() {
-            document.getElementById('searchBar').value = '';
-            filterPosts('');
-        };
-
-        // --- MISC LOGIC ---
-        let lastScrollTop = 0;
-        window.addEventListener('scroll', function() {
-            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            if (scrollTop > lastScrollTop && scrollTop > 50) {
-                document.querySelector('.bottom-nav').classList.add('nav-hidden');
-            } else {
-                document.querySelector('.bottom-nav').classList.remove('nav-hidden');
-            }
-            lastScrollTop = scrollTop;
-            // Progress Bar
-            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            document.getElementById("readingProgress").style.width = (scrollTop / height) * 100 + "%";
-        });
-
-        // 5-TAP Secret
         let tapCount = 0, tapTimer;
         window.handleSecretTap = function() {
-            tapCount++;
-            clearTimeout(tapTimer);
+            tapCount++; clearTimeout(tapTimer);
             tapTimer = setTimeout(() => { tapCount = 0; }, 2000);
             if(tapCount === 5) {
                 if(navigator.vibrate) navigator.vibrate(200);
@@ -1369,172 +1318,129 @@
                 Swal.fire({
                     title: 'অ্যাডমিন প্যানেল', input: 'password', showCancelButton: true, confirmButtonText: 'প্রবেশ'
                 }).then((r) => {
-                    if (r.value === '1234') { localStorage.setItem('IS_ADMIN', 'true'); openWriteModal(); }
+                    if (r.value === '1234') { 
+                        localStorage.setItem('IS_ADMIN', 'true'); 
+                        showToast("অ্যাডমিন মোড চালু হয়েছে");
+                        // Refresh Feed to show Admin Buttons immediately
+                        renderFeed(window.allPosts);
+                        openWriteModal(); 
+                    }
                 });
             }
         };
 
-        window.openWriteModal = function() {
-             document.getElementById('adminModalWrapper').style.display = 'flex';
-             if(localStorage.getItem('IS_ADMIN') === 'true') {
-                 document.getElementById('adminFields').style.display = 'block';
-             } else {
-                 document.getElementById('adminFields').style.display = 'none';
-             }
+        // --- MISC UTILS ---
+        window.filterCategory = function(cat, btn) {
+            if(btn) { document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); }
+            document.getElementById('searchBar').value = '';
+            if(cat === 'সব') renderFeed(window.allPosts);
+            else if(cat === 'জনপ্রিয়') renderFeed([...window.allPosts].sort((a,b) => (b.views||0) - (a.views||0)));
+            else if(cat === 'সংরক্ষিত') {
+                const s = JSON.parse(localStorage.getItem('SAVED_POSTS') || '[]');
+                renderFeed(window.allPosts.filter(p => s.includes(p.key)));
+            } else renderFeed(window.allPosts.filter(p => p.category === cat));
         };
-        window.closeAdminModal = () => document.getElementById('adminModalWrapper').style.display = 'none';
+
+        window.filterPosts = function(q) {
+            q = q.toLowerCase();
+            document.getElementById('searchClearBtn').style.display = q ? 'block' : 'none';
+            renderFeed(window.allPosts.filter(p => p.title.toLowerCase().includes(q) || p.author.toLowerCase().includes(q)));
+        };
+        window.clearSearch = function() { document.getElementById('searchBar').value = ''; filterPosts(''); };
+
+        window.openDetailView = function(key) {
+            const post = window.allPosts.find(p => p.key === key);
+            if(!post) return;
+            document.getElementById('detailTitle').innerText = post.title;
+            document.getElementById('detailDate').innerText = post.date;
+            document.getElementById('detailBody').innerHTML = post.content;
+            document.getElementById('detailAuthorName').innerText = post.author;
+            document.getElementById('detailAuthorImg').src = post.userImg || 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+            const imgEl = document.getElementById('detailMainImg');
+            if(post.image) { imgEl.src = post.image; imgEl.style.display = 'block'; } else imgEl.style.display = 'none';
+            
+            const likeBtn = document.getElementById('detailLikeBtn');
+            likeBtn.onclick = () => handleLike(key, post.likes, likeBtn);
+            likeBtn.querySelector('span').innerText = post.likes||0;
+            updateLikeVisual(likeBtn, key);
+
+            document.getElementById('detailCommentBtn').onclick = () => openCommentsSheet(key);
+            document.getElementById('detailShareBtn').onclick = () => openShareSheet(key);
+            const saved = (JSON.parse(localStorage.getItem('SAVED_POSTS') || '[]')).includes(key);
+            const saveBtn = document.getElementById('detailSaveBtn');
+            saveBtn.innerHTML = `<i class="${saved ? 'fas' : 'far'} fa-bookmark" style="${saved?'color:#f39c12':''}"></i> <span>${saved?'সেভড':'সেভ'}</span>`;
+            saveBtn.onclick = () => toggleSave(key, saveBtn);
+            
+            document.getElementById('detailView').style.display = 'flex';
+            document.getElementById('mainHeader').style.display = 'none';
+        };
+        window.closeDetailView = function() {
+            document.getElementById('detailView').style.display = 'none';
+            document.getElementById('mainHeader').style.display = 'flex';
+        };
+        window.toggleSave = function(key, btn) {
+            let saved = JSON.parse(localStorage.getItem('SAVED_POSTS') || '[]');
+            if(!saved.includes(key)) {
+                saved.push(key); showToast("সেভ হয়েছে ✅");
+                btn.innerHTML = `<i class="fas fa-bookmark" style="color:#f39c12"></i> <span>সেভড</span>`;
+            } else {
+                saved = saved.filter(k => k !== key); showToast("সেভ বাতিল হয়েছে ❌");
+                btn.innerHTML = `<i class="far fa-bookmark"></i> <span>সেভ</span>`;
+            }
+            localStorage.setItem('SAVED_POSTS', JSON.stringify(saved));
+        };
+
+        window.openShareSheet = function(key) {
+            const post = window.allPosts.find(p => p.key === key);
+            document.getElementById('sheetTitle').innerText = 'শেয়ার করুন';
+            document.getElementById('sheetFooter').style.display = 'none';
+            document.getElementById('sheetBody').innerHTML = `
+            <div class="share-grid">
+                <button class="share-item" onclick="copyPostLink('${key}')"><div class="share-icon-circle"><i class="fas fa-link"></i></div><span style="font-size:11px;">কপি লিংক</span></button>
+                <button class="share-item" onclick="nativeShare('${post.title}', '${key}')"><div class="share-icon-circle"><i class="fas fa-share-alt"></i></div><span style="font-size:11px;">শেয়ার অ্যাপ</span></button>
+                <button class="share-item" onclick="downloadPostImage('${key}')"><div class="share-icon-circle"><i class="fas fa-download"></i></div><span style="font-size:11px;">ডাউনলোড</span></button>
+            </div>`;
+            document.getElementById('universalBottomSheet').classList.add('active');
+        };
+        window.copyPostLink = (key) => { navigator.clipboard.writeText(window.location.origin + '?post=' + key); showToast("লিংক কপি হয়েছে"); document.getElementById('universalBottomSheet').classList.remove('active'); };
+        window.nativeShare = (title, key) => {
+            if (navigator.share) navigator.share({ title: title, text: 'মুক্তলিপি ডায়েরি - ' + title, url: window.location.origin + '?post=' + key });
+            else copyPostLink(key);
+        };
+        window.downloadPostImage = (key) => {
+            const post = window.allPosts.find(p => p.key === key);
+            const captureArea = document.getElementById('quote-capture-area');
+            captureArea.style.backgroundImage = post.image ? `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${post.image})` : 'linear-gradient(135deg, #1877f2 0%, #00c6ff 100%)';
+            document.getElementById('q-text').innerText = post.title; document.getElementById('q-author').innerText = '- ' + post.author;
+            document.getElementById('universalBottomSheet').classList.remove('active'); showToast("ছবি তৈরি হচ্ছে...");
+            html2canvas(captureArea, { scale: 2 }).then(canvas => {
+                const link = document.createElement('a'); link.download = 'Muktolipi_' + Date.now() + '.png'; link.href = canvas.toDataURL(); link.click();
+            });
+        };
+
         window.showToast = (msg) => { const t = document.getElementById('toast'); document.getElementById('toastMsg').innerText = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 2000); };
         window.execCmd = (cmd) => document.execCommand(cmd, false, null);
         window.addLink = () => { const u = prompt('Link:'); if(u) document.execCommand('createLink', false, u); };
         window.toggleTheme = () => document.body.classList.toggle('dark-theme');
-        
+        window.saveDraft = () => {
+             const title = document.getElementById('postTitle').value;
+             const drafts = JSON.parse(localStorage.getItem('MUKTOLIPI_DRAFTS_V2') || '[]');
+             drafts.unshift({ title: title || 'Untitled', content: document.getElementById('richEditor').innerHTML, date: new Date().toLocaleString() });
+             localStorage.setItem('MUKTOLIPI_DRAFTS_V2', JSON.stringify(drafts));
+             showToast("ড্রাফট সেভ হয়েছে");
+        };
+        window.closeBottomSheet = (e) => { if(!e || e.target === e.currentTarget) document.getElementById('universalBottomSheet').classList.remove('active'); };
         window.showLibraryToast = () => showToast("লাইব্রেরি শীঘ্রই আসছে...");
-
-        // Drafts
-        window.saveDraft = function() {
-            const title = document.getElementById('postTitle').value;
-            const content = document.getElementById('richEditor').innerHTML;
-            const drafts = JSON.parse(localStorage.getItem('MUKTOLIPI_DRAFTS_V2') || '[]');
-            drafts.unshift({ title: title || 'Untitled', content, date: new Date().toLocaleString() });
-            localStorage.setItem('MUKTOLIPI_DRAFTS_V2', JSON.stringify(drafts));
-            showToast("ড্রাফট সেভ হয়েছে");
-        };
-
-        // Universal Bottom Sheet Closer
-        window.closeBottomSheet = function(e) {
-            if(e && e.target !== e.currentTarget) return;
-            document.getElementById('universalBottomSheet').classList.remove('active');
-        };
-
-        // --- LOGIC FIX: Like Toggle ---
-        window.handleLike = (key, count, btn) => {
-            const alreadyLiked = localStorage.getItem('LIKED_'+key);
-            let newCount = count || 0;
-
-            if (alreadyLiked) {
-                // Unlike Logic
-                newCount = Math.max(0, newCount - 1);
-                update(ref(db, 'posts/'+key), {likes: newCount});
-                localStorage.removeItem('LIKED_'+key);
-                localStorage.removeItem('REACTION_'+key); // Remove reaction too
-            } else {
-                // Like Logic
-                newCount = newCount + 1;
-                update(ref(db, 'posts/'+key), {likes: newCount});
-                localStorage.setItem('LIKED_'+key, true);
-                // Default love reaction if generic like
-                // localStorage.setItem('REACTION_'+key, JSON.stringify({type: 'love'}));
-                showToast("লাইক দিয়েছেন ❤️");
-            }
-            
-            // Visual Update
-            if (btn && btn.id === 'detailLikeBtn') {
-                // Detail view
-                btn.querySelector('span').innerText = newCount;
-                updateLikeVisual(btn, key); // Helper will handle class/icon
-            } else if (btn) {
-                // Feed view
-                const txt = btn.querySelector('.count-text');
-                if(txt) txt.innerText = newCount;
-                updateLikeVisual(btn, key);
-            }
-        };
-
-        window.openCommentsSheet = (key) => {
-            document.getElementById('sheetTitle').innerText = 'মন্তব্য';
-            document.getElementById('sheetBody').innerHTML = '<p style="text-align:center;">লোড হচ্ছে...</p>';
-            document.getElementById('sheetFooter').style.display = 'flex';
-            document.getElementById('universalBottomSheet').classList.add('active');
-            
-            onValue(ref(db, 'comments/'+key), snap => {
-                const data = snap.val();
-                const html = data ? Object.values(data).map(c => `
-                    <div style="margin-bottom:10px; border-bottom:1px solid var(--border-color); padding-bottom:5px;">
-                        <div style="font-weight:bold; font-size:12px;">${c.author}</div>
-                        <div style="font-size:14px;">${c.text}</div>
-                    </div>`).join('') : '<p style="text-align:center; color:var(--secondary-text);">কোনো মন্তব্য নেই</p>';
-                document.getElementById('sheetBody').innerHTML = html;
-            });
-            
-            document.getElementById('sheetSendBtn').onclick = () => {
-                const txt = document.getElementById('sheetInput').value;
-                if(!txt) return;
-                push(ref(db, 'comments/'+key), {
-                    text: txt, author: window.currentUser ? window.currentUser.displayName : "বেনামী", timestamp: Date.now()
-                });
-                document.getElementById('sheetInput').value = '';
-            };
-        };
-
-        // --- NEW: Advanced Share Sheet ---
-        window.openShareSheet = function(key) {
-            const post = window.allPosts.find(p => p.key === key);
-            if(!post) return;
-
-            document.getElementById('sheetTitle').innerText = 'শেয়ার করুন';
-            document.getElementById('sheetFooter').style.display = 'none';
-            
-            const html = `
-            <div class="share-grid">
-                <button class="share-item" onclick="copyPostLink('${key}')">
-                    <div class="share-icon-circle"><i class="fas fa-link"></i></div>
-                    <span style="font-size:11px;">কপি লিংক</span>
-                </button>
-                <button class="share-item" onclick="nativeShare('${post.title}', '${key}')">
-                    <div class="share-icon-circle"><i class="fas fa-share-alt"></i></div>
-                    <span style="font-size:11px;">শেয়ার অ্যাপ</span>
-                </button>
-                <button class="share-item" onclick="downloadPostImage('${key}')">
-                    <div class="share-icon-circle"><i class="fas fa-download"></i></div>
-                    <span style="font-size:11px;">ডাউনলোড</span>
-                </button>
-            </div>
-            `;
-            document.getElementById('sheetBody').innerHTML = html;
-            document.getElementById('universalBottomSheet').classList.add('active');
-        };
-
-        window.copyPostLink = (key) => {
-            const url = window.location.origin + window.location.pathname + '?post=' + key;
-            navigator.clipboard.writeText(url).then(() => {
-                showToast("লিংক কপি হয়েছে");
-                document.getElementById('universalBottomSheet').classList.remove('active');
-            });
-        };
-
-        window.nativeShare = (title, key) => {
-            const url = window.location.origin + window.location.pathname + '?post=' + key;
-            if (navigator.share) {
-                navigator.share({ title: title, text: 'মুক্তলিপি ডায়েরি - ' + title, url: url })
-                .then(() => document.getElementById('universalBottomSheet').classList.remove('active'))
-                .catch(console.error);
-            } else {
-                copyPostLink(key);
-            }
-        };
-
-        window.downloadPostImage = (key) => {
-            const post = window.allPosts.find(p => p.key === key);
-            const captureArea = document.getElementById('quote-capture-area');
-            const bgImg = post.image ? `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${post.image})` : 'linear-gradient(135deg, #1877f2 0%, #00c6ff 100%)';
-            
-            // Setup hidden div
-            captureArea.style.backgroundImage = bgImg;
-            document.getElementById('q-text').innerText = post.title;
-            document.getElementById('q-author').innerText = '- ' + post.author;
-
-            document.getElementById('universalBottomSheet').classList.remove('active');
-            showToast("ছবি তৈরি হচ্ছে...");
-
-            html2canvas(captureArea, { scale: 2 }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'Muktolipi_' + Date.now() + '.png';
-                link.href = canvas.toDataURL();
-                link.click();
-                showToast("ডাউনলোড শুরু হয়েছে");
-            });
-        };
-
+        
+        // Scroll Hide Dock
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop && scrollTop > 50) document.querySelector('.bottom-nav').classList.add('nav-hidden');
+            else document.querySelector('.bottom-nav').classList.remove('nav-hidden');
+            lastScrollTop = scrollTop;
+            document.getElementById("readingProgress").style.width = (scrollTop / (document.documentElement.scrollHeight - document.documentElement.clientHeight)) * 100 + "%";
+        });
     </script>
 </body>
 </html>
