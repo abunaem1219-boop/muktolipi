@@ -53,6 +53,8 @@
             --current-font: 'Hind Siliguri', sans-serif;
             --sheet-bg: #ffffff;
             --transition-speed: 0.3s;
+            --shimmer-bg: rgba(0,0,0,0.06);
+            --shimmer-highlight: rgba(255,255,255,0.5);
         }
         .dark-theme { 
             --bg-color: #121212; 
@@ -67,6 +69,8 @@
             --shadow-soft: 0 4px 12px rgba(0,0,0,0.3);
             --shadow-card: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
             --sheet-bg: #1e1e1e;
+            --shimmer-bg: rgba(255,255,255,0.05);
+            --shimmer-highlight: rgba(255,255,255,0.1);
         }
 
         body, .glass-panel, input, select, textarea, .nav-item, .post-card, .btn, .sheet-content {
@@ -404,6 +408,36 @@
         .pending-actions { display:flex; gap:10px; margin-top:5px; }
         .btn-approve { background: #2ecc71; color: white; flex:1; border:none; border-radius:5px; padding:5px; cursor:pointer; }
         .btn-reject { background: #e74c3c; color: white; flex:1; border:none; border-radius:5px; padding:5px; cursor:pointer; }
+
+        /* Skeleton Loading */
+        .skeleton-card {
+            background: var(--glass-bg);
+            border: var(--glass-border);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 20px;
+            break-inside: avoid;
+            display: inline-block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .skeleton {
+            background: var(--shimmer-bg);
+            background: linear-gradient(90deg, var(--shimmer-bg) 0%, var(--shimmer-highlight) 50%, var(--shimmer-bg) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite linear;
+            border-radius: 4px;
+        }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        .sk-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .sk-avatar { width: 34px; height: 34px; border-radius: 50%; }
+        .sk-info { display: flex; flex-direction: column; gap: 5px; }
+        .sk-name { width: 100px; height: 12px; }
+        .sk-date { width: 60px; height: 10px; }
+        .sk-img { width: 100%; height: 150px; border-radius: 12px; margin-bottom: 15px; }
+        .sk-title { width: 80%; height: 18px; margin-bottom: 10px; }
+        .sk-line { width: 100%; height: 12px; margin-bottom: 6px; }
+        .sk-line.short { width: 60%; }
     </style>
 </head>
 <body>
@@ -489,7 +523,7 @@
 
             <!-- Banner Image -->
             <div class="header-banner-container">
-                <img src="https://images.unsplash.com/photo-1499750310159-54f0f29752f3?q=80&w=1000&auto=format&fit=crop" class="header-banner">
+                <img src="my_banner.jpg" class="header-banner">
                 <div class="banner-text">মনের কথা, মুক্ত ভাষায়</div>
             </div>
 
@@ -727,6 +761,9 @@
         import { getDatabase, ref, push, set, onValue, update, remove, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
+        // IMPORTANT: Replace this with your actual Firebase User UID from the Firebase Console!
+        const ADMIN_UID = "Pg5ko76Pu8Zf4ja9MMzEJRLDMYs1"; 
+
         const firebaseConfig = {
             apiKey: "AIzaSyBZtycgadrngON2WEwvIE7ERPYxdkDVfFM",
             authDomain: "muktolipidiary.firebaseapp.com",
@@ -772,9 +809,10 @@
             updateAuthUI(user);
             if(user) {
                 syncUserProfile(user);
-                document.getElementById('loginModal').style.display = 'none'; // Close modal if logged in
-                // If profile view is active, reload it
+                document.getElementById('loginModal').style.display = 'none';
                 if(document.getElementById('profileView').style.display === 'block') loadProfile();
+            } else {
+                localStorage.removeItem('IS_ADMIN'); // Clear admin status on logout
             }
         });
 
@@ -815,6 +853,32 @@
             }
         });
 
+        // --- SKELETON LOADING ---
+        window.renderSkeletons = function() {
+            const feed = document.getElementById('feed');
+            let html = '';
+            for(let i=0; i<6; i++) {
+                html += `
+                <div class="skeleton-card">
+                    <div class="sk-header">
+                        <div class="skeleton sk-avatar"></div>
+                        <div class="sk-info">
+                            <div class="skeleton sk-name"></div>
+                            <div class="skeleton sk-date"></div>
+                        </div>
+                    </div>
+                    ${i % 2 === 0 ? '<div class="skeleton sk-img"></div>' : ''}
+                    <div class="skeleton sk-title"></div>
+                    <div class="skeleton sk-line"></div>
+                    <div class="skeleton sk-line"></div>
+                    <div class="skeleton sk-line short"></div>
+                </div>`;
+            }
+            feed.innerHTML = html;
+        };
+        // Trigger skeletons on load
+        window.renderSkeletons();
+
         // --- POSTS DATA ---
         onValue(ref(db, 'posts'), (snapshot) => {
             const data = snapshot.val();
@@ -829,7 +893,6 @@
         onValue(ref(db, 'pending_posts'), (snapshot) => {
             const data = snapshot.val();
             window.pendingPosts = data ? Object.entries(data).map(([key, val]) => ({ key, ...val })) : [];
-            // If admin is in pending tab, auto refresh
             if(document.getElementById('pendingListContainer').style.display === 'block') renderPendingList();
         });
 
@@ -1138,6 +1201,11 @@
         };
 
         window.deletePost = function(key) {
+            // SECURITY CHECK: Verify UID before deleting
+            if (!window.currentUser || window.currentUser.uid !== ADMIN_UID) {
+                return showToast("Permission Denied: You are not an admin 🚫");
+            }
+
             Swal.fire({
                 title: 'ডিলিট করবেন?', text: "এটি ফিরে পাওয়া যাবে না!", icon: 'warning',
                 showCancelButton: true, confirmButtonText: 'হ্যাঁ, ডিলিট'
@@ -1309,23 +1377,31 @@
         };
 
         let tapCount = 0, tapTimer;
+        // SECURITY UPGRADE: Logic changed to verify UID instead of hardcoded password
         window.handleSecretTap = function() {
             tapCount++; clearTimeout(tapTimer);
             tapTimer = setTimeout(() => { tapCount = 0; }, 2000);
+            
             if(tapCount === 5) {
                 if(navigator.vibrate) navigator.vibrate(200);
                 tapCount = 0;
-                Swal.fire({
-                    title: 'অ্যাডমিন প্যানেল', input: 'password', showCancelButton: true, confirmButtonText: 'প্রবেশ'
-                }).then((r) => {
-                    if (r.value === '1234') { 
-                        localStorage.setItem('IS_ADMIN', 'true'); 
-                        showToast("অ্যাডমিন মোড চালু হয়েছে");
-                        // Refresh Feed to show Admin Buttons immediately
-                        renderFeed(window.allPosts);
-                        openWriteModal(); 
-                    }
-                });
+
+                // 1. Check if user is logged in
+                if (!window.currentUser) {
+                    showToast("লগিন করা নেই! ❌");
+                    return performLogin();
+                }
+
+                // 2. Check if UID matches Admin UID
+                if (window.currentUser.uid === ADMIN_UID) {
+                    localStorage.setItem('IS_ADMIN', 'true'); 
+                    showToast("অ্যাডমিন মোড চালু হয়েছে ✅");
+                    // Refresh Feed to show Admin Buttons immediately
+                    renderFeed(window.allPosts);
+                    openWriteModal(); 
+                } else {
+                    showToast("Access Denied: You are not an Admin 🚫");
+                }
             }
         };
 
