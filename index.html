@@ -571,7 +571,7 @@ html
             backdrop-filter: blur(2px);
         }
         .drawer-overlay.open { opacity: 1; visibility: visible; }
-        
+
         .side-drawer {
             position: fixed; top: 0; left: 0; height: 100%; width: 280px;
             background: var(--glass-bg); backdrop-filter: var(--glass-blur);
@@ -580,13 +580,13 @@ html
             display: flex; flex-direction: column;
         }
         .side-drawer.open { transform: translateX(0); }
-        
+
         .drawer-header {
             padding: 20px 15px; display: flex; align-items: center; justify-content: space-between;
             border-bottom: 1px solid var(--border-color);
         }
         .drawer-logo { font-family: 'Galada', cursive; font-size: 24px; color: var(--primary-color); }
-        
+
         .drawer-menu { padding: 10px 0; flex: 1; overflow-y: auto; }
         .drawer-item {
             padding: 15px 20px; display: flex; align-items: center; gap: 15px;
@@ -595,7 +595,7 @@ html
         }
         .drawer-item:hover { background: rgba(0,0,0,0.03); }
         .drawer-item i { width: 25px; text-align: center; color: var(--secondary-text); }
-        
+
         .drawer-footer {
             padding: 15px; text-align: center; font-size: 11px; color: var(--secondary-text);
             border-top: 1px solid var(--border-color);
@@ -644,13 +644,13 @@ html
             <button class="icon-btn" onclick="openDrawer()">
                 <i class="fas fa-bars"></i>
             </button>
-            
+
             <!-- SECRET ADMIN TAP TARGET (PRESERVED) -->
             <div class="header-title-block" onclick="handleSecretTap()">
                 <span class="app-logo-text">মুক্তলিপি</span>
             </div>
         </div>
-        
+
         <div style="display:flex; gap:5px;">
             <!-- Chat Icon -->
             <button class="icon-btn" onclick="navTo('chatList')">
@@ -1069,14 +1069,14 @@ html
 
         // --- ASSETS: FACEBOOK REACTION GIFS (MASTER SOLUTION V2 - JSDelivr) ---
         const reactionAssets = {
-            like: 'https://cdn.jsdelivr.net/gh/Likhon-Sheikh/Facebook-Reactions-Gif@master/like.gif',
-            love: 'https://cdn.jsdelivr.net/gh/Likhon-Sheikh/Facebook-Reactions-Gif@master/love.gif',
-            care: 'https://cdn.jsdelivr.net/gh/Likhon-Sheikh/Facebook-Reactions-Gif@master/care.gif',
-            haha: 'https://cdn.jsdelivr.net/gh/Likhon-Sheikh/Facebook-Reactions-Gif@master/haha.gif',
-            wow: 'https://cdn.jsdelivr.net/gh/Likhon-Sheikh/Facebook-Reactions-Gif@master/wow.gif',
-            sad: 'https://cdn.jsdelivr.net/gh/Likhon-Sheikh/Facebook-Reactions-Gif@master/sad.gif',
-            angry: 'https://cdn.jsdelivr.net/gh/Likhon-Sheikh/Facebook-Reactions-Gif@master/angry.gif',
-            
+            like: 'like.gif',
+            love: 'love.gif',
+            care: 'care.gif',
+            haha: 'haha.gif',
+            wow: 'wow.gif',
+            sad: 'sad.gif',
+            angry: 'angry.gif',
+
             // Static Icons
             staticLike: 'far fa-thumbs-up', 
             solidLike: 'fas fa-thumbs-up'
@@ -1225,7 +1225,7 @@ html
         function sendNotification(targetUid, type, postId) {
             if(!window.currentUser || targetUid === window.currentUser.uid) return;
             push(ref(db, `notifications/${targetUid}`), { type: type, postId: postId, sender: window.currentUser.displayName, senderImg: window.currentUser.photoURL, read: false, timestamp: Date.now() });
-            
+
             let messageText = "আপনার প্রোফাইলে নতুন অ্যাক্টিভিটি";
             if(type === 'like') messageText = `${window.currentUser.displayName} আপনার পোস্টে লাইক দিয়েছেন ❤️`;
             else if(type === 'comment') messageText = `${window.currentUser.displayName} আপনার পোস্টে মন্তব্য করেছেন 💬`;
@@ -1579,7 +1579,7 @@ html
         // --- FACEBOOK STYLE REACTION LOGIC ---
         let pressTimer = null;
         let isLongPress = false;
-        
+
         window.startLongPress = function(e, key, likes, btn) {
             if(!checkAuth()) return;
             // e.preventDefault(); // Do not prevent default to allow scrolling if user moves
@@ -1652,18 +1652,18 @@ html
         window.handleReactionRelease = function(e, key, container) {
             if (pressTimer) clearTimeout(pressTimer);
             const activeItem = container.querySelector('.reaction-item.active');
-            
+
             if (activeItem) {
                 const type = activeItem.dataset.type;
                 const src = activeItem.querySelector('img').src;
-                
+
                 // Trigger Flying Animation
                 performFlyingAnimation(activeItem, key, src);
-                
+
                 // Save Logic
                 selectReactionLogic(type, key);
             }
-            
+
             // Close Dock
             container.classList.remove('show');
             container.querySelectorAll('.reaction-item').forEach(i => i.classList.remove('active'));
@@ -1712,7 +1712,7 @@ html
             const myReaction = { type: type, timestamp: Date.now() };
             localStorage.setItem('REACTION_' + key, JSON.stringify(myReaction));
             const btn = document.querySelector(`#post-${key} .action-btn.like-btn`);
-            
+
             // Check if already liked to avoid double counting, but update visual
             const alreadyLiked = localStorage.getItem('LIKED_' + key);
             if(!alreadyLiked) {
@@ -1751,7 +1751,7 @@ html
                 const authorImg = post.userImg || 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
                 const commentCount = window.allComments[post.key] ? Object.keys(window.allComments[post.key]).length : 0;
                 const shareCount = parseInt(localStorage.getItem('SHARE_COUNT_' + post.key) || '0');
-                
+
                 // Reaction State
                 let reactionData = JSON.parse(localStorage.getItem('REACTION_' + post.key) || 'null');
                 let displayIcon = `<i class="${reactionAssets.staticLike}"></i>`; // Default Gray Thumb
@@ -1897,7 +1897,7 @@ html
                     let iconHTML = '';
                     if(reactionData.type === 'like') iconHTML = `<i class="${reactionAssets.solidLike}"></i>`;
                     else iconHTML = `<img src="${style.icon}" style="width:18px;height:18px;vertical-align:middle;">`;
-                    
+
                     btn.innerHTML = `${iconHTML} <span class="count-text" style="margin-left:4px;">${style.text} (${count})</span>`;
                     btn.style.color = style.color;
                 } else {
@@ -1917,7 +1917,7 @@ html
             const alreadyLiked = localStorage.getItem('LIKED_'+key);
             let newCount = count || 0;
             const post = window.allPosts.find(p => p.key === key);
-            
+
             if (alreadyLiked) {
                 // If it's a generic click on an already liked button -> Unline
                 // BUT if type is provided (from reaction menu), we don't toggle off, we just switch.
