@@ -1,7 +1,7 @@
-const CACHE_NAME = 'muktolipi-diary-v3';
+const CACHE_NAME = 'muktolipi-diary-v5'; // নতুন ভার্সন যাতে ব্রাউজার আপডেট নেয়
 const ASSETS_TO_CACHE = [
   './',
-  './index.html',
+  './index.html', // সঠিক নাম
   './manifest.json',
   './icon.png',
   // External Libraries (CDNs)
@@ -23,7 +23,7 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// 2. Activate Event (Cleanup old caches)
+// 2. Activate Event (পুরানো ক্যাশ মুছে ফেলা)
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keyList) => {
@@ -39,29 +39,22 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// 3. Fetch Event (Offline Capability)
+// 3. Fetch Event (অফলাইন সাপোর্ট)
 self.addEventListener('fetch', (event) => {
-  // Only cache GET requests (ignore Firebase/Database writes)
   if (event.request.method !== 'GET') return;
 
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      // Return cached file if found
       if (cachedResponse) {
         return cachedResponse;
       }
-      // Otherwise fetch from network
       return fetch(event.request).then((networkResponse) => {
-        // Check if response is valid
-        if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
-          return networkResponse;
-        }
-        // Cache new files dynamically
-        const responseToCache = networkResponse.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, responseToCache);
-        });
         return networkResponse;
+      }).catch(() => {
+        // অফলাইনে থাকলে index.html লোড হবে
+        if (event.request.mode === 'navigate') {
+            return caches.match('./index.html');
+        }
       });
     })
   );
