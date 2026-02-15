@@ -1,4 +1,3 @@
-html
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -105,45 +104,261 @@ html
         #offlineBanner { display: none; background: #333; color: white; text-align: center; padding: 8px; font-size: 13px; position: sticky; top: 0; z-index: 1000; }
         .container { max-width: 800px; margin: 0 auto; padding: 70px 15px 10px 15px; min-height: 100vh;}
 
-        /* --- Dynamic Header & Stories --- */
+        /* --- Dynamic Header --- */
         .greeting-section { margin-bottom: 15px; padding: 0 5px; }
         .greeting-text { font-size: 22px; font-weight: 700; color: var(--primary-color); margin: 0; display: flex; align-items: center; gap: 8px; }
         .date-text { font-size: 13px; color: var(--secondary-text); margin-top: 2px; }
 
-        .stories-container {
-            display: flex; gap: 10px; overflow-x: auto; padding: 4px 4px 14px 4px;
-            margin-bottom: 10px; scrollbar-width: none;
+        /* ==========================================================================
+           🎯 FACEBOOK-STYLE STORY SYSTEM CSS (START)
+           ========================================================================== */
+        .fb-stories-wrapper {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 4px 20px 4px; /* Bottom padding for shadow */
+            margin-bottom: 10px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
-        .stories-container::-webkit-scrollbar { display: none; }
-        .story-item { display: flex; flex-direction: column; align-items: center; min-width: 60px; cursor: pointer; }
+        .fb-stories-wrapper::-webkit-scrollbar { display: none; }
 
-        .story-ring {
-            width: 50px; height: 50px; border-radius: 50%; padding: 2px;
-            border: 2px solid transparent; 
-            background: transparent;
-            display: flex; align-items: center; justify-content: center; margin-bottom: 3px;
-            transition: transform 03s, border-color 0.3s;
+        /* Common Story Card Style */
+        .story-card {
             position: relative;
+            width: 110px;
+            height: 160px;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background-color: var(--glass-bg);
         }
-        .story-ring.seen-gradient {
-            background: linear-gradient(var(--bg-color), var(--bg-color)) padding-box,
-                        linear-gradient(45deg, #bbb, #ddd) border-box;
-            border: 2px solid transparent;
-        }
-        .story-ring.active {
-            border: 3px solid #1877f2;
-            box-shadow: 0 0 8px rgba(24, 119, 242, 0.4);
-            animation: pulse-ring 2s infinite;
-        }
-        @keyframes pulse-ring {
-            0% { box-shadow: 0 0 0 0 rgba(24, 119, 242, 0.4); }
-            70% { box-shadow: 0 0 0 6px rgba(24, 119, 242, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(24, 119, 242, 0); }
-        }
-        .story-ring:active { transform: scale(0.9); }
-        .story-img { width: 100%; height: 100%; border-radius: 50%; border: 2px solid var(--bg-color); object-fit: cover; }
-        .story-name { font-size: 14px; max-width: 60px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-color); }
+        .story-card:active { transform: scale(0.96); }
 
+        /* Your Story Card Specifics */
+        .story-card.your-story .story-card-bg {
+            height: 65%;
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .story-card.your-story .create-story-btn {
+            position: absolute;
+            bottom: 35px; /* Adjusted to overlap */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 34px;
+            height: 34px;
+            background: #1877f2;
+            border: 3px solid var(--sheet-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            z-index: 5;
+        }
+        .story-card.your-story .story-label {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 35%; /* Rest of the height */
+            background: var(--sheet-bg);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        /* Your Story Active Ring */
+        .your-story.active-story .create-story-btn {
+            background: transparent;
+            border: 3px solid #1877f2;
+            color: transparent; /* Hide plus */
+        }
+        .your-story.active-story .create-story-btn::after {
+            content: ''; /* Show existing story thumbnail logic if needed, but ring is enough */
+        }
+
+        /* Friends' Story Card Specifics */
+        .story-card.friend-story {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        /* Dark overlay for text visibility */
+        .story-card.friend-story::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.7) 100%);
+            border-radius: 12px;
+        }
+        
+        /* Friend Profile Pic in Story Card */
+        .story-author-img {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 3px solid #1877f2; /* Blue for unseen */
+            object-fit: cover;
+            z-index: 2;
+        }
+        /* Unseen Gradient Ring Logic */
+        .story-card.friend-story[data-seen="false"] .story-author-img {
+             border: 3px solid transparent;
+             background: linear-gradient(#fff, #fff) padding-box,
+                         linear-gradient(45deg, #1877f2, #00c6ff) border-box;
+        }
+        /* Seen Ring */
+        .story-card.friend-story[data-seen="true"] .story-author-img {
+            border: 2px solid #ddd;
+        }
+
+        /* Green Dot (Active Status) */
+        .story-online-dot {
+            position: absolute;
+            top: 32px; /* Relative to card */
+            left: 32px; /* Relative to card */
+            width: 10px;
+            height: 10px;
+            background: #44b700;
+            border: 2px solid white;
+            border-radius: 50%;
+            z-index: 3;
+            display: none; /* JS will toggle */
+        }
+        .story-online-dot.active { display: block; }
+
+        .story-username {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+            z-index: 2;
+            width: 90%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .story-time {
+             position: absolute;
+             bottom: 24px;
+             left: 8px;
+             color: rgba(255,255,255,0.8);
+             font-size: 10px;
+             z-index: 2;
+             display: none; /* Optional detail */
+        }
+
+        /* --- Story Creator Modal --- */
+        .story-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--sheet-bg); z-index: 4000;
+            display: none; flex-direction: column;
+            animation: slideUp 0.3s ease-out;
+        }
+        .story-modal-header {
+            padding: 15px; border-bottom: 1px solid var(--border-color);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .story-options-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px;
+            margin-top: auto; margin-bottom: auto;
+        }
+        .story-option-card {
+            background: var(--bg-color); border-radius: 12px; padding: 30px 10px;
+            text-align: center; cursor: pointer; border: 1px solid var(--border-color);
+            transition: 0.2s;
+        }
+        .story-option-card:active { transform: scale(0.95); }
+        .story-option-icon { font-size: 30px; margin-bottom: 10px; display: block; }
+        .text-icon { color: #aa00ff; } .media-icon { color: #2ecc71; }
+
+        /* --- Text Story Editor --- */
+        #textStoryEditor {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #1877f2; display: none; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 4001;
+        }
+        .color-picker {
+            position: absolute; bottom: 80px; display: flex; gap: 10px;
+            overflow-x: auto; max-width: 90%; padding: 5px;
+        }
+        .color-dot { width: 30px; height: 30px; border-radius: 50%; border: 2px solid white; cursor: pointer; }
+        .story-text-input {
+            background: transparent; border: none; color: white; font-size: 24px;
+            text-align: center; width: 80%; outline: none; font-weight: bold;
+            font-family: var(--current-font); resize: none;
+        }
+
+        /* --- Full Screen Viewer --- */
+        .story-viewer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: black; z-index: 5000; display: none;
+            flex-direction: column;
+        }
+        .viewer-progress-container {
+            display: flex; gap: 4px; padding: 10px 10px 0 10px; z-index: 5002;
+        }
+        .progress-bar-bg {
+            flex: 1; height: 3px; background: rgba(255,255,255,0.3); border-radius: 2px; overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%; background: white; width: 0%; transition: width 0.1s linear;
+        }
+        .viewer-header {
+            display: flex; align-items: center; padding: 15px; color: white; z-index: 5002;
+        }
+        .viewer-content {
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
+        }
+        .viewer-media { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .viewer-text-bg {
+            width: 100%; height: 100%; display: flex; align-items: center;
+            justify-content: center; padding: 20px; text-align: center;
+            color: white; font-size: 24px; font-weight: bold;
+        }
+        .nav-tap-area {
+            position: absolute; top: 0; height: 100%; width: 30%; z-index: 5001;
+        }
+        .left-tap { left: 0; } .right-tap { right: 0; }
+        
+        .viewer-footer {
+            padding: 15px; display: flex; gap: 10px; align-items: center; z-index: 5002;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+        }
+        .story-reply-input {
+            flex: 1; background: transparent; border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 25px; padding: 10px 15px; color: white; outline: none;
+        }
+        .story-reaction-btn { background: none; border: none; font-size: 24px; cursor: pointer; transition: 0.2s; }
+        .story-reaction-btn:active { transform: scale(1.3); }
+
+        /* Loading Spinner for Upload */
+        .story-loader {
+            position: absolute; top:50%; left:50%; transform:translate(-50%, -50%);
+            color: white; text-align: center; display: none; z-index: 4005;
+        }
+        /* ==========================================================================
+           🎯 FACEBOOK-STYLE STORY SYSTEM CSS (END)
+           ========================================================================== */
+
+        /* Existing Styles Restored Below */
         /* --- Masonry & Post Card --- */
         .masonry-feed { column-count: 2; column-gap: 15px; }
         @media (max-width: 500px) { .masonry-feed { column-count: 1; } }
@@ -354,18 +569,18 @@ html
 
         /* Bottom Nav */
         .bottom-nav { 
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; height: 65px; 
+            position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); width: 95%; max-width: 500px; height: 60px; 
             display: flex; justify-content: space-around; align-items: center; z-index: 1500; padding: 0 5px; box-sizing: border-box; 
             border-radius: 35px; border: var(--glass-border); background: var(--glass-bg); backdrop-filter: blur(20px);
             box-shadow: 0 15px 35px rgba(0,0,0,0.15); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .bottom-nav.nav-hidden { transform: translate(-50%, 150%); }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--secondary-text); background: none; border: none; font-size: 10px; cursor: pointer; width: 60px; padding: 5px 0; transition: all 0.3s; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--secondary-text); background: none; border: none; font-size: 9px; cursor: pointer; width: 50px; padding: 5px 0; transition: all 0.3s; }
         .nav-item i { font-size: 20px; margin-bottom: 5px; transition: 0.3s; }
-        .nav-item.active { color: var(--primary-color); transform: translateY(-3px); font-weight: 600; }
+        .nav-item.active { color: var(--primary-color); transform: translateY(-4px); font-weight: 600; }
         .nav-center-btn { 
-            background: var(--gradient-primary); color: white; border: none; width: 50px; height: 50px; border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; transform: translateY(-5px); 
+            background: var(--gradient-primary); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; transform: translateY(-4px); 
             box-shadow: 0 8px 20px rgba(24, 119, 242, 0.4); transition: transform 0.2s;
         }
         .nav-center-btn:active { transform: translateY(-2px) scale(0.95); }
@@ -374,12 +589,12 @@ html
         #profileView { display: none; padding-bottom: 20px; }
         .profile-cover {
             height: 160px; width: 100%; background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            border-radius: 0 0 25px 25px; position: relative; margin-bottom: 50px;
+            border-radius: 0 0 25px 25px; position: relative; margin-bottom: 2px;
             box-shadow: var(--shadow-soft); background-size: cover; background-position: center;
         }
         .profile-pic-wrapper {
-            position: absolute; bottom: -45px; left: 50%; transform: translateX(-50%);
-            width: 100px; height: 100px; border-radius: 50%; padding: 4px; background: var(--bg-color);
+            position: absolute; bottom: -55px; left: 15%; transform: translateX(-50%);
+            width: 100px; height: 100px; border-radius: 50%; padding: 3px; background: var(--bg-color);
         }
         .profile-pic-large { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid var(--border-color); }
         .edit-fab {
@@ -681,7 +896,84 @@ html
         .skeleton-text-group { flex: 1; display: flex; flex-direction: column; gap: 8px; }
         .skeleton-content { display: flex; flex-direction: column; gap: 10px; }
         @keyframes skeletonPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
-    </style>
+    div.swal2-container {
+            z-index: 10000 !important;
+        }
+        .toast-box {
+            z-index: 10001 !important;
+        }
+/* --- PREMIUM AUTH MODAL STYLES (NEW) --- */
+.modal-content {
+    background: #ffffff !important;
+    padding: 40px 30px !important;
+    border-radius: 24px !important;
+    width: 90% !important;
+    max-width: 420px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+}
+.modal-close-btn {
+    position: absolute; top: 20px; right: 20px; width: 32px; height: 32px;
+    background: #f3f4f6; border-radius: 50%; color: #6b7280; font-size: 16px;
+    display: flex; align-items: center; justify-content: center; border: none; cursor: pointer;
+}
+.auth-header { text-align: center; margin-bottom: 30px; }
+.auth-icon-circle {
+    width: 70px; height: 70px; background: linear-gradient(135deg, rgba(24, 119, 242, 0.1) 0%, rgba(0, 198, 255, 0.1) 100%);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;
+    color: var(--primary-color); font-size: 28px;
+}
+.auth-title { font-size: 24px; font-weight: 700; color: #1f2937; margin: 0 0 8px 0; }
+.auth-subtitle { font-size: 14px; color: #6b7280; margin: 0; }
+.google-btn-modern {
+    width: 100%; background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 12px;
+    display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer;
+    margin-bottom: 25px; color: #374151; font-weight: 600; font-size: 15px;
+}
+.auth-divider { display: flex; align-items: center; text-align: center; color: #9ca3af; margin: 0 0 25px 0; font-size: 13px; }
+.auth-divider::before, .auth-divider::after { content: ''; flex: 1; border-bottom: 1px solid #e5e7eb; }
+.auth-divider span { padding: 0 10px; }
+.input-label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; text-align: left; }
+.modern-input-group {
+    display: flex; align-items: center; background: #f9fafb; border: 1px solid #e5e7eb;
+    border-radius: 12px; padding: 2px 5px; margin-bottom: 15px; transition: 0.3s;
+}
+.modern-input-group:focus-within { background: #fff; border-color: var(--primary-color); }
+.modern-input { flex: 1; border: none; background: transparent; padding: 12px 10px; font-size: 15px; color: #1f2937; outline: none; width: 100%; }
+.input-suffix { color: #9ca3af; font-size: 14px; padding-right: 12px; font-weight: 500; }
+.password-toggle { color: #9ca3af; padding: 10px; cursor: pointer; background: none; border: none; font-size: 16px; }
+.auth-submit-btn {
+    width: 100%; padding: 14px; background: var(--gradient-primary); color: white; border: none;
+    border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px;
+}
+.auth-footer { text-align: center; margin-top: 20px; font-size: 14px; color: #6b7280; }
+.auth-link { color: var(--primary-color); text-decoration: none; font-weight: 600; cursor: pointer; }
+.forgot-pass { text-align: right; display: block; font-size: 13px; color: #ef4444; margin-top: -10px; margin-bottom: 15px; cursor: pointer; }
+/* --- PWA Install Button Style --- */
+.install-btn-glow {
+    display: none; /* ডিফল্টভাবে লুকানো থাকবে */
+    background: linear-gradient(45deg, #ff00cc, #333399);
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: bold;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 0, 204, 0.5);
+    animation: glowAnim 1.5s infinite alternate;
+    margin-left: 8px;
+    text-transform: uppercase;
+}
+@keyframes glowAnim {
+    from { box-shadow: 0 0 5px rgba(255, 0, 204, 0.5); transform: scale(1); }
+    to { box-shadow: 0 0 15px rgba(51, 51, 153, 0.8); transform: scale(1.05); }
+}
+</style>
 </head>
 <body>
 
@@ -745,8 +1037,14 @@ html
                     <i class="fas fa-bars"></i>
                 </button>
                 <div class="header-title-block" onclick="handleSecretTap()">
-                    <span class="app-logo-text">মুক্তলিপি</span>
-                </div>
+    <span class="app-logo-text">মুক্তলিপি</span>
+</div>
+
+<!-- নতুন বাটনটি এখানে পেস্ট করুন -->
+<button id="installAppBtn" class="install-btn-glow" onclick="installPWA()">
+    <i class="fas fa-download"></i> INSTALL
+</button>
+<!-- বাটন শেষ -->
             </div>
 
             <div style="display:flex; gap:5px;">
@@ -779,112 +1077,108 @@ html
     </div>
 
     <!-- LOGIN MODAL (Gatekeeper) -->
+   <!-- LOGIN MODAL (Premium Design) -->
     <div id="loginModal" class="modal-overlay">
-        <div class="modal-content glass-panel" style="width:100%; max-width:400px; padding:0;">
-            <div class="modal-banner" id="loginBanner"></div>
-            <div style="padding: 0 30px 30px;">
-                <i class="fas fa-lock" style="font-size:30px; color:var(--primary-color); margin-bottom:10px;"></i>
-                <h3 style="margin:0 0 10px 0;">লগিন প্রয়োজন</h3>
-                
-                <button class="google-login-btn" onclick="performLogin()" style="margin-bottom:10px;">
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> 
-                    গুগল দিয়ে লগিন
-                </button>
+        <div class="modal-content">
+            <div class="auth-header">
+                <div class="auth-icon-circle">
+                    <i class="fas fa-fingerprint"></i>
+                </div>
+                <h2 class="auth-title">স্বাগতম!</h2>
+                <p class="auth-subtitle">লগিন করে আপনার ডায়েরিতে ফিরে আসুন</p>
+            </div>
 
-                <div class="divider-line"><span>অথবা</span></div>
+            <button class="google-btn-modern" onclick="performLogin()">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G">
+                গুগল দিয়ে চালিয়ে যান
+            </button>
 
-                <div class="email-login-section">
-                    <div class="email-input-group">
-                        <input type="text" id="loginEmailUsername" placeholder="আপনার ইমেইল" class="email-input-field">
-                        <span class="email-suffix">@gmail.com</span>
-                    </div>
-                    
-                    <div class="password-input-group">
-                        <input type="password" id="loginPassword" placeholder="পাসওয়ার্ড" class="password-input-field">
-                        <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility('loginPassword')">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                    
-                    <button class="email-login-btn" onclick="handleEmailLogin()">
-                        <i class="fas fa-sign-in-alt"></i> লগইন করুন
+            <div class="auth-divider"><span>অথবা ইমেইল দিয়ে</span></div>
+
+            <div class="auth-form">
+                <label class="input-label">ইমেইল</label>
+                <div class="modern-input-group">
+                    <input type="text" id="loginEmailUsername" placeholder="username" class="modern-input">
+                    <span class="input-suffix">@gmail.com</span>
+                </div>
+
+                <label class="input-label">পাসওয়ার্ড</label>
+                <div class="modern-input-group">
+                    <input type="password" id="loginPassword" placeholder="••••••••" class="modern-input">
+                    <button type="button" class="password-toggle" onclick="togglePasswordVisibility('loginPassword')">
+                        <i class="far fa-eye"></i>
                     </button>
-                    
-                    <div class="forgot-password-link">
-                        <a href="#" onclick="handleForgotPassword()">পাসওয়ার্ড ভুলে গেছেন?</a>
-                    </div>
                 </div>
 
-                <div class="signup-redirect">
-                    <p>নতুন ব্যবহারকারী? <a href="#" onclick="showSignupModal()">একাউন্ট তৈরি করুন</a></p>
-                </div>
-                
-                <button class="btn" onclick="document.getElementById('loginModal').style.display='none'" style="background:transparent; color:var(--secondary-text); margin-top:10px;">বন্ধ করুন</button>
+                <span class="forgot-pass" onclick="handleForgotPassword()">পাসওয়ার্ড ভুলে গেছেন?</span>
+
+                <button class="auth-submit-btn" onclick="handleEmailLogin()">
+                    লগইন করুন <i class="fas fa-arrow-right" style="margin-left:8px; font-size:12px;"></i>
+                </button>
+            </div>
+
+            <div class="auth-footer">
+                কোনো একাউন্ট নেই? <span class="auth-link" onclick="showSignupModal()">নতুন একাউন্ট খুলুন</span>
             </div>
         </div>
     </div>
 
-    <!-- SIGNUP MODAL -->
+    <!-- SIGNUP MODAL (Premium Design) -->
     <div id="signupModal" class="modal-overlay" style="display: none;">
-        <div class="modal-content glass-panel" style="width:100%; max-width:450px; padding:0;">
-            <div class="modal-banner" id="signupBanner"></div>
+        <div class="modal-content">
             <button class="modal-close-btn" onclick="closeSignupModal()"><i class="fas fa-times"></i></button>
-            
-            <div class="modal-header">
-                <h2>নতুন একাউন্ট তৈরি করুন</h2>
-                <p class="modal-subtitle">মুক্তলিপি ডায়েরিতে স্বাগতম</p>
+
+            <div class="auth-header">
+                <div class="auth-icon-circle" style="color: #10b981; background: rgba(16, 185, 129, 0.1);">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <h2 class="auth-title">একাউন্ট তৈরি</h2>
+                <p class="auth-subtitle">মুক্তলিপি ডায়েরিতে যুক্ত হোন</p>
             </div>
-            
-            <div class="modal-body">
-                <button class="google-signup-btn" onclick="handleGoogleSignup()">
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
-                    Google দিয়ে সাইনআপ করুন
-                </button>
-                
-                <div class="divider-line"><span>অথবা</span></div>
-                
-                <div class="signup-form">
-                    <div class="form-group">
-                        <label>আপনার নাম</label>
-                        <input type="text" id="signupName" placeholder="উদাহরণ: জন ডো" class="form-input" style="width:100%;">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>ইমেইল</label>
-                        <div class="email-input-group">
-                            <input type="text" id="signupEmailUsername" placeholder="আপনার ইমেইল" class="email-input-field">
-                            <span class="email-suffix">@gmail.com</span>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>পাসওয়ার্ড</label>
-                        <div class="password-input-group">
-                            <input type="password" id="signupPassword" placeholder="পাসওয়ার্ড (কমপক্ষে ৬ অক্ষর)" class="password-input-field">
-                            <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility('signupPassword')">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>পাসওয়ার্ড নিশ্চিত করুন</label>
-                        <div class="password-input-group">
-                            <input type="password" id="signupConfirmPassword" placeholder="পাসওয়ার্ড আবার লিখুন" class="password-input-field">
-                            <button type="button" class="toggle-password-btn" onclick="togglePasswordVisibility('signupConfirmPassword')">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <button class="signup-submit-btn" onclick="handleEmailSignup()">
-                        <i class="fas fa-user-plus"></i> একাউন্ট তৈরি করুন
+
+            <button class="google-btn-modern" onclick="handleGoogleSignup()">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G">
+                গুগল দিয়ে সাইনআপ করুন
+            </button>
+
+            <div class="auth-divider"><span>অথবা ফর্ম পূরণ করুন</span></div>
+
+            <div class="auth-form">
+                <label class="input-label">আপনার নাম</label>
+                <div class="modern-input-group">
+                    <input type="text" id="signupName" placeholder="যেমন: আবু নাঈম" class="modern-input">
+                    <i class="fas fa-user" style="color:#9ca3af; padding-right:15px;"></i>
+                </div>
+
+                <label class="input-label">ইমেইল ইউজারনেম</label>
+                <div class="modern-input-group">
+                    <input type="text" id="signupEmailUsername" placeholder="username" class="modern-input">
+                    <span class="input-suffix">@gmail.com</span>
+                </div>
+
+                <label class="input-label">পাসওয়ার্ড</label>
+                <div class="modern-input-group">
+                    <input type="password" id="signupPassword" placeholder="কমপক্ষে ৬ অক্ষর" class="modern-input">
+                    <button type="button" class="password-toggle" onclick="togglePasswordVisibility('signupPassword')">
+                        <i class="far fa-eye"></i>
                     </button>
                 </div>
                 
-                <div class="login-redirect">
-                    <p>ইতিমধ্যে একাউন্ট আছে? <a href="#" onclick="showLoginModal()">লগইন করুন</a></p>
+                <label class="input-label">পাসওয়ার্ড নিশ্চিত করুন</label>
+                <div class="modern-input-group">
+                    <input type="password" id="signupConfirmPassword" placeholder="পুনরায় লিখুন" class="modern-input">
+                    <button type="button" class="password-toggle" onclick="togglePasswordVisibility('signupConfirmPassword')">
+                        <i class="far fa-eye"></i>
+                    </button>
                 </div>
+
+                <button class="auth-submit-btn" onclick="handleEmailSignup()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                    রেজিস্ট্রেশন করুন
+                </button>
+            </div>
+
+            <div class="auth-footer">
+                ইতিমধ্যে একাউন্ট আছে? <span class="auth-link" onclick="showLoginModal()">লগইন করুন</span>
             </div>
         </div>
     </div>
@@ -1013,10 +1307,97 @@ html
                 <p id="dateText" class="date-text">আজকের দিনটি আপনার ভালো কাটুক</p>
             </div>
 
-            <!-- Stories / Top Writers -->
-            <div id="storiesBar" class="stories-container">
-                <!-- Injected via JS -->
+            <!-- ==========================================================================
+                 🎯 FACEBOOK-STYLE STORY SYSTEM HTML (START)
+                 ========================================================================== -->
+            
+            <div id="storiesBar" class="fb-stories-wrapper">
+                <!-- This section will be populated dynamically by JS -->
+                <div class="story-card your-story" onclick="openStoryCreator()">
+                    <div class="story-card-bg" id="yourStoryBg" style="background-image: url('https://cdn-icons-png.flaticon.com/512/149/149071.png')"></div>
+                    <div class="create-story-btn">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <span class="story-label">Create Story</span>
+                </div>
+                <!-- Friend stories will be injected here -->
             </div>
+
+            <!-- Story Creator Modal -->
+            <div id="storyCreatorModal" class="story-modal">
+                <div class="story-modal-header">
+                    <h3 style="margin:0;">Create Story</h3>
+                    <button onclick="closeStoryCreator()" style="border:none; background:none; font-size:24px; color:var(--text-color);">&times;</button>
+                </div>
+                <div class="story-options-grid">
+                    <div class="story-option-card" onclick="openTextStoryEditor()">
+                        <span class="story-option-icon text-icon"><i class="fas fa-font"></i></span>
+                        <span style="font-weight:600;">Text</span>
+                    </div>
+                    <div class="story-option-card" onclick="triggerMediaUpload('image')">
+                        <span class="story-option-icon media-icon"><i class="fas fa-image"></i></span>
+                        <span style="font-weight:600;">Photo</span>
+                    </div>
+                    <div class="story-option-card" onclick="triggerMediaUpload('video')">
+                        <span class="story-option-icon media-icon" style="color:#e74c3c;"><i class="fas fa-video"></i></span>
+                        <span style="font-weight:600;">Video</span>
+                    </div>
+                </div>
+                <input type="file" id="storyMediaInput" hidden>
+                <div class="story-loader" id="storyLoader">
+                    <i class="fas fa-spinner fa-spin" style="font-size:30px;"></i><br>Uploading...
+                </div>
+            </div>
+
+            <!-- Text Story Editor -->
+            <div id="textStoryEditor">
+                <button onclick="closeTextStoryEditor()" style="position:absolute; top:20px; left:20px; background:rgba(0,0,0,0.3); color:white; border:none; border-radius:50%; width:40px; height:40px; font-size:20px;">&times;</button>
+                <button onclick="postTextStory()" style="position:absolute; top:20px; right:20px; background:white; color:black; border:none; border-radius:20px; padding:10px 20px; font-weight:bold;">Share</button>
+                
+                <textarea id="storyTextInputField" class="story-text-input" placeholder="Start typing..." maxlength="200"></textarea>
+                
+                <div class="color-picker">
+                    <div class="color-dot" style="background:#1877f2" onclick="setStoryBg('#1877f2')"></div>
+                    <div class="color-dot" style="background:#e74c3c" onclick="setStoryBg('#e74c3c')"></div>
+                    <div class="color-dot" style="background:#9b59b6" onclick="setStoryBg('#9b59b6')"></div>
+                    <div class="color-dot" style="background:#2ecc71" onclick="setStoryBg('#2ecc71')"></div>
+                    <div class="color-dot" style="background:#f39c12" onclick="setStoryBg('#f39c12')"></div>
+                    <div class="color-dot" style="background:#34495e" onclick="setStoryBg('#34495e')"></div>
+                    <div class="color-dot" style="background:linear-gradient(45deg, #ff00cc, #333399)" onclick="setStoryBg('linear-gradient(45deg, #ff00cc, #333399)')"></div>
+                </div>
+            </div>
+
+            <!-- Story Viewer -->
+            <div id="storyViewerModal" class="story-viewer">
+                <div class="viewer-progress-container" id="viewerProgressBars"></div>
+                
+                <div class="viewer-header">
+                    <img id="viewerAuthorImg" src="" style="width:40px; height:40px; border-radius:50%; margin-right:10px; border:1px solid rgba(255,255,255,0.5);">
+                    <div style="flex:1;">
+                        <div id="viewerAuthorName" style="font-weight:bold; font-size:14px;"></div>
+                        <div id="viewerTime" style="font-size:11px; opacity:0.8;"></div>
+                    </div>
+                    <button onclick="closeStoryViewer()" style="background:none; border:none; color:white; font-size:24px;">&times;</button>
+                </div>
+                
+                <div class="viewer-content" id="viewerContentArea">
+                    <!-- Media or Text injected here -->
+                    <div class="nav-tap-area left-tap" onclick="prevStorySegment()"></div>
+                    <div class="nav-tap-area right-tap" onclick="nextStorySegment()"></div>
+                </div>
+                
+                <div class="viewer-footer">
+                    <input type="text" id="storyReplyInput" class="story-reply-input" placeholder="Send message...">
+                    <button onclick="sendStoryReply()" style="background:none; border:none; color:white; font-size:20px;"><i class="fas fa-paper-plane"></i></button>
+                    <button class="story-reaction-btn" onclick="reactToStory('love')">❤️</button>
+                    <button class="story-reaction-btn" onclick="reactToStory('haha')">😂</button>
+                    <button class="story-reaction-btn" onclick="reactToStory('wow')">😮</button>
+                </div>
+            </div>
+            
+            <!-- ==========================================================================
+                 🎯 FACEBOOK-STYLE STORY SYSTEM HTML (END)
+                 ========================================================================== -->
 
             <!-- Tabs -->
             <div class="category-tabs">
@@ -1246,7 +1627,7 @@ html
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, push, set, onValue, update, remove, get, query, orderByKey, limitToLast, endBefore, equalTo, orderByChild, onChildAdded, onDisconnect, runTransaction, off, startAt, endAt, limitToFirst } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getDatabase, ref, push, set, onValue, update, remove, get, query, orderByKey, limitToLast, endBefore, equalTo, orderByChild, onChildAdded, onDisconnect, runTransaction, off, startAt, endAt, limitToFirst, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, updateProfile, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const ADMIN_UID = "Pg5ko76Pu8Zf4ja9MMzEJRLDMYs1"; 
@@ -1266,6 +1647,11 @@ html
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
 
+        // --- CLOUDINARY CONFIGURATION ---
+        // REPLACE THESE WITH YOUR ACTUAL CLOUDINARY CREDENTIALS
+        const CLOUDINARY_CLOUD_NAME = "dvvx2frpu"; 
+        const CLOUDINARY_UPLOAD_PRESET = "story_upload"; 
+
         window.allPosts = []; 
         window.allComments = {}; 
         window.db = db; window.ref = ref; window.push = push; window.set = set; window.update = update; window.remove = remove; window.runTransaction = runTransaction;
@@ -1278,7 +1664,7 @@ html
         window.reactionEmojiMap = {
             like: "👍",
             love: "❤️",
-            care: "🤗",
+            care: "😘",
             haha: "😂", 
             wow: "😮",  
             sad: "😢",
@@ -1401,12 +1787,20 @@ html
                 initNotificationListener(user.uid);
                 initChatListener(user.uid); 
 
+                // --- PRESENCE SYSTEM (ONLINE STATUS) ---
                 const connectedRef = ref(db, '.info/connected');
                 const myStatusRef = ref(db, 'status/' + user.uid);
+                const myPresenceRef = ref(db, 'presence/' + user.uid); // New for Story
+
                 onValue(connectedRef, (snap) => {
                     if (snap.val() === true) {
+                        // Existing status logic
                         onDisconnect(myStatusRef).remove();
                         set(myStatusRef, { state: 'online', last_changed: Date.now() });
+
+                        // New Presence logic for Stories
+                        set(myPresenceRef, { online: true, lastSeen: serverTimestamp() });
+                        onDisconnect(myPresenceRef).set({ online: false, lastSeen: serverTimestamp() });
                     }
                 });
 
@@ -1414,6 +1808,13 @@ html
                     const params = new URLSearchParams(window.location.search);
                     if(!params.get('uid') || params.get('uid') === user.uid) loadProfile();
                 }
+
+                // Initial Story Load
+                if(document.getElementById('yourStoryBg')) {
+                     document.getElementById('yourStoryBg').style.backgroundImage = `url('${user.photoURL}')`;
+                }
+                loadFacebookStories();
+
             } else {
                 window.OneSignalDeferred.push(function(OneSignal) {
                     OneSignal.logout();
@@ -1426,7 +1827,6 @@ html
             }
 
             updateAuthUI(user);
-            loadStoryFeed();
         });
 
         window.performLogin = () => signInWithPopup(auth, provider).catch(console.error);
@@ -1454,7 +1854,416 @@ html
             }
         }
 
-        // --- AUTH FUNCTIONS (NEW) ---
+        /* ==========================================================================
+           🎯 FACEBOOK-STYLE STORY SYSTEM LOGIC (START)
+           ========================================================================== */
+        
+        let currentStoryViewerState = {
+            userId: null,
+            storyIndex: 0,
+            stories: [],
+            timerId: null,
+            paused: false
+        };
+
+        // --- 1. Story Fetching & Rendering ---
+        window.loadFacebookStories = function() {
+            if (!window.currentUser) return; // Wait for auth
+            
+            const storiesRef = ref(db, 'stories');
+            onValue(storiesRef, async (snapshot) => {
+                const allStoriesData = snapshot.val() || {};
+                const friendsContainer = document.getElementById('storiesBar');
+                
+                // Keep the "Your Story" card (first child)
+                const yourStoryCard = friendsContainer.firstElementChild;
+                friendsContainer.innerHTML = '';
+                friendsContainer.appendChild(yourStoryCard);
+
+                // Filter & Sort Stories
+                const now = Date.now();
+                const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
+                
+                const validStories = []; // Array of user objects { uid, stories: [] }
+
+                // Check my own story
+                if(allStoriesData[window.currentUser.uid]) {
+                    const myStories = Object.entries(allStoriesData[window.currentUser.uid])
+                        .map(([k,v]) => ({id:k, ...v}))
+                        .filter(s => now - s.timestamp < TWENTY_FOUR_HOURS)
+                        .sort((a,b) => a.timestamp - b.timestamp);
+                    
+                    if(myStories.length > 0) {
+                        // Update Your Story UI
+                        yourStoryCard.classList.add('active-story');
+                        // On click, open viewer instead of creator
+                        yourStoryCard.onclick = () => openStoryViewer(window.currentUser.uid, 0);
+                        document.querySelector('.your-story .story-label').innerText = "Your Story";
+                    } else {
+                        yourStoryCard.classList.remove('active-story');
+                        yourStoryCard.onclick = openStoryCreator;
+                        document.querySelector('.your-story .story-label').innerText = "Create Story";
+                    }
+                }
+
+                // Process Friends' Stories
+                // Logic: Fetch friends/following list first? For now, fetch all stories (demo scale)
+                // In production: Filter by following list
+                for (const [uid, userStories] of Object.entries(allStoriesData)) {
+                    if (uid === window.currentUser.uid) continue;
+                    if (window.blockedUsers.includes(uid)) continue;
+
+                    const activeStories = Object.entries(userStories)
+                        .map(([k,v]) => ({id:k, ...v}))
+                        .filter(s => now - s.timestamp < TWENTY_FOUR_HOURS)
+                        .sort((a,b) => a.timestamp - b.timestamp);
+                    
+                    if (activeStories.length > 0) {
+                        validStories.push({ uid, stories: activeStories });
+                    }
+                }
+
+                // Render Friends' Cards
+                for (const userStoryData of validStories) {
+                    const userSnap = await get(ref(db, `users/${userStoryData.uid}`));
+                    if (!userSnap.exists()) continue;
+                    const user = userSnap.val();
+                    
+                    const lastStory = userStoryData.stories[userStoryData.stories.length - 1];
+                    const bgImage = lastStory.type === 'image' ? `url(${lastStory.content})` : 
+                                   (lastStory.type === 'video' ? `url(${user.photoURL})` : 'none'); // Video thumb fallback
+                    const bgColor = lastStory.type === 'text' ? lastStory.backgroundColor : '#333';
+                    
+                    // Check Seen Status (Local Logic)
+                    const seenKey = `SEEN_STORY_${userStoryData.uid}_${lastStory.id}`;
+                    const isSeen = localStorage.getItem(seenKey) === 'true';
+
+                    const card = document.createElement('div');
+                    card.className = 'story-card friend-story';
+                    card.setAttribute('data-uid', userStoryData.uid);
+                    card.setAttribute('data-seen', isSeen);
+                    
+                    if (lastStory.type === 'text') {
+                        card.style.background = bgColor;
+                    } else {
+                        card.style.backgroundImage = bgImage;
+                    }
+
+                    // Online Status Check
+                    let isOnline = false;
+                    const presenceSnap = await get(ref(db, `presence/${userStoryData.uid}`));
+                    if(presenceSnap.exists() && presenceSnap.val().online) isOnline = true;
+
+                    card.innerHTML = `
+                        <img src="${user.photoURL}" class="story-author-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
+                        <div class="story-online-dot ${isOnline ? 'active' : ''}"></div>
+                        <span class="story-username">${user.displayName.split(' ')[0]}</span>
+                    `;
+                    
+                    card.onclick = () => openStoryViewer(userStoryData.uid, 0);
+                    friendsContainer.appendChild(card);
+                }
+            });
+        };
+
+        // --- 2. Story Creation System ---
+        window.openStoryCreator = function() {
+            if(!checkAuth()) return;
+            document.getElementById('storyCreatorModal').style.display = 'flex';
+        };
+        window.closeStoryCreator = () => document.getElementById('storyCreatorModal').style.display = 'none';
+
+        // Text Story
+        let textStoryBg = '#1877f2';
+        window.openTextStoryEditor = function() {
+            document.getElementById('textStoryEditor').style.display = 'flex';
+            setStoryBg('#1877f2'); // Default
+        };
+        window.closeTextStoryEditor = () => document.getElementById('textStoryEditor').style.display = 'none';
+        
+        window.setStoryBg = function(color) {
+            textStoryBg = color;
+            document.getElementById('textStoryEditor').style.background = color;
+        };
+
+        window.postTextStory = function() {
+            const text = document.getElementById('storyTextInputField').value.trim();
+            if (!text) return showToast("Please write something!");
+            
+            saveStoryToFirebase({
+                type: 'text',
+                content: text,
+                backgroundColor: textStoryBg
+            });
+            
+            closeTextStoryEditor();
+            closeStoryCreator();
+            document.getElementById('storyTextInputField').value = '';
+        };
+
+        // Media Story (Photo/Video)
+        window.triggerMediaUpload = function(type) {
+            const input = document.getElementById('storyMediaInput');
+            input.accept = type === 'image' ? "image/*" : "video/*";
+            input.onchange = (e) => handleMediaFile(e.target.files[0], type);
+            input.click();
+        };
+
+        window.handleMediaFile = async function(file, type) {
+            if (!file) return;
+            
+            // Size Check
+            if (type === 'image' && file.size > 10 * 1024 * 1024) return showToast("Image too large (Max 10MB)");
+            if (type === 'video' && file.size > 50 * 1024 * 1024) return showToast("Video too large (Max 50MB)");
+
+            document.getElementById('storyLoader').style.display = 'block';
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET); 
+            formData.append('cloud_name', CLOUDINARY_CLOUD_NAME);
+
+            try {
+                const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                
+                if (data.secure_url) {
+                    saveStoryToFirebase({
+                        type: type,
+                        content: data.secure_url
+                    });
+                    document.getElementById('storyLoader').style.display = 'none';
+                    closeStoryCreator();
+                    showToast("Story Uploaded Successfully! ✅");
+                } else {
+                    throw new Error("Upload failed");
+                }
+            } catch (err) {
+                console.error(err);
+                document.getElementById('storyLoader').style.display = 'none';
+                showToast("Upload Failed ❌");
+            }
+        };
+
+        function saveStoryToFirebase(storyData) {
+            const newStoryRef = push(ref(db, `stories/${window.currentUser.uid}`));
+            set(newStoryRef, {
+                ...storyData,
+                timestamp: Date.now(),
+                views: {},
+                reactions: {}
+            });
+        }
+
+        // --- 3. Story Viewer System ---
+        window.openStoryViewer = async function(userId, startIndex = 0) {
+            const viewer = document.getElementById('storyViewerModal');
+            viewer.style.display = 'flex';
+            
+            // Fetch fresh data for this user
+            const snap = await get(ref(db, `stories/${userId}`));
+            const allStories = snap.val() || {};
+            const now = Date.now();
+            const stories = Object.entries(allStories)
+                .map(([k,v]) => ({id:k, ...v}))
+                .filter(s => now - s.timestamp < 24 * 60 * 60 * 1000)
+                .sort((a,b) => a.timestamp - b.timestamp);
+
+            if (stories.length === 0) return closeStoryViewer();
+
+            const userSnap = await get(ref(db, `users/${userId}`));
+            const user = userSnap.val();
+
+            currentStoryViewerState = {
+                userId: userId,
+                storyIndex: startIndex,
+                stories: stories,
+                userName: user.displayName,
+                userImg: user.photoURL,
+                timerId: null,
+                paused: false
+            };
+
+            renderViewerStory();
+        };
+
+        window.closeStoryViewer = function() {
+            document.getElementById('storyViewerModal').style.display = 'none';
+            clearInterval(currentStoryViewerState.timerId);
+            const video = document.querySelector('.viewer-media');
+            if(video && video.tagName === 'VIDEO') video.pause();
+        };
+
+        function renderViewerStory() {
+            const state = currentStoryViewerState;
+            const story = state.stories[state.storyIndex];
+            const contentArea = document.getElementById('viewerContentArea');
+            
+            // Header Update
+            document.getElementById('viewerAuthorName').innerText = state.userName;
+            document.getElementById('viewerAuthorImg').src = state.userImg;
+            document.getElementById('viewerTime').innerText = getRelativeTime(story.timestamp);
+
+            // Progress Bars
+            const progressContainer = document.getElementById('viewerProgressBars');
+            progressContainer.innerHTML = '';
+            state.stories.forEach((_, idx) => {
+                const barBg = document.createElement('div');
+                barBg.className = 'progress-bar-bg';
+                const barFill = document.createElement('div');
+                barFill.className = 'progress-bar-fill';
+                // Previous bars full, current empty (will animate), next empty
+                if (idx < state.storyIndex) barFill.style.width = '100%';
+                else if (idx > state.storyIndex) barFill.style.width = '0%';
+                
+                barBg.appendChild(barFill);
+                progressContainer.appendChild(barBg);
+            });
+
+            // Content
+            if (story.type === 'text') {
+                contentArea.innerHTML = `
+                    <div class="viewer-text-bg" style="background:${story.backgroundColor}">
+                        ${story.content}
+                    </div>
+                `;
+                startProgress(5000); // 5s for text
+            } else if (story.type === 'image') {
+                contentArea.innerHTML = `<img src="${story.content}" class="viewer-media">`;
+                startProgress(5000); // 5s for image
+            } else if (story.type === 'video') {
+                contentArea.innerHTML = `<video src="${story.content}" class="viewer-media" autoplay playsinline></video>`;
+                const video = contentArea.querySelector('video');
+                video.onloadedmetadata = () => startProgress(video.duration * 1000);
+                video.onended = nextStorySegment;
+            }
+
+            // Re-add nav taps
+            const leftTap = document.createElement('div'); leftTap.className = 'nav-tap-area left-tap'; leftTap.onclick = prevStorySegment;
+            const rightTap = document.createElement('div'); rightTap.className = 'nav-tap-area right-tap'; rightTap.onclick = nextStorySegment;
+            contentArea.appendChild(leftTap); contentArea.appendChild(rightTap);
+
+            // Mark as Seen (Local + Firebase View)
+            localStorage.setItem(`SEEN_STORY_${state.userId}_${story.id}`, 'true');
+            if (state.userId !== window.currentUser.uid) {
+                update(ref(db, `stories/${state.userId}/${story.id}/views/${window.currentUser.uid}`), { timestamp: Date.now() });
+                // Send Notification logic if needed
+            }
+        }
+
+        function startProgress(duration) {
+            clearInterval(currentStoryViewerState.timerId);
+            const currentBarFill = document.querySelectorAll('.progress-bar-fill')[currentStoryViewerState.storyIndex];
+            let startTime = Date.now();
+            
+            currentStoryViewerState.timerId = setInterval(() => {
+                if (currentStoryViewerState.paused) {
+                    startTime += 50; // Delay end time
+                    return;
+                }
+                const elapsed = Date.now() - startTime;
+                const percent = Math.min((elapsed / duration) * 100, 100);
+                currentBarFill.style.width = percent + '%';
+                
+                if (elapsed >= duration) {
+                    clearInterval(currentStoryViewerState.timerId);
+                    if (currentStoryViewerState.stories[currentStoryViewerState.storyIndex].type !== 'video') {
+                        nextStorySegment();
+                    }
+                }
+            }, 50);
+        }
+
+        window.nextStorySegment = function() {
+            if (currentStoryViewerState.storyIndex < currentStoryViewerState.stories.length - 1) {
+                currentStoryViewerState.storyIndex++;
+                renderViewerStory();
+            } else {
+                closeStoryViewer(); // Or go to next user
+            }
+        };
+
+        window.prevStorySegment = function() {
+            if (currentStoryViewerState.storyIndex > 0) {
+                currentStoryViewerState.storyIndex--;
+                renderViewerStory();
+            } else {
+                // Restart current or close
+                renderViewerStory();
+            }
+        };
+
+        // Pause on Hold logic
+        document.addEventListener('mousedown', (e) => {
+            if (e.target.closest('.viewer-content')) currentStoryViewerState.paused = true;
+        });
+        document.addEventListener('mouseup', () => currentStoryViewerState.paused = false);
+        document.addEventListener('touchstart', (e) => {
+            if (e.target.closest('.viewer-content')) currentStoryViewerState.paused = true;
+        });
+        document.addEventListener('touchend', () => currentStoryViewerState.paused = false);
+
+        // Interactions
+        window.reactToStory = function(type) {
+            const state = currentStoryViewerState;
+            const story = state.stories[state.storyIndex];
+            
+            // Animation
+            const btn = event.target;
+            btn.style.transform = "scale(1.5)";
+            setTimeout(() => btn.style.transform = "scale(1)", 200);
+
+            // Save to Firebase
+            push(ref(db, `stories/${state.userId}/${story.id}/reactions`), {
+                from: window.currentUser.uid,
+                type: type,
+                timestamp: Date.now()
+            });
+
+            // Notification
+            if (state.userId !== window.currentUser.uid) {
+                // Reuse existing sendNotification logic but simplified for Story
+                sendStoryNotification(state.userId, `Reacted ${window.reactionEmojiMap[type]} to your story`, story.id);
+            }
+        };
+
+        window.sendStoryReply = function() {
+            const input = document.getElementById('storyReplyInput');
+            const text = input.value.trim();
+            if (!text) return;
+            
+            const state = currentStoryViewerState;
+            // Send to Chat
+            const chatId = getChatId(window.currentUser.uid, state.userId);
+            const replyMsg = `Replied to your story: ${text}`;
+            
+            push(ref(db, `chats/${chatId}/messages`), { 
+                text: replyMsg, sender: window.currentUser.uid, timestamp: Date.now() 
+            });
+            update(ref(db, `user_chats/${window.currentUser.uid}/${state.userId}`), { lastMsg: "You: " + replyMsg, timestamp: Date.now() });
+            update(ref(db, `user_chats/${state.userId}/${window.currentUser.uid}`), { lastMsg: replyMsg, timestamp: Date.now(), unseenCount: 1 }); // Increment logic simplified
+
+            input.value = '';
+            showToast("Reply sent! 📨");
+        };
+
+        function sendStoryNotification(targetUid, msg, storyId) {
+             push(ref(db, `notifications/${targetUid}`), { 
+                type: 'story_reaction', 
+                postId: storyId, // Using postId field for storyId
+                sender: window.currentUser.displayName, 
+                senderImg: window.currentUser.photoURL, 
+                read: false, 
+                timestamp: Date.now() 
+            });
+        }
+        /* ==========================================================================
+           🎯 FACEBOOK-STYLE STORY SYSTEM LOGIC (END)
+           ========================================================================== */
+
         window.loadAuthBanners = function() {
             const bannerUrl = localStorage.getItem('my_banner2.jpg');
             if (bannerUrl) {
@@ -1783,6 +2592,7 @@ html
         }
 
         window.openChatRoom = async function(targetUid) {
+window.history.pushState({ modal: 'chat' }, "", "#chat");
             if(!checkAuth()) return;
             activeChatPartnerUid = targetUid;
             const myUid = window.currentUser.uid;
@@ -1932,7 +2742,8 @@ html
                     reachedEnd = true;
                     if(window.allPosts.length === 0) document.getElementById('feed').innerHTML = '<div style="text-align:center; padding:30px;">কোনো পোস্ট নেই</div>';
                     isLoadingPosts = false;
-                    loadStoryFeed(); return;
+                     // Stories are loaded separately
+                    return;
                 }
 
                 let newPosts = Object.entries(data).map(([key, val]) => ({ key, ...val }));
@@ -1958,7 +2769,7 @@ html
                    renderFeed(savedPosts);
                 } else { renderFeed(window.allPosts); }
 
-                loadStoryFeed(); updateGreeting(); isLoadingPosts = false;
+                updateGreeting(); isLoadingPosts = false;
             }).catch(err => { spinner.style.display = 'none'; isLoadingPosts = false; console.error(err); });
         };
         loadPostsChunk(true);
@@ -1980,50 +2791,6 @@ html
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById('dateText').innerText = new Date().toLocaleDateString('bn-BD', options);
         }
-
-        window.loadStoryFeed = function() {
-            if (!window.currentUser) { renderDefaultStories(); return; }
-            get(ref(db, 'following/' + window.currentUser.uid)).then(snap => {
-                const followingMap = snap.val();
-                if (!followingMap) { renderDefaultStories(); return; }
-                const uids = Object.keys(followingMap);
-                const safeUids = uids.filter(uid => !window.blockedUsers.includes(uid));
-                const promises = safeUids.map(uid => get(ref(db, 'users/' + uid)));
-                Promise.all(promises).then(snapshots => {
-                    const storyData = [];
-                    snapshots.forEach(userSnap => {
-                        if (userSnap.exists()) {
-                            const uData = userSnap.val();
-                            const uid = userSnap.key;
-                            const lastViewed = followingMap[uid].timestamp || 0;
-                            const lastPost = uData.lastPostTimestamp || 0;
-                            const isNew = lastPost > lastViewed;
-                            storyData.push({ uid: uid, name: uData.displayName, img: uData.photoURL, isNew: isNew, lastPost: lastPost, isVerified: uData.isVerified });
-                        }
-                    });
-                    storyData.sort((a, b) => { if (a.isNew && !b.isNew) return -1; if (!a.isNew && b.isNew) return 1; return b.lastPost - a.lastPost; });
-                    renderFollowStories(storyData);
-                });
-            });
-        };
-
-        function renderDefaultStories() {
-            const authors = {};
-            window.allPosts.forEach(p => { if(p.author && p.userImg && !authors[p.author] && !window.blockedUsers.includes(p.uid)) authors[p.author] = {img: p.userImg, uid: p.uid, isVerified: window.userVerificationCache[p.uid]}; });
-            const top = Object.entries(authors).slice(0, 10);
-            const html = top.map(([name, data]) => `<div class="story-item" onclick="viewUserProfile('${data.uid}')"><div class="story-ring seen-gradient"><img src="${data.img}" class="story-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'"></div><span class="story-name">${name.split(' ')[0]} ${getVerifiedBadge(data.isVerified)}</span></div>`).join('');
-            document.getElementById('storiesBar').innerHTML = html || '<div style="padding:10px; font-size:12px; color:#999;">জনপ্রিয় লেখকদের গল্প এখানে আসবে...</div>';
-        }
-
-        function renderFollowStories(stories) {
-            const html = stories.map(s => { const ringClass = s.isNew ? 'story-ring active' : 'story-ring seen-gradient'; return `<div class="story-item" onclick="handleStoryClick('${s.uid}')"><div class="${ringClass}"><img src="${s.img}" class="story-img" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'"></div><span class="story-name">${s.name.split(' ')[0]} ${getVerifiedBadge(s.isVerified)}</span></div>`}).join('');
-            document.getElementById('storiesBar').innerHTML = html;
-        }
-
-        window.handleStoryClick = function(targetUid) {
-            if (window.currentUser) { update(ref(db, `following/${window.currentUser.uid}/${targetUid}`), { timestamp: Date.now() }); }
-            viewUserProfile(targetUid); loadStoryFeed(); 
-        };
 
         // --- REACTION LOGIC ---
         let pressTimer = null;
@@ -2867,7 +3634,6 @@ html
                 btn.classList.add('following'); btn.innerText = 'Follow';
                 followersStat.innerText = parseInt(followersStat.innerText) + 1;
             }
-            setTimeout(loadStoryFeed, 1000);
         };
         window.switchProfileTab = function(tab, btn) {
             document.querySelectorAll('.p-tab-btn').forEach(b => b.classList.remove('active')); if(btn) btn.classList.add('active');
@@ -2887,65 +3653,75 @@ html
         };
 
         // --- NAVIGATION ---
-        window.navTo = function(page, btn) {
-             // Home Refresh Logic
-            if(page === 'home') {
-                const feedView = document.getElementById('feedView');
-                if(feedView.style.display === 'block') {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                    renderSkeletons();
-                    setTimeout(() => loadPostsChunk(true), 800);
-                    return;
-                }
-            }
+        // --- NAVIGATION FUNCTION (UPDATED) ---
+window.navTo = function(page, btn, addToHistory = true) {
+    // 1. History Management
+    if (addToHistory) {
+        window.history.pushState({ page: page }, "", "?page=" + page);
+    }
 
-            if (page === 'profile') {
-                if(!window.currentUser) { performLogin(); return; }
-                const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-                window.history.pushState({path:newurl},'',newurl); currentlyViewingUid = window.currentUser.uid; loadProfile(window.currentUser.uid);
-            }
-            if (page === 'chatList') {
-                if(!checkAuth()) return;
-                document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-                closeDetailView();
-                document.getElementById('feedView').style.display = 'none';
-                document.getElementById('profileView').style.display = 'none';
-                document.getElementById('chatListView').style.display = 'block';
-                initChatListener(window.currentUser.uid);
-                return;
-            }
-            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active')); if(btn) btn.classList.add('active');
-            closeDetailView();
-            const feedView = document.getElementById('feedView');
-            const profileView = document.getElementById('profileView');
-            const chatView = document.getElementById('chatListView');
-            feedView.style.display = 'none'; profileView.style.display = 'none'; chatView.style.display = 'none';
+    // Home Refresh Logic
+    if (page === 'home') {
+        const feedView = document.getElementById('feedView');
+        if (feedView.style.display === 'block') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // রিফ্রেশ লজিক যদি থাকে
+            return;
+        }
+    }
 
-            if(page === 'home') {
-                feedView.style.display = 'block'; 
-                 if(history.pushState) { const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname; window.history.pushState({path:newurl},'',newurl); }
-                filterCategory('সব', document.querySelector('.cat-btn')); loadStoryFeed();
-            } else if(page === 'saved') { feedView.style.display = 'block'; filterCategory('সংরক্ষিত'); }
-            else if(page === 'profile') { profileView.style.display = 'block'; }
-        };
+    if (page === 'profile') {
+        if (!window.currentUser) { performLogin(); return; }
+        currentlyViewingUid = window.currentUser.uid; 
+        loadProfile(window.currentUser.uid);
+    }
 
-        // --- MISC ---
-        let tapCount = 0, tapTimer;
-        window.handleSecretTap = function() {
-            tapCount++; clearTimeout(tapTimer); tapTimer = setTimeout(() => { tapCount = 0; }, 2000);
-            if(tapCount === 5) {
-                if(navigator.vibrate) navigator.vibrate(200); tapCount = 0;
-                if (!window.currentUser) { showToast("লগিন করা নেই! ❌"); return performLogin(); }
-                if (window.currentUser.uid === ADMIN_UID) { showToast("অ্যাডমিন মোড চালু হয়েছে ✅"); renderFeed(window.allPosts); openWriteModal(); }
-                else { showToast("Access Denied: You are not an Admin 🚫"); }
-            }
-        };
+    if (page === 'chatList') {
+        if (!checkAuth()) return;
+        document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+        closeDetailView();
+        document.getElementById('feedView').style.display = 'none';
+        document.getElementById('profileView').style.display = 'none';
+        document.getElementById('chatListView').style.display = 'block';
+        initChatListener(window.currentUser.uid);
+        return;
+    }
+
+    // UI Updates
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    else {
+        // বাটন অটোমেটিক অ্যাক্টিভ করা
+        const targetBtn = document.querySelector(`.nav-item[onclick*="'${page}'"]`);
+        if(targetBtn) targetBtn.classList.add('active');
+    }
+
+    closeDetailView();
+    const feedView = document.getElementById('feedView');
+    const profileView = document.getElementById('profileView');
+    const chatView = document.getElementById('chatListView');
+    
+    feedView.style.display = 'none';
+    profileView.style.display = 'none';
+    chatView.style.display = 'none';
+
+    if (page === 'home') {
+        feedView.style.display = 'block';
+        filterCategory('সব', document.querySelector('.cat-btn'));
+    } else if (page === 'saved') {
+        feedView.style.display = 'block';
+        filterCategory('সংরক্ষিত');
+    } else if (page === 'profile') {
+        profileView.style.display = 'block';
+    }
+};
 
         window.filterCategory = function(cat, btn) { if(btn) { document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); } document.getElementById('headerSearchBar').value = ''; activeCategoryFilter = cat; loadPostsChunk(true); };
         window.filterPosts = function(q) { q = q.toLowerCase(); document.getElementById('headerSearchClearBtn').style.display = q ? 'block' : 'none'; renderFeed(window.allPosts.filter(p => p.title.toLowerCase().includes(q) || p.author.toLowerCase().includes(q) || (p.content && p.content.toLowerCase().includes(q)))); };
         window.clearSearch = function() { document.getElementById('headerSearchBar').value = ''; filterPosts(''); };
 
         window.openDetailView = async function(key) {
+window.history.pushState({ modal: 'detail' }, "", "#detail");
             const post = window.allPosts.find(p => p.key === key); if(!post) return;
             document.getElementById('detailTitle').innerText = post.title;
             document.getElementById('detailDate').innerText = post.date;
@@ -3202,6 +3978,133 @@ html
                 window.mentionedUids.push(uid);
             }
         };
+// ==================================================
+// 🔙 ব্যাক বাটন এবং এক্সিট পপ-আপ লজিক (Start)
+// ==================================================
+
+// ১. অ্যাপ লোড হলে একটি ফেইক হিস্টোরি তৈরি করি
+window.addEventListener('load', () => {
+    // বর্তমান স্টেট রিপ্লেস করি
+    window.history.replaceState({ page: 'root' }, "", "");
+    // এরপর 'home' স্টেট পুশ করি (যাতে ব্যাক করলে root-এ আসে)
+    window.history.pushState({ page: 'home' }, "", "#home");
+});
+
+// ২. ব্যাক বাটন চাপলে কি হবে
+window.addEventListener('popstate', (event) => {
+    
+    // ক) যদি কোনো মডাল (Modal) খোলা থাকে, তবে সেটি বন্ধ হবে
+    const detailView = document.getElementById('detailView');
+    const chatRoomView = document.getElementById('chatRoomView');
+    const storyViewer = document.getElementById('storyViewerModal');
+    
+    // Story Viewer খোলা থাকলে
+    if(storyViewer && storyViewer.style.display === 'flex') {
+        closeStoryViewer();
+        return; 
+    }
+    // Chat Room খোলা থাকলে
+    if(chatRoomView && chatRoomView.style.display === 'flex') {
+        chatRoomView.style.display = 'none';
+        return;
+    }
+    // Detail View খোলা থাকলে
+    if(detailView && detailView.style.display === 'flex') {
+        closeDetailView();
+        document.getElementById('mainHeader').style.display = 'flex';
+        return;
+    }
+
+    // খ) যদি আমরা অন্য কোনো পেজে (যেমন Profile/ChatList) থাকি, তবে Home এ ফিরে আসব
+    const feedView = document.getElementById('feedView');
+    if (feedView.style.display === 'none') {
+        // ম্যানুয়ালি হোমে নেভিগেট করা (হিস্টোরি পুশ ছাড়া)
+        navTo('home', null); 
+        // যেহেতু navTo আবার pushState করে, তাই আমরা সেটা আটকাতে পারি না সহজে,
+        // তবে ব্যবহারকারীর অভিজ্ঞতায় এটি ন্যাচারাল মনে হবে।
+        return;
+    }
+
+    // গ) যদি আমরা Home পেজেই থাকি এবং ব্যাক বাটন চাপি (EXIT CONFIRMATION)
+    if (feedView.style.display === 'block') {
+        // সুইট অ্যালার্ট পপ-আপ দেখানো
+        Swal.fire({
+            title: 'অ্যাপ থেকে বের হবেন?',
+            text: "আপনি কি অ্যাপটি বন্ধ করতে চান?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'হ্যাঁ, বের হবো',
+            cancelButtonText: 'না'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // যদি হ্যাঁ বলে, অ্যাপ বন্ধ করার চেষ্টা করি (হিস্টোরি ২ ধাপ পিছনে)
+                window.history.go(-2); 
+                // অথবা উইন্ডো ক্লোজ
+                // window.close(); 
+            } else {
+                // যদি না বলে, আবার স্টেট পুশ করে অ্যাপেই রাখি
+                window.history.pushState({ page: 'home' }, "", "#home");
+            }
+        });
+    }
+});
+// ==================================================
+// 🔙 ব্যাক বাটন এবং এক্সিট পপ-আপ লজিক (End)
+// ==================================================
     </script>
+<script>
+    // --- PWA INSTALLATION LOGIC ---
+    let deferredPrompt;
+    const installBtn = document.getElementById('installAppBtn');
+
+    // 1. Service Worker Register
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+                .then(reg => console.log('Service Worker registered!', reg))
+                .catch(err => console.log('SW registration failed: ', err));
+        });
+    }
+
+    // 2. Capture install prompt
+    window.addEventListener('beforeinstallprompt', (e) => {
+        // Prevent default mini-infobar
+        e.preventDefault();
+        // Store event for later use
+        deferredPrompt = e;
+        // Show the install button
+        if(installBtn) {
+            installBtn.style.display = 'flex';
+            console.log("Install prompt captured, button shown.");
+        }
+    });
+
+    // 3. Install Function
+    async function installPWA() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`User response to the install prompt: ${outcome}`);
+            
+            // Hide button if accepted
+            if (outcome === 'accepted') {
+                if(installBtn) installBtn.style.display = 'none';
+            }
+            deferredPrompt = null;
+        }
+    }
+
+    // 4. Hide button if already installed (Standalone mode)
+    window.addEventListener('appinstalled', () => {
+        if(installBtn) installBtn.style.display = 'none';
+        console.log('PWA was installed');
+    });
+
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+        if(installBtn) installBtn.style.display = 'none';
+    }
+</script>
 </body>
 </html>
