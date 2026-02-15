@@ -201,7 +201,7 @@
             background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.7) 100%);
             border-radius: 12px;
         }
-        
+
         /* Friend Profile Pic in Story Card */
         .story-author-img {
             position: absolute;
@@ -337,7 +337,7 @@
             position: absolute; top: 0; height: 100%; width: 30%; z-index: 5001;
         }
         .left-tap { left: 0; } .right-tap { right: 0; }
-        
+
         .viewer-footer {
             padding: 15px; display: flex; gap: 10px; align-items: center; z-index: 5002;
             background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
@@ -832,7 +832,7 @@
             padding: 0 4px;
             border-radius: 4px;
         }
-        
+
         /* --- AUTH & PROFILE NEW STYLES --- */
         .divider-line {
             display: flex; align-items: center; text-align: center; margin: 25px 0; color: var(--secondary-text); font-size: 14px;
@@ -862,12 +862,12 @@
         .google-signup-btn img { width: 20px; height: 20px; }
         .forgot-password-link, .signup-redirect, .login-redirect { text-align: center; margin-top: 15px; font-size: 14px; }
         .forgot-password-link a, .signup-redirect a, .login-redirect a { color: var(--primary-color); text-decoration: none; font-weight: 600; }
-        
+
         .modal-banner { width: 100%; height: 120px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px 20px 0 0; margin-bottom: 20px; }
         .modal-header { text-align: center; padding: 0 30px 20px; }
         .modal-header h2 { margin: 0 0 8px 0; }
         .modal-close-btn { position: absolute; top: 15px; right: 15px; width: 35px; height: 35px; border-radius: 50%; border:none; background: rgba(255,255,255,0.9); cursor: pointer; z-index: 10; font-size: 16px; display:flex; align-items:center; justify-content:center; }
-        
+
         /* Profile Edit */
         .profile-edit-btn {
             position: absolute; bottom: 5px; right: 5px; width: 36px; height: 36px; border-radius: 50%; background: var(--primary-color); border: 3px solid var(--bg-color); color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); z-index: 10;
@@ -1040,7 +1040,7 @@
     <span class="app-logo-text">মুক্তলিপি</span>
 </div>
 
-<button id="installAppBtn" class="install-btn-glow" onclick="installPWA()" style="display: flex;">
+<button id="installAppBtn" class="install-btn-glow" onclick="installPWA()" style="display: none;">
     <i class="fas fa-download"></i> INSTALL
 </button>
 <!-- বাটন শেষ -->
@@ -1162,7 +1162,7 @@
                         <i class="far fa-eye"></i>
                     </button>
                 </div>
-                
+
                 <label class="input-label">পাসওয়ার্ড নিশ্চিত করুন</label>
                 <div class="modern-input-group">
                     <input type="password" id="signupConfirmPassword" placeholder="পুনরায় লিখুন" class="modern-input">
@@ -1190,7 +1190,7 @@
                 <h2>প্রোফাইল সম্পাদনা করুন</h2>
                 <p class="modal-subtitle">আপনার তথ্য আপডেট করুন</p>
             </div>
-            
+
             <div class="modal-body profile-edit-body" style="padding: 20px;">
                 <!-- Cover Photo -->
                 <div class="edit-section">
@@ -1203,7 +1203,7 @@
                     </div>
                     <input type="file" id="coverPhotoInput" accept="image/*" style="display: none;" onchange="handleCoverPhotoSelect(event)">
                 </div>
-                
+
                 <!-- Profile Photo -->
                 <div class="edit-section">
                     <label class="section-label"><i class="fas fa-user-circle"></i> প্রোফাইল ছবি</label>
@@ -1213,20 +1213,20 @@
                     </div>
                     <input type="file" id="profilePhotoInput" accept="image/*" style="display: none;" onchange="handleProfilePhotoSelect(event)">
                 </div>
-                
+
                 <!-- Name -->
                 <div class="edit-section">
                     <label class="section-label"><i class="fas fa-signature"></i> নাম</label>
                     <input type="text" id="editName" class="form-input" placeholder="আপনার নাম লিখুন">
                 </div>
-                
+
                 <!-- Bio -->
                 <div class="edit-section">
                     <label class="section-label"><i class="fas fa-align-left"></i> বায়ো</label>
                     <textarea id="editBio" class="form-textarea" rows="4" placeholder="নিজের সম্পর্কে কিছু লিখুন..."></textarea>
                     <span class="char-counter" id="bioCharCounter">0/150</span>
                 </div>
-                
+
                 <!-- Social Links -->
                 <div class="edit-section">
                     <label class="section-label"><i class="fas fa-share-alt"></i> সোশ্যাল মিডিয়া লিংক</label>
@@ -1235,7 +1235,7 @@
                     <div class="social-input-group"><i class="fab fa-tiktok social-icon" style="color: #000000;"></i><input type="url" id="editTiktok" class="form-input" placeholder="TikTok লিংক"></div>
                     <div class="social-input-group"><i class="fab fa-whatsapp social-icon" style="color: #25d366;"></i><input type="url" id="editWhatsapp" class="form-input" placeholder="WhatsApp লিংক"></div>
                 </div>
-                
+
                 <button class="save-profile-btn" onclick="saveProfileChanges()"><i class="fas fa-save"></i> পরিবর্তন সংরক্ষণ করুন</button>
             </div>
         </div>
@@ -1309,7 +1309,7 @@
             <!-- ==========================================================================
                  🎯 FACEBOOK-STYLE STORY SYSTEM HTML (START)
                  ========================================================================== -->
-            
+
             <div id="storiesBar" class="fb-stories-wrapper">
                 <!-- This section will be populated dynamically by JS -->
                 <div class="story-card your-story" onclick="openStoryCreator()">
@@ -1352,9 +1352,9 @@
             <div id="textStoryEditor">
                 <button onclick="closeTextStoryEditor()" style="position:absolute; top:20px; left:20px; background:rgba(0,0,0,0.3); color:white; border:none; border-radius:50%; width:40px; height:40px; font-size:20px;">&times;</button>
                 <button onclick="postTextStory()" style="position:absolute; top:20px; right:20px; background:white; color:black; border:none; border-radius:20px; padding:10px 20px; font-weight:bold;">Share</button>
-                
+
                 <textarea id="storyTextInputField" class="story-text-input" placeholder="Start typing..." maxlength="200"></textarea>
-                
+
                 <div class="color-picker">
                     <div class="color-dot" style="background:#1877f2" onclick="setStoryBg('#1877f2')"></div>
                     <div class="color-dot" style="background:#e74c3c" onclick="setStoryBg('#e74c3c')"></div>
@@ -1369,7 +1369,7 @@
             <!-- Story Viewer -->
             <div id="storyViewerModal" class="story-viewer">
                 <div class="viewer-progress-container" id="viewerProgressBars"></div>
-                
+
                 <div class="viewer-header">
                     <img id="viewerAuthorImg" src="" style="width:40px; height:40px; border-radius:50%; margin-right:10px; border:1px solid rgba(255,255,255,0.5);">
                     <div style="flex:1;">
@@ -1378,13 +1378,13 @@
                     </div>
                     <button onclick="closeStoryViewer()" style="background:none; border:none; color:white; font-size:24px;">&times;</button>
                 </div>
-                
+
                 <div class="viewer-content" id="viewerContentArea">
                     <!-- Media or Text injected here -->
                     <div class="nav-tap-area left-tap" onclick="prevStorySegment()"></div>
                     <div class="nav-tap-area right-tap" onclick="nextStorySegment()"></div>
                 </div>
-                
+
                 <div class="viewer-footer">
                     <input type="text" id="storyReplyInput" class="story-reply-input" placeholder="Send message...">
                     <button onclick="sendStoryReply()" style="background:none; border:none; color:white; font-size:20px;"><i class="fas fa-paper-plane"></i></button>
@@ -1393,7 +1393,7 @@
                     <button class="story-reaction-btn" onclick="reactToStory('wow')">😮</button>
                 </div>
             </div>
-            
+
             <!-- ==========================================================================
                  🎯 FACEBOOK-STYLE STORY SYSTEM HTML (END)
                  ========================================================================== -->
@@ -1438,7 +1438,7 @@
             <div class="profile-info">
                 <h2 id="profileNameDisplay" class="profile-name">Name</h2>
                 <div id="profileBioDisplay" class="profile-bio">Bio...</div>
-                
+
                 <!-- Social Links Display -->
                 <div class="social-links-display" id="socialLinksDisplay"></div>
 
@@ -1856,7 +1856,7 @@
         /* ==========================================================================
            🎯 FACEBOOK-STYLE STORY SYSTEM LOGIC (START)
            ========================================================================== */
-        
+
         let currentStoryViewerState = {
             userId: null,
             storyIndex: 0,
@@ -1868,12 +1868,12 @@
         // --- 1. Story Fetching & Rendering ---
         window.loadFacebookStories = function() {
             if (!window.currentUser) return; // Wait for auth
-            
+
             const storiesRef = ref(db, 'stories');
             onValue(storiesRef, async (snapshot) => {
                 const allStoriesData = snapshot.val() || {};
                 const friendsContainer = document.getElementById('storiesBar');
-                
+
                 // Keep the "Your Story" card (first child)
                 const yourStoryCard = friendsContainer.firstElementChild;
                 friendsContainer.innerHTML = '';
@@ -1882,7 +1882,7 @@
                 // Filter & Sort Stories
                 const now = Date.now();
                 const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
-                
+
                 const validStories = []; // Array of user objects { uid, stories: [] }
 
                 // Check my own story
@@ -1891,7 +1891,7 @@
                         .map(([k,v]) => ({id:k, ...v}))
                         .filter(s => now - s.timestamp < TWENTY_FOUR_HOURS)
                         .sort((a,b) => a.timestamp - b.timestamp);
-                    
+
                     if(myStories.length > 0) {
                         // Update Your Story UI
                         yourStoryCard.classList.add('active-story');
@@ -1916,7 +1916,7 @@
                         .map(([k,v]) => ({id:k, ...v}))
                         .filter(s => now - s.timestamp < TWENTY_FOUR_HOURS)
                         .sort((a,b) => a.timestamp - b.timestamp);
-                    
+
                     if (activeStories.length > 0) {
                         validStories.push({ uid, stories: activeStories });
                     }
@@ -1927,12 +1927,12 @@
                     const userSnap = await get(ref(db, `users/${userStoryData.uid}`));
                     if (!userSnap.exists()) continue;
                     const user = userSnap.val();
-                    
+
                     const lastStory = userStoryData.stories[userStoryData.stories.length - 1];
                     const bgImage = lastStory.type === 'image' ? `url(${lastStory.content})` : 
                                    (lastStory.type === 'video' ? `url(${user.photoURL})` : 'none'); // Video thumb fallback
                     const bgColor = lastStory.type === 'text' ? lastStory.backgroundColor : '#333';
-                    
+
                     // Check Seen Status (Local Logic)
                     const seenKey = `SEEN_STORY_${userStoryData.uid}_${lastStory.id}`;
                     const isSeen = localStorage.getItem(seenKey) === 'true';
@@ -1941,7 +1941,7 @@
                     card.className = 'story-card friend-story';
                     card.setAttribute('data-uid', userStoryData.uid);
                     card.setAttribute('data-seen', isSeen);
-                    
+
                     if (lastStory.type === 'text') {
                         card.style.background = bgColor;
                     } else {
@@ -1958,7 +1958,7 @@
                         <div class="story-online-dot ${isOnline ? 'active' : ''}"></div>
                         <span class="story-username">${user.displayName.split(' ')[0]}</span>
                     `;
-                    
+
                     card.onclick = () => openStoryViewer(userStoryData.uid, 0);
                     friendsContainer.appendChild(card);
                 }
@@ -1979,7 +1979,7 @@
             setStoryBg('#1877f2'); // Default
         };
         window.closeTextStoryEditor = () => document.getElementById('textStoryEditor').style.display = 'none';
-        
+
         window.setStoryBg = function(color) {
             textStoryBg = color;
             document.getElementById('textStoryEditor').style.background = color;
@@ -1988,13 +1988,13 @@
         window.postTextStory = function() {
             const text = document.getElementById('storyTextInputField').value.trim();
             if (!text) return showToast("Please write something!");
-            
+
             saveStoryToFirebase({
                 type: 'text',
                 content: text,
                 backgroundColor: textStoryBg
             });
-            
+
             closeTextStoryEditor();
             closeStoryCreator();
             document.getElementById('storyTextInputField').value = '';
@@ -2010,13 +2010,13 @@
 
         window.handleMediaFile = async function(file, type) {
             if (!file) return;
-            
+
             // Size Check
             if (type === 'image' && file.size > 10 * 1024 * 1024) return showToast("Image too large (Max 10MB)");
             if (type === 'video' && file.size > 50 * 1024 * 1024) return showToast("Video too large (Max 50MB)");
 
             document.getElementById('storyLoader').style.display = 'block';
-            
+
             const formData = new FormData();
             formData.append('file', file);
             formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET); 
@@ -2028,7 +2028,7 @@
                     body: formData
                 });
                 const data = await res.json();
-                
+
                 if (data.secure_url) {
                     saveStoryToFirebase({
                         type: type,
@@ -2061,7 +2061,7 @@
         window.openStoryViewer = async function(userId, startIndex = 0) {
             const viewer = document.getElementById('storyViewerModal');
             viewer.style.display = 'flex';
-            
+
             // Fetch fresh data for this user
             const snap = await get(ref(db, `stories/${userId}`));
             const allStories = snap.val() || {};
@@ -2100,7 +2100,7 @@
             const state = currentStoryViewerState;
             const story = state.stories[state.storyIndex];
             const contentArea = document.getElementById('viewerContentArea');
-            
+
             // Header Update
             document.getElementById('viewerAuthorName').innerText = state.userName;
             document.getElementById('viewerAuthorImg').src = state.userImg;
@@ -2117,7 +2117,7 @@
                 // Previous bars full, current empty (will animate), next empty
                 if (idx < state.storyIndex) barFill.style.width = '100%';
                 else if (idx > state.storyIndex) barFill.style.width = '0%';
-                
+
                 barBg.appendChild(barFill);
                 progressContainer.appendChild(barBg);
             });
@@ -2157,7 +2157,7 @@
             clearInterval(currentStoryViewerState.timerId);
             const currentBarFill = document.querySelectorAll('.progress-bar-fill')[currentStoryViewerState.storyIndex];
             let startTime = Date.now();
-            
+
             currentStoryViewerState.timerId = setInterval(() => {
                 if (currentStoryViewerState.paused) {
                     startTime += 50; // Delay end time
@@ -2166,7 +2166,7 @@
                 const elapsed = Date.now() - startTime;
                 const percent = Math.min((elapsed / duration) * 100, 100);
                 currentBarFill.style.width = percent + '%';
-                
+
                 if (elapsed >= duration) {
                     clearInterval(currentStoryViewerState.timerId);
                     if (currentStoryViewerState.stories[currentStoryViewerState.storyIndex].type !== 'video') {
@@ -2209,7 +2209,7 @@
         window.reactToStory = function(type) {
             const state = currentStoryViewerState;
             const story = state.stories[state.storyIndex];
-            
+
             // Animation
             const btn = event.target;
             btn.style.transform = "scale(1.5)";
@@ -2233,12 +2233,12 @@
             const input = document.getElementById('storyReplyInput');
             const text = input.value.trim();
             if (!text) return;
-            
+
             const state = currentStoryViewerState;
             // Send to Chat
             const chatId = getChatId(window.currentUser.uid, state.userId);
             const replyMsg = `Replied to your story: ${text}`;
-            
+
             push(ref(db, `chats/${chatId}/messages`), { 
                 text: replyMsg, sender: window.currentUser.uid, timestamp: Date.now() 
             });
@@ -2323,7 +2323,7 @@
             if (!name || !username || !password || !confirmPassword) { Swal.fire({icon: 'warning', title: 'সতর্কতা!', text: 'সকল তথ্য পূরণ করুন', confirmButtonText: 'ঠিক আছে'}); return; }
             if (password.length < 6) { Swal.fire({icon: 'warning', title: 'দুর্বল পাসওয়ার্ড', text: 'পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে', confirmButtonText: 'ঠিক আছে'}); return; }
             if (password !== confirmPassword) { Swal.fire({icon: 'error', title: 'ত্রুটি', text: 'পাসওয়ার্ড মিলছে না', confirmButtonText: 'ঠিক আছে'}); return; }
-            
+
             const email = `${username}@gmail.com`;
             Swal.fire({title: 'একাউন্ট তৈরি করা হচ্ছে...', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
             try {
@@ -3514,7 +3514,7 @@ window.history.pushState({ modal: 'chat' }, "", "#chat");
                 }).catch(() => { btn.classList.remove('uploading'); btn.innerHTML = `ব্যর্থ হয়েছে`; });
             });
         });
-        
+
         function uploadImageXHR(file, onProgress) {
             return new Promise((resolve, reject) => {
                 const formData = new FormData(); formData.append('image', file);
@@ -3699,7 +3699,7 @@ window.navTo = function(page, btn, addToHistory = true) {
     const feedView = document.getElementById('feedView');
     const profileView = document.getElementById('profileView');
     const chatView = document.getElementById('chatListView');
-    
+
     feedView.style.display = 'none';
     profileView.style.display = 'none';
     chatView.style.display = 'none';
@@ -3991,12 +3991,12 @@ window.addEventListener('load', () => {
 
 // ২. ব্যাক বাটন চাপলে কি হবে
 window.addEventListener('popstate', (event) => {
-    
+
     // ক) যদি কোনো মডাল (Modal) খোলা থাকে, তবে সেটি বন্ধ হবে
     const detailView = document.getElementById('detailView');
     const chatRoomView = document.getElementById('chatRoomView');
     const storyViewer = document.getElementById('storyViewerModal');
-    
+
     // Story Viewer খোলা থাকলে
     if(storyViewer && storyViewer.style.display === 'flex') {
         closeStoryViewer();
@@ -4086,7 +4086,7 @@ window.addEventListener('popstate', (event) => {
             deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
             console.log(`User response to the install prompt: ${outcome}`);
-            
+
             // Hide button if accepted
             if (outcome === 'accepted') {
                 if(installBtn) installBtn.style.display = 'none';
