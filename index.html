@@ -1950,10 +1950,17 @@
             window.currentUser = user;
 
             if (user) {
-                // ১. অ্যান্ড্রয়েড অ্যাপে ওয়ানসিগন্যাল লগইন সিগন্যাল পাঠানো
-                if (window.AndroidInterface) {
-                    window.AndroidInterface.loginOneSignal(user.uid);
-                }
+    // ১. অ্যান্ড্রয়েড অ্যাপে ওয়ানসিগন্যাল লগইন সিগন্যাল পাঠানো
+    if (window.AndroidInterface) {
+        window.AndroidInterface.loginOneSignal(user.uid);
+    }
+
+    // ----- এই নতুন ব্যাকআপ কোডটুকু এখানে যুক্ত করুন -----
+    setTimeout(() => {
+        if (window.AndroidInterface) {
+            window.AndroidInterface.loginOneSignal(user.uid);
+        }
+    }, 2000);
 
                 // ২. রাইট বক্সের প্রোফাইল পিকচার সেট করা
                 const writeAvatar = document.getElementById('writeBoxAvatar');
@@ -2703,8 +2710,15 @@
                 })
             };
 
-            fetch('https://onesignal.com/api/v1/notifications', options).catch(err => console.error(err));
-        }
+            // fetch লাইনের বদলে নিচে দেওয়া এই কন্ডিশনটি বসিয়ে দিন
+    if (window.AndroidInterface) {
+        // অ্যান্ড্রয়েডের নেটিভ জাভা কোড দিয়ে নোটিফিকেশন পাঠানো হবে (CORS এড়াতে)
+        window.AndroidInterface.sendPushNotificationJava(targetUid, messageText, postId);
+    } else {
+        // সাধারণ কম্পিউটার বা মোবাইলের ব্রাউজার থেকে চললে
+        fetch('https://onesignal.com/api/v1/notifications', options).catch(err => console.error(err));
+    }
+}
 
         window.showNotifications = function() {
             if(!checkAuth()) return;
