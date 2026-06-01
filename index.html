@@ -971,6 +971,93 @@
         /* Skeleton Refresh */
         .skeleton-container { display: flex; flex-direction: column; gap: 15px; padding: 15px; }
         .skeleton-card { padding: 20px; border-radius: 20px; animation: skeletonPulse 1.5s ease-in-out infinite; }
+
+        /* --- Story Skeleton Loader Styles --- */
+        .story-skeleton-card {
+            width: 110px;
+            height: 160px;
+            border-radius: 12px;
+            background: var(--glass-bg);
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: var(--glass-border);
+        }
+        .story-skeleton-avatar {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+        }
+        .story-skeleton-name {
+            position: absolute;
+            bottom: 12px;
+            left: 8px;
+            width: 70px;
+            height: 10px;
+            border-radius: 4px;
+        }
+
+        /* --- Story Skeleton Loader Styles --- */
+        .story-skeleton-card {
+            width: 110px;
+            height: 160px;
+            border-radius: 12px;
+            background: var(--glass-bg);
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: var(--glass-border);
+        }
+        .story-skeleton-avatar {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+        }
+        .story-skeleton-name {
+            position: absolute;
+            bottom: 12px;
+            left: 8px;
+            width: 70px;
+            height: 10px;
+            border-radius: 4px;
+        }
+
+        /* --- Story Skeleton Loader Styles --- */
+        .story-skeleton-card {
+            width: 110px;
+            height: 160px;
+            border-radius: 12px;
+            background: var(--glass-bg);
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: var(--glass-border);
+        }
+        .story-skeleton-avatar {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+        }
+        .story-skeleton-name {
+            position: absolute;
+            bottom: 12px;
+            left: 8px;
+            width: 70px;
+            height: 10px;
+            border-radius: 4px;
+        }
         .skeleton-header { display: flex; gap: 12px; margin-bottom: 15px; }
         .skeleton-text-group { flex: 1; display: flex; flex-direction: column; gap: 8px; }
         .skeleton-content { display: flex; flex-direction: column; gap: 10px; }
@@ -1250,7 +1337,7 @@
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        
+
         <!-- ব্যাকওয়ার্ড জাভাস্ক্রিপ্ট কম্প্যাটিবিলিটির জন্য একটি অদৃশ্য ডিভ -->
         <div id="defaultHeader" style="display:none;"></div>
     </div>
@@ -1468,12 +1555,12 @@
         <i class="fa-solid fa-image"></i>
     </button>
 </div>
-           
+
             <!-- ==========================================================================
                  🎯 FACEBOOK-STYLE STORY SYSTEM HTML (START)
                  ========================================================================== -->
 
-            <div id="soriesBar" class="fb-stories-wrapper">
+            <div id="storiesBar" class="fb-stories-wrapper">
                 <!-- This section will be populated dynamically by JS -->
                 <div class="story-card your-story" onclick="openStoryCreator()">
                     <div class="story-card-bg" id="yourStoryBg" style="background-image: url('https://cdn-icons-png.flaticon.com/512/149/149071.png')"></div>
@@ -1576,62 +1663,7 @@
             <div id="loadingSpinner" class="loading-spinner-area"><i class="fas fa-spinner fa-spin"></i> লোড হচ্ছে...</div>
         </div>
 
-        <!-- Profile View -->
-        <div id="profileView" class="view-section">
-            <div class="profile-cover" id="profileCover"></div>
-
-            <div class="profile-header-container">
-                <div class="profile-pic-wrapper">
-                    <img id="profilePic" src="" class="profile-pic-large" onerror="this.src='https://cdn-icon-png.flaticon.com/512/149/149071.png'">
-                    <button id="mainProfileEditBtn" class="profile-edit-btn" onclick="openProfileEdit()" title="প্রোফাইল সম্পাদনা করুন" style="display:none;">
-                        <i class="fas fa-camera"></i>
-                    </button>
-                </div>
-
-                <div class="profile-info">
-                    <h2 id="profileNameDisplay" class="profile-name">Name</h2>
-                    <div id="profileBioDisplay" class="profile-bio">Bio...</div>
-                </div>
-
-                <!-- Stats Grid -->
-                <div class="profile-stats-grid">
-                    <div class="stat-card">
-                        <span id="statPosts" class="stat-val">0</span>
-                        <span class="stat-label">পোস্ট</span>
-                    </div>
-                    <div class="stat-card">
-                        <span id="statFollowers" class="stat-val">0</span>
-                        <span class="stat-label">ফলোয়ার</span>
-                    </div>
-                    <div class="stat-card">
-                        <span id="statLikes" class="stat-val">0</span>
-                        <span class="stat-label">লাইক</span>
-                    </div>
-                </div>
-
-                <!-- Follow/Message/Verify Buttons -->
-                <div class="follow-container" id="profileActionContainer">
-                    <button id="profileFollowBtn" class="btn-follow" style="display:none;" onclick="toggleFollow()"><i class="fas fa-user-plus"></i> Follow</button>
-                    <button id="profileMsgBtn" class="btn-profile-action" style="display:none;" onclick="initChatFromProfile()">
-    <i class="fab fa-facebook-messenger"></i> মেসেজ
-</button>
-                </div>
-
-                <div id="socialLinksDisplay" class="social-links"></div>
-            </div>
-
-            <!-- Profile Tabs (Underline Style) -->
-            <div class="profile-tabs">
-                <button class="p-tab-btn active" onclick="switchProfileTab('posts', this)">লেখা</button>
-                <button id="tabDrafts" class="p-tab-btn" onclick="switchProfileTab('drafts', this)">ড্রাফট</button>
-                <button id="tabSaved" class="p-tab-btn" onclick="switchProfileTab('saved', this)">সংরক্ষিত</button>
-            </div>
-
-            <div id="profileContentFeed" class="masonry-feed" style="padding: 0 10px;">
-                <!-- Content injected here -->
-            </div>
-        </div>
-
+        
     <!-- Sticky Player -->
     <div id="stickyPlayer">
         <div style="display:flex; align-items:center; width:70%;">
@@ -1771,7 +1803,7 @@
         import { getDatabase, ref, push, set, onValue, update, remove, get, query, orderByKey, limitToLast, endBefore, equalTo, orderByChild, onChildAdded, onDisconnect, runTransaction, off, startAt, endAt, limitToFirst, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, updateProfile, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        const ADMIN_UID = "Pg5ko76Pu8Zf4ja9MMzEJRLDMYs1"; 
+        const ADMIN_UID = "5tgxvUP6z9bgC2DSRoi1hsDFvzW2"; 
 
         const firebaseConfig = {
             apiKey: "AIzaSyBZtycgadrngON2WEwvIE7ERPYxdkDVfFM",
@@ -1913,19 +1945,23 @@
             });
         };
 
-        // --- AUTH & INIT ---
+ // --- AUTH & INIT ---
         onAuthStateChanged(auth, async (user) => {
-// onAuthStateChanged(auth, async (user) => { ... }) এর ভেতরে এটি বসান
-if (user) {
-    // আপনার আগের কোডের পাশে এটি যোগ করুন:
-    const writeAvatar = document.getElementById('writeBoxAvatar');
-    if (writeAvatar) {
-        writeAvatar.src = user.photoURL || 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
-    }
-}
             window.currentUser = user;
 
-            if(user) {
+            if (user) {
+                // ১. অ্যান্ড্রয়েড অ্যাপে ওয়ানসিগন্যাল লগইন সিগন্যাল পাঠানো
+                if (window.AndroidInterface) {
+                    window.AndroidInterface.loginOneSignal(user.uid);
+                }
+
+                // ২. রাইট বক্সের প্রোফাইল পিকচার সেট করা
+                const writeAvatar = document.getElementById('writeBoxAvatar');
+                if (writeAvatar) {
+                    writeAvatar.src = user.photoURL || 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+                }
+
+                // ৩. ওয়ানসিগন্যাল ওয়েব লগইন
                 window.OneSignalDeferred.push(function(OneSignal) {
                     OneSignal.login(user.uid);
                 });
@@ -1939,45 +1975,50 @@ if (user) {
                 // --- PRESENCE SYSTEM (ONLINE STATUS) ---
                 const connectedRef = ref(db, '.info/connected');
                 const myStatusRef = ref(db, 'status/' + user.uid);
-                const myPresenceRef = ref(db, 'presence/' + user.uid); // New for Story
+                const myPresenceRef = ref(db, 'presence/' + user.uid);
 
                 onValue(connectedRef, (snap) => {
                     if (snap.val() === true) {
-                        // Existing status logic
                         onDisconnect(myStatusRef).remove();
                         set(myStatusRef, { state: 'online', last_changed: Date.now() });
 
-                        // New Presence logic for Stories
                         set(myPresenceRef, { online: true, lastSeen: serverTimestamp() });
                         onDisconnect(myPresenceRef).set({ online: false, lastSeen: serverTimestamp() });
                     }
                 });
 
-                if(document.getElementById('profileView').style.display === 'block') {
-                    const params = new URLSearchParams(window.location.search);
-                    if(!params.get('uid') || params.get('uid') === user.uid) loadProfile();
-                }
-
-                // Initial Story Load
+                // ইনিশিয়াল স্টোরি লোড
                 if(document.getElementById('yourStoryBg')) {
                      document.getElementById('yourStoryBg').style.backgroundImage = `url('${user.photoURL}')`;
                 }
                 loadFacebookStories();
-const urlParams = new URLSearchParams(window.location.search);
-const targetUid = urlParams.get('uid');
-if(targetUid) {
-    navTo('profile'); // হোম পেজ লুকিয়ে প্রোফাইল পেজ ওপেন করবে
-    loadProfile(targetUid); // কাঙ্ক্ষিত ইউজারের ডেটা লোড করবে
-}
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const targetUid = urlParams.get('uid');
+                if(targetUid) {
+                    window.location.href = `profile.html?uid=${targetUid}`;
+                    return;
+                }
+
             } else {
+                // ৪. অ্যান্ড্রয়েড অ্যাপ থেকে ওয়ানসিগন্যাল লগআউট সিগন্যাল পাঠানো
+                if (window.AndroidInterface) {
+                    window.AndroidInterface.logoutOneSignal();
+                }
+
+                // ৫. ওয়ানসিগন্যাল ওয়েব লগআউট
                 window.OneSignalDeferred.push(function(OneSignal) {
                     OneSignal.logout();
                 });
 
                 window.blockedUsers = [];
                 localStorage.removeItem('IS_ADMIN');
-                document.getElementById('notifBadge').classList.remove('active');
-                document.getElementById('msgBadge').classList.remove('active');
+                
+                // লগআউট হলে নোটিফিকেশন ব্যাজ বন্ধ করা
+                const notifBadge = document.getElementById('notifBadge');
+                const msgBadge = document.getElementById('msgBadge');
+                if (notifBadge) notifBadge.classList.remove('active');
+                if (msgBadge) msgBadge.classList.remove('active');
             }
 
             updateAuthUI(user);
@@ -2616,8 +2657,15 @@ if(targetUid) {
                 let count = 0;
                 if(data) count = Object.values(data).filter(n => !n.read).length;
                 const badge = document.getElementById('notifBadge');
-                if(count > 0) { badge.innerText = count > 9 ? '9+' : count; badge.classList.add('active'); } 
-                else { badge.classList.remove('active'); }
+                // নাল-চেক (Null-check) যুক্ত করে নিশ্চিত করা হলো যাতে এলিমেন্টটি না থাকলে ক্র্যাশ না করে
+                if (badge) {
+                    if(count > 0) { 
+                        badge.innerText = count > 9 ? '9+' : count; 
+                        badge.classList.add('active'); 
+                    } else { 
+                        badge.classList.remove('active'); 
+                    }
+                }
             });
         }
 
@@ -2703,6 +2751,9 @@ if(targetUid) {
             onValue(ref(db, `user_chats/${uid}`), (snap) => {
                 const data = snap.val();
                 const badge = document.getElementById('msgBadge');
+                // চ্যাট নোটিফিকেশন ব্যাজ এলিমেন্ট ডমে লোড হওয়া নিশ্চিত করতে নাল-চেক
+                if (!badge) return;
+                
                 if(!data) {
                      badge.classList.remove('active');
                      return;
@@ -2724,7 +2775,7 @@ if(targetUid) {
         // index.html এ এই ফাংশনটি দিয়ে রিপ্লেস করুন
 window.checkAuth = function() {
     if (window.currentUser) return true;
-    
+
     // লগইন সফল হওয়ার পর ব্যবহারকারী যেন পুনরায় ঠিক একই পেজে ফেরত আসতে পারে
     const currentUrl = encodeURIComponent(window.location.href);
     window.location.href = `auth.html?redirect=${currentUrl}`;
@@ -2734,6 +2785,30 @@ window.checkAuth = function() {
         // --- FEED & SKELETONS ---
         onValue(ref(db, 'comments'), (snapshot) => { window.allComments = snapshot.val() || {}; });
 
+        // স্টোরিগুলোর জন্য এস্কেলেটন রেন্ডার করার ফাংশন
+        window.renderStorySkeletons = function() {
+            const bar = document.getElementById('storiesBar');
+            if (!bar) return;
+            
+            // Your Story কার্ডটি রেখে বাকি অংশ ক্লিয়ার করা হচ্ছে
+            const yourStoryCard = bar.firstElementChild;
+            bar.innerHTML = '';
+            if (yourStoryCard) {
+                bar.appendChild(yourStoryCard);
+            }
+            
+            let html = '';
+            for(let i=0; i<4; i++) {
+                html += `
+                <div class="story-skeleton-card">
+                    <div class="skeleton story-skeleton-avatar"></div>
+                    <div class="skeleton story-skeleton-name"></div>
+                </div>`;
+            }
+            // Your Story কার্ডের পাশে নতুন ৪টি এস্কেলেটন কার্ড যোগ করা হচ্ছে
+            bar.insertAdjacentHTML('beforeend', html);
+        };
+
         window.renderSkeletons = function() {
             const feed = document.getElementById('feed');
             let html = '';
@@ -2742,6 +2817,9 @@ window.checkAuth = function() {
             }
             feed.innerHTML = html;
         };
+        
+        // পেজ লোড হওয়ার সময় উভয় এস্কেলেটন রেন্ডার করানো হচ্ছে
+        window.renderStorySkeletons();
         window.renderSkeletons();
 
         window.loadPostsChunk = function(reset = false) {
@@ -3703,91 +3781,10 @@ window.endLongPress = function(e, key, btn) {
         window.viewUserProfile = function(uid) {
             if (!uid || uid === 'undefined') return;
             if(window.blockedUsers.includes(uid)) { return showToast("You have blocked this user."); }
-            navTo('profile'); loadProfile(uid);
+            // লোকাল প্রোফাইল ওপেন না করে সরাসরি কুয়েরি প্যারামিটারসহ profile.html এ পাঠানো হচ্ছে
+            window.location.href = `profile.html?uid=${uid}`;
         };
-      window.loadProfile = function(targetUid) {
-            const params = new URLSearchParams(window.location.search);
-            const urlUid = params.get('uid');
-            const uid = targetUid || urlUid || (window.currentUser ? window.currentUser.uid : null);
-            currentlyViewingUid = uid;
-
-            if(!uid) { document.getElementById('profileNameDisplay').innerText = "অতিথি"; return; }
-
-            if(window.blockedUsers.includes(uid)) {
-                document.getElementById('profileNameDisplay').innerText = "Blocked User";
-                document.getElementById('profileBioDisplay').innerText = "You have blocked this user.";
-                document.getElementById('profileContentFeed').innerHTML = '';
-                document.getElementById('profilePic').src = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
-                return;
-            }
-
-            if(history.pushState) { const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?uid=' + uid; window.history.pushState({path:newurl},'',newurl); }
-
-            const isMe = window.currentUser && window.currentUser.uid === uid;
-            const isAdmin = window.currentUser && window.currentUser.uid === ADMIN_UID;
-
-            const editBtn = document.getElementById('mainProfileEditBtn');
-            if(editBtn) editBtn.style.display = isMe ? 'flex' : 'none';
-
-            const followBtn = document.getElementById('profileFollowBtn');
-            const savedBtn = document.getElementById('profileSavedViewBtn');
-            const msgBtn = document.getElementById('profileMsgBtn');
-            const existingVerifyBtn = document.getElementById('adminVerifyBtn');
-
-            if(existingVerifyBtn) existingVerifyBtn.remove();
-
-            const tabDrafts = document.getElementById('tabDrafts');
-            const tabSaved = document.getElementById('tabSaved');
-
-            if (isMe) { 
-                followBtn.style.display = 'none'; 
-                msgBtn.style.display = 'none'; 
-                // নিজের প্রোফাইল হলে ড্রাফট ও সংরক্ষিত ট্যাব দেখাবে
-                if(tabDrafts) tabDrafts.style.display = 'inline-block';
-                if(tabSaved) tabSaved.style.display = 'inline-block';
-            } else {
-                followBtn.style.display = 'flex'; 
-                msgBtn.style.display = 'flex'; 
-                // অন্যের প্রোফাইল হলে ড্রাফট ও সংরক্ষিত ট্যাব লুকানো থাকবে
-                if(tabDrafts) tabDrafts.style.display = 'none';
-                if(tabSaved) tabSaved.style.display = 'none';
-
-                if (window.currentUser) { 
-                    get(ref(db, `followers/${uid}/${window.currentUser.uid}`)).then(snap => { 
-                        if (snap.exists()) { followBtn.classList.add('following'); followBtn.innerHTML = '<i class="fas fa-user-check"></i> Follow'; } 
-                        else { followBtn.classList.remove('following'); followBtn.innerHTML = '<i class="fas fa-user-plus"></i> Follow'; } 
-                    }); 
-                }
-            }
-
-            get(ref(db, `followers/${uid}`)).then(snap => { const count = snap.exists() ? Object.keys(snap.val()).length : 0; document.getElementById('statFollowers').innerText = count; });
-
-            get(ref(db, 'users/' + uid)).then(snap => {
-                const data = snap.val() || {};
-                document.getElementById('profilePic').src = data.photoURL || 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
-                document.getElementById('profileNameDisplay').innerHTML = `${data.displayName || "Unknown"} ${getVerifiedBadge(data.isVerified)}`;
-                document.getElementById('profileBioDisplay').innerText = data.bio || "";
-
-                if (data.coverPhoto || data.coverURL) { document.getElementById('profileCover').style.background = `url(${data.coverURL || data.coverPhoto}) center/cover no-repeat`; }
-                else { document.getElementById('profileCover').style.background = 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)'; }
-
-                renderSocialLinks(data.socialLinks);
-
-                if (isAdmin && !isMe) {
-                    const btn = document.createElement('button'); btn.id = 'adminVerifyBtn'; btn.className = 'btn-profile-action'; btn.style.display = 'flex'; btn.style.color = data.isVerified ? '#e74c3c' : '#1877f2'; btn.innerHTML = data.isVerified ? '<i class="fas fa-times-circle"></i> আন-ভেরিফাই' : '<i class="fas fa-check-circle"></i> ভেরিফাই করুন'; btn.onclick = () => toggleVerification(uid, data.isVerified);
-                    document.getElementById('profileActionContainer').appendChild(btn);
-                }
-
-                get(query(ref(db, 'posts'), orderByChild('uid'), equalTo(uid), limitToLast(20))).then(postSnap => {
-                     const userPosts = postSnap.val() ? Object.values(postSnap.val()) : [];
-                     document.getElementById('statPosts').innerText = userPosts.length;
-                     document.getElementById('statLikes').innerText = userPosts.reduce((s, p) => s + (p.likes||0), 0);
-                     window.currentUserProfilePosts = Object.entries(postSnap.val() || {}).map(([k,v]) => ({key:k, ...v})).reverse();
-                     switchProfileTab('posts', document.querySelector('.p-tab-btn.active'));
-                });
-            });
-        };
-
+      
         window.toggleVerification = function(targetUid, currentStatus) {
             const newStatus = !currentStatus;
             update(ref(db, `users/${targetUid}`), { isVerified: newStatus }).then(() => {
@@ -3834,52 +3831,48 @@ window.endLongPress = function(e, key, btn) {
         // --- NAVIGATION ---
         // --- NAVIGATION FUNCTION (UPDATED) ---
 window.navTo = function(page, btn, addToHistory = true) {
-    // 1. History Management
-    if (addToHistory) {
+    // ১. হিস্টোরি ম্যানেজমেন্ট
+    if (addToHistory && page !== 'profile') {
         window.history.pushState({ page: page }, "", "?page=" + page);
     }
 
-    // Home Refresh Logic
+    // হোম রিফ্রেশ লজিক
     if (page === 'home') {
         const feedView = document.getElementById('feedView');
-        if (feedView.style.display === 'block') {
+        if (feedView && feedView.style.display === 'block') {
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            // রিফ্রেশ লজিক যদি থাকে
             return;
         }
     }
 
+    // প্রোফাইল পেজে ক্লিক করলে সরাসরি profile.html এ রিডাইরেক্ট করবে
     if (page === 'profile') {
         if (!window.currentUser) { performLogin(); return; }
-        currentlyViewingUid = window.currentUser.uid; 
-        loadProfile(window.currentUser.uid);
+        window.location.href = `profile.html?uid=${window.currentUser.uid}`;
+        return;
     }
 
-    // UI Updates
+    // UI আপডেটস
     document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
     else {
-        // বাটন অটোমেটিক অ্যাক্টিভ করা
         const targetBtn = document.querySelector(`.nav-item[onclick*="'${page}'"]`);
         if(targetBtn) targetBtn.classList.add('active');
     }
 
     closeDetailView();
     const feedView = document.getElementById('feedView');
-    const profileView = document.getElementById('profileView');
 
-
-    feedView.style.display = 'none';
-    profileView.style.display = 'none';
+    if (feedView) {
+        feedView.style.display = 'none';
+    }
 
     if (page === 'home') {
-        feedView.style.display = 'block';
+        if (feedView) feedView.style.display = 'block';
         filterCategory('সব', document.querySelector('.cat-btn'));
     } else if (page === 'saved') {
-        feedView.style.display = 'block';
+        if (feedView) feedView.style.display = 'block';
         filterCategory('সংরক্ষিত');
-    } else if (page === 'profile') {
-        profileView.style.display = 'block';
     }
 };
 
@@ -4379,8 +4372,8 @@ window.addEventListener('popstate', (event) => {
 // প্রোফাইল ফটোতে ক্লিক করলে নিজের প্রোফাইলে নিয়ে যাওয়ার লজিক
 window.goToMyProfile = function() {
     if (window.currentUser) {
-        // viewUserProfile ফাংশন কল করে সরাসরি প্রোফাইলে পাঠানো হবে
-        viewUserProfile(window.currentUser.uid);
+        // সরাসরি ডেডিকেটেড profile.html ফাইলে রিডাইরেক্ট করবে
+        window.location.href = `profile.html?uid=${window.currentUser.uid}`;
     } else {
         checkAuth();
     }
