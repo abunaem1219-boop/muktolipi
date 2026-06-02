@@ -1,32 +1,94 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MuktoReels</title>
-<style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { overflow: hidden; background: #000; }
-  iframe { 
-    width: 100vw; 
-    height: 100vh; 
-    border: none; 
-  }
-  .back-btn {
-    position: fixed;
-    top: 12px;
-    left: 12px;
-    z-index: 9999;
-    background: rgba(0,0,0,0.6);
-    color: #fff;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 14px;
-    cursor: pointer;
-    backdrop-filter: blur(5px);
-  }
-  .back-btn:active { transform: scale(0.95); }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>App Viewer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+        
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            width: 45px;
+            height: 45px;
+            background: rgba(0, 0, 0, 0.6);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .back-button:hover {
+            background: rgba(0, 0, 0, 0.85);
+            transform: scale(1.1);
+        }
+        
+        .back-button svg {
+            width: 24px;
+            height: 24px;
+            color: white;
+        }
+        
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+    </style>
 </head>
 <body>
+    <!-- Floating Back Button -->
+    <button class="back-button" onclick="goBack()" title="ফিরে যান">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7" />
+        </svg>
+    </button>
+
+    <!-- Full Screen Iframe -->
+    <iframe 
+        src="https://app-c25t202r4we9.appmedo.com"
+        allowfullscreen
+        allow="camera; microphone; geolocation; clipboard-write; encrypted-media; fullscreen">
+    </iframe>
+
+    <script>
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.close();
+            }
+        }
+
+        // Escape key support
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "Escape") {
+                goBack();
+            }
+        });
+
+        // Prevent pull-to-refresh on mobile
+        document.body.style.overscrollBehavior = 'none';
+    </script>
+</body>
+</html>
