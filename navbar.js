@@ -10,10 +10,22 @@ document.addEventListener("DOMContentLoaded", function() {
             padding-top: 104px !important; 
             padding-bottom: 0 !important;
             font-family: 'Inter', 'Hind Siliguri', -apple-system, BlinkMacSystemFont, sans-serif;
+            transition: padding-top 0.2s ease; /* মসৃণ ট্রানজিশন */
+        }
+        body.header-only-tabs {
+            padding-top: 48px !important; /* শুধুমাত্র ট্যাব বার থাকলে প্যাডিং কমবে */
         }
         body.page-exit { animation: pageFadeOut 0.15s ease-in forwards; }
         @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes pageFadeOut { from { opacity: 1; } to { opacity: 0; } }
+
+        /* শুধুমাত্র ট্যাব মোড চালুর জন্য নিচের ক্লাসগুলো যোগ করা হলো */
+        .fb-header-container.only-tabs {
+            transform: translateY(0) !important; /* স্ক্রল করলেও ট্যাব হাইড হবে না */
+        }
+        .fb-header-container.only-tabs .fb-top-row {
+            display: none !important; /* মেইন ব্র্যান্ড হেডার হাইড হবে */
+        }
 
         /* হেডার কন্টেইনার */
         .fb-header-container {
@@ -28,12 +40,12 @@ document.addEventListener("DOMContentLoaded", function() {
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
         
-        /* ডার্ক থিম সাপোর্ট */
+        /* প্রফেশনাল চারকোল ডার্ক থিম সিঙ্ক */
         .dark-theme .fb-header-container,
         .dark .fb-header-container,
         [data-theme="dark"] .fb-header-container {
-            background: #18191a;
-            border-bottom: 1px solid #2f3031;
+            background: var(--bg-color) !important;
+            border-bottom: 1px solid var(--border-color) !important;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
         }
         
@@ -66,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .dark-theme .fb-brand-logo,
         .dark .fb-brand-logo,
         [data-theme="dark"] .fb-brand-logo {
-            color: #ffffff;
+            color: var(--text-color) !important;
         }
         
         .fb-brand-logo:active {
@@ -100,8 +112,8 @@ document.addEventListener("DOMContentLoaded", function() {
         .dark-theme .fb-circle-btn,
         .dark .fb-circle-btn,
         [data-theme="dark"] .fb-circle-btn {
-            background: #3a3b3c;
-            color: #e4e6eb;
+            background: var(--surface-color) !important;
+            color: var(--text-color) !important;
         }
         
         .fb-circle-btn:active {
@@ -142,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function() {
         .dark-theme .fb-badge,
         .dark .fb-badge,
         [data-theme="dark"] .fb-badge {
-            border: 2px solid #18191a;
+            border: 2px solid var(--bg-color);
         }
         
         .fb-badge.active {
@@ -269,39 +281,50 @@ document.addEventListener("DOMContentLoaded", function() {
             display: none;
         }
 
-        /* --- ফেসবুক স্টাইল প্রফেশনাল ডার্ক ড্রপডাউন --- */
-        .fb-create-dropdown {
+       .fb-create-dropdown {
             position: absolute;
             top: 54px;
             right: 16px;
-            width: 210px;
-            background: #242526; 
+            width: 140px; 
+            background: rgba(255, 255, 255, 0.75); 
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-radius: 14px;
-            box-shadow: 0 12px 28px 0 rgba(0, 0, 0, 0.35), 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
             display: none;
             flex-direction: column;
             padding: 6px;
             z-index: 100005;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.08); 
             transform-origin: top right;
             transition: opacity 0.15s ease, transform 0.15s ease;
             opacity: 0;
             transform: scale(0.9);
         }
+
+        /* ডার্ক থিম সিঙ্ক */
+        .dark-theme .fb-create-dropdown,
+        .dark .fb-create-dropdown,
+        [data-theme="dark"] .fb-create-dropdown {
+            background: rgba(36, 37, 38, 0.8) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+        }
+
         .fb-create-dropdown.show {
-            display: flex;
-            opacity: 1;
-            transform: scale(1);
+            display: flex !important;
+            opacity: 1 !important;
+            transform: scale(1) !important;
         }
         .fb-dropdown-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 10px 12px;
+            gap: 10px;
+            padding: 8px 10px;
             background: transparent;
             border: none;
-            color: #e4e6eb; 
-            font-size: 15px;
+            color: #1c1e21; 
+            font-size: 14.5px;
             font-weight: 600;
             text-align: left;
             cursor: pointer;
@@ -312,16 +335,35 @@ document.addEventListener("DOMContentLoaded", function() {
             border-radius: 8px;
         }
         .fb-dropdown-item:hover, .fb-dropdown-item:active {
-            background-color: rgba(255, 255, 255, 0.08);
+            background-color: rgba(0, 0, 0, 0.05);
         }
         .fb-dropdown-icon {
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #e4e6eb;
-            width: 24px;
-            height: 24px;
+            color: #65676b; 
+            width: 20px;
+            height: 20px;
             flex-shrink: 0;
+        }
+
+        .dark-theme .fb-dropdown-item,
+        .dark .fb-dropdown-item,
+        [data-theme="dark"] .fb-dropdown-item {
+            color: var(--text-color) !important;
+        }
+        .dark-theme .fb-dropdown-item:hover,
+        .dark-theme .fb-dropdown-item:active,
+        .dark .fb-dropdown-item:hover,
+        .dark .fb-dropdown-item:active,
+        [data-theme="dark"] .fb-dropdown-item:hover,
+        [data-theme="dark"] .fb-dropdown-item:active {
+            background-color: rgba(255, 255, 255, 0.08) !important;
+        }
+        .dark-theme .fb-dropdown-icon,
+        .dark .fb-dropdown-icon,
+        [data-theme="dark"] .fb-dropdown-icon {
+            color: var(--secondary-text) !important;
         }
     `;
     document.head.appendChild(navStyle);
@@ -395,36 +437,24 @@ document.addEventListener("DOMContentLoaded", function() {
             </div>
         </div>
         
-        <!-- দ্বিতীয় সারি (Navigation Tabs - 100% Free Icons) -->
+        <!-- দ্বিতীয় সারি (Navigation Tabs) -->
         <div class="fb-tab-row" id="fbTabRow">
-            <!-- হোম ট্যাব (Solid Version For Both, Opacity Handled) -->
             <button class="fb-tab-item ${isHome ? 'active' : ''}" data-tab="home" onclick="handleTabClick(this, 'index.html')" title="হোম">
                 <i class="fa-solid fa-house"></i>
             </button>
-
-            <!-- রিলস ট্যাব (Regular/Solid Free Both Available) -->
-            <!-- রিলস ট্যাব -->
             <button class="fb-tab-item ${isReels ? 'active' : ''}" data-tab="reels" onclick="handleTabClick(this, 'reels.html')" title="রিলস">
                 <i class="fa-solid fa-circle-play"></i>
             </button>
-
-            <!-- অ্যাপ স্টোর ট্যাব (Solid Version For Both, Opacity Handled) -->
-<button class="fb-tab-item ${isStore ? 'active' : ''}" data-tab="store" onclick="handleTabClick(this, 'appstore.html')" title="অ্যাপ স্টোর">
-    <i class="fa-solid fa-store"></i>
-</button>
-
-            <!-- ফ্রেন্ডস ট্যাব (Solid Version For Both, Opacity Handled) -->
-<button class="fb-tab-item ${isFriends ? 'active' : ''}" data-tab="friends" onclick="handleTabClick(this, 'friends.html')" title="বন্ধুরা">
-    <i class="fa-solid fa-user-group"></i>
-</button>
-
-          <!-- নোটিফিকেশন ট্যাব -->
-<button class="fb-tab-item ${isNotifications ? 'active' : ''}" data-tab="notifications" onclick="handleTabClick(this, 'notifications.html')" title="নোটিফিকেশন">
-    <i class="fa-regular fa-bell" id="notifBellIcon"></i>
-    <span id="notifBadge" class="fb-badge">0</span>
-</button>
-
-            <!-- মেনু ট্যাব -->
+            <button class="fb-tab-item ${isStore ? 'active' : ''}" data-tab="store" onclick="handleTabClick(this, 'appstore.html')" title="অ্যাপ স্টোর">
+                <i class="fa-solid fa-store"></i>
+            </button>
+            <button class="fb-tab-item ${isFriends ? 'active' : ''}" data-tab="friends" onclick="handleTabClick(this, 'friends.html')" title="বন্ধুরা">
+                <i class="fa-solid fa-user-group"></i>
+            </button>
+            <button class="fb-tab-item ${isNotifications ? 'active' : ''}" data-tab="notifications" onclick="handleTabClick(this, 'notifications.html')" title="নোটিফিকেশন">
+                <i class="fa-regular fa-bell" id="notifBellIcon"></i>
+                <span id="notifBadge" class="fb-badge">0</span>
+            </button>
             <button class="fb-tab-item" data-tab="menu" onclick="handleTabClick(this, 'menu'); handleMenuTab();" title="মেনু">
                 <i class="fa-solid fa-bars"></i>
             </button>
@@ -432,21 +462,21 @@ document.addEventListener("DOMContentLoaded", function() {
             <div class="fb-active-indicator" id="fbActiveIndicator"></div>
         </div>
     `;
-    
+
     document.body.insertBefore(fbHeader, document.body.firstChild);
 
     window.updateIndicator = function() {
         const activeTab = document.querySelector('.fb-tab-item.active');
         const indicator = document.getElementById('fbActiveIndicator');
         const tabRow = document.getElementById('fbTabRow');
-        
+
         if (activeTab && indicator && tabRow) {
             const activeRect = activeTab.getBoundingClientRect();
             const rowRect = tabRow.getBoundingClientRect();
-            
+
             const left = activeRect.left - rowRect.left;
             const width = activeRect.width;
-            
+
             const margin = width * 0.20; 
             indicator.style.left = `${left + margin}px`;
             indicator.style.width = `${width - (margin * 2)}px`;
@@ -465,7 +495,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     window.addEventListener('scroll', function() {
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        if (scrollTop > lastScrollTop && scrollTop > 60) {
+        const isOnlyTabs = headerContainer.classList.contains('only-tabs');
+        
+        // শুধুমাত্র হোমপেজে ডবল হেডার থাকলেই স্ক্রল-হাইড এনিমেশন কাজ করবে
+        if (!isOnlyTabs && scrollTop > lastScrollTop && scrollTop > 60) {
             headerContainer.classList.add('header-hide');
         } else {
             headerContainer.classList.remove('header-hide');
@@ -473,7 +506,6 @@ document.addEventListener("DOMContentLoaded", function() {
         lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; 
     }, { passive: true });
 
-    // ক্লিক ছাড়া বাইরে কোথাও স্পর্শ করলে পপআপ যেন বন্ধ হয়ে যায়
     document.addEventListener('click', function(e) {
         const dropdown = document.getElementById('fbCreateDropdown');
         if (dropdown && dropdown.classList.contains('show')) {
@@ -486,7 +518,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-// প্লাস বাটন চাপলে ডাইনামিক মেনু টগল করা
 window.handlePlusAction = function(event) {
     if (event) event.stopPropagation();
     const dropdown = document.getElementById('fbCreateDropdown');
@@ -494,7 +525,7 @@ window.handlePlusAction = function(event) {
         const isClosed = !dropdown.classList.contains('show');
         if (isClosed) {
             dropdown.style.display = 'flex';
-            dropdown.offsetHeight; // force reflow for smooth transition
+            dropdown.offsetHeight; 
             dropdown.classList.add('show');
         } else {
             dropdown.classList.remove('show');
@@ -503,7 +534,6 @@ window.handlePlusAction = function(event) {
     }
 };
 
-// মেনুর আইটেমে ক্লিকে অ্যাকশন হ্যান্ডলার (মাল্টি-পেজ কম্প্যাটিবিলিটিসহ)
 window.handleMenuClick = function(action) {
     const dropdown = document.getElementById('fbCreateDropdown');
     if (dropdown) {
@@ -549,39 +579,34 @@ window.handleMenuClick = function(action) {
     }
 };
 
-// ট্যাব পরিবর্তন ও আউটলাইন থেকে সলিড আইকন স্টেট টগল (Fixed for Free version)
 window.handleTabClick = function(tabElement, targetUrl) {
-    // নিষ্ক্রিয় ট্যাবগুলোর অপাসিটি কমানো এবং বেল আইকন রেগুলার মোডে ফিরিয়ে আনা
     document.querySelectorAll('.fb-tab-item').forEach(btn => {
         btn.classList.remove('active');
     });
-    
+
     const bellIcon = document.getElementById('notifBellIcon');
     if(bellIcon) {
         bellIcon.classList.remove('fa-solid');
         bellIcon.classList.add('fa-regular');
     }
-    
-    // বর্তমান ক্লিক করা ট্যাব সক্রিয় করা
+
     tabElement.classList.add('active');
-    
-    // যদি নোটিফিকেশন ট্যাবে ক্লিক করা হয়, তবে বেল আইকনটি সলিড (Solid) হবে
+
     if (tabElement.getAttribute('data-tab') === 'notifications' && bellIcon) {
         bellIcon.classList.remove('fa-regular');
         bellIcon.classList.add('fa-solid');
     }
-    
+
     if (typeof window.updateIndicator === 'function') {
         window.updateIndicator();
     }
 
-    // ভুল অংশগুলো ফেলে দিয়ে শুধু এই 'if' কন্ডিশনটুকু রাখবেন:
     if (targetUrl !== 'menu' && targetUrl !== 'notifications') {
         setTimeout(() => {
             window.smoothNavigate(targetUrl);
         }, 200);
     }
-}; // এই ব্র্যাকেট দিয়ে ফাংশনটি শেষ হবে
+};
 
 window.smoothNavigate = function(targetUrl) {
     const currentPath = window.location.pathname.split('/').pop() || 'index.html';
@@ -629,6 +654,28 @@ window.showReelsComingSoon = function() {
         icon: 'info',
         iconColor: '#1877f2',
         confirmButtonText: 'ঠিক আছে',
-        confirmButtonColor: '#1877f2',
+        confirmButtonColor: '#1877f2'
     });
 };
+
+window.setHeaderMode = function(onlyTabs) {
+    const header = document.getElementById('fbHeaderContainer');
+    if (!header) return;
+    
+    if (onlyTabs) {
+        header.classList.add('only-tabs');
+        document.body.classList.add('header-only-tabs');
+        header.classList.remove('header-hide');
+    } else {
+        header.classList.remove('only-tabs');
+        document.body.classList.remove('header-only-tabs');
+    }
+};
+
+setTimeout(() => {
+    const currentPath = window.location.pathname.split('/').pop() || '';
+    const isProfilePage = new URLSearchParams(window.location.search).get('page') === 'profile';
+    // index.html এবং খালি রুট (/) উভয় ক্ষেত্রকেই হোমপেজ হিসেবে ধরা হবে
+    const isHomePage = (currentPath === 'index.html' || currentPath === '') && !isProfilePage;
+    window.setHeaderMode(!isHomePage);
+}, 100);
