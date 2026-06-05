@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>লগইন / সাইনআপ - মুক্তলিপি</title>
-    
+
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,281 +12,306 @@
 
     <style>
         :root {
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-color: #0f172a;
-            --text-secondary: #64748b;
-            --primary-color: #1877f2;
-            --primary-gradient: linear-gradient(135deg, #1877f2 0%, #00c6ff 100%);
-            --border-color: #e2e8f0;
-            --input-bg: #f8fafc;
-        }
+    --bg-color: #f0f2f5; /* ফেসবুকের মতো প্রিমিয়াম সফট গ্রে ব্যাকগ্রাউন্ড */
+    --card-bg: #ffffff;
+    --text-color: #1c1e21;
+    --text-secondary: #606770;
+    --primary-color: #1877f2;
+    --primary-gradient: linear-gradient(135deg, #1877f2 0%, #1062d4 100%);
+    --border-color: #e4e6eb;
+    --input-bg: #f5f6f7;
+}
 
-        .dark-theme {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-color: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --border-color: #334155;
-            --input-bg: #0f172a;
-        }
+.dark-theme {
+    --bg-color: #0b1426;
+    --card-bg: #1e293b;
+    --text-color: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --border-color: #334155;
+    --input-bg: #0f172a;
+}
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', 'Hind Siliguri', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            box-sizing: border-box;
-            transition: background-color 0.3s, color 0.3s;
-        }
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', 'Hind Siliguri', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+    transition: background-color 0.3s;
+}
 
-        .auth-container {
-            width: 100%;
-            max-width: 420px;
-            padding: 20px;
-            box-sizing: border-box;
-        }
+/* স্মুথ ফেড-ইন অ্যানিমেশন */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
-        .auth-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 35px 30px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            position: relative;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
+.auth-container {
+    width: 100%;
+    max-width: 410px;
+    padding: 16px;
+    box-sizing: border-box;
+}
 
-        .auth-header {
-            text-align: center;
-            margin-bottom: 28px;
-        }
+.auth-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 30px 24px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+    position: relative;
+    transition: background-color 0.3s, border-color 0.3s;
+    animation: fadeInUp 0.4s ease-out;
+}
 
-        .brand-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(24, 119, 242, 0.1);
-            color: var(--primary-color);
-            border-radius: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            margin: 0 auto 16px;
-        }
+.auth-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
 
-        .auth-title {
-            font-size: 24px;
-            font-weight: 800;
-            margin: 0 0 6px 0;
-            letter-spacing: -0.5px;
-        }
+/* আইকন বক্স স্টাইল (নতুন ইমেজের জন্য সামঞ্জস্যপূর্ণ) */
+.brand-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-        .auth-subtitle {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin: 0;
-        }
+.brand-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
 
-        .google-btn {
-            width: 100%;
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            cursor: pointer;
-            color: var(--text-color);
-            font-weight: 700;
-            font-size: 14px;
-            transition: all 0.2s;
-            font-family: inherit;
-        }
+.auth-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 6px 0;
+    color: var(--text-color);
+}
 
-        .google-btn:hover {
-            background-color: var(--input-bg);
-            transform: translateY(-1px);
-        }
+.auth-subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0;
+}
 
-        .google-btn img {
-            width: 20px;
-            height: 20px;
-        }
+/* গুগল বাটন প্রিমিয়াম ডিজাইন */
+.google-btn {
+    width: 100%;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    color: var(--text-color);
+    font-weight: 600;
+    font-size: 14px;
+    transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
 
-        .divider {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            color: var(--text-secondary);
-            margin: 24px 0;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+.google-btn:hover {
+    background-color: var(--input-bg);
+}
 
-        .divider::before, .divider::after {
-            content: '';
-            flex: 1;
-            border-bottom: 1px solid var(--border-color);
-        }
+.google-btn:active {
+    transform: scale(0.98);
+}
 
-        .divider span {
-            padding: 0 10px;
-        }
+/* গুগলের লোগো সাইজ নিয়ন্ত্রণ (এটি বড় হওয়া রোধ করবে) */
+.google-btn img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
 
-        .form-group {
-            margin-bottom: 18px;
-            text-align: left;
-        }
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: var(--text-secondary);
+    margin: 20px 0;
+    font-size: 12px;
+    font-weight: 500;
+}
 
-        .input-label {
-            display: block;
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--text-color);
-            margin-bottom: 8px;
-        }
+.divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--border-color);
+}
 
-        .input-wrapper {
-            display: flex;
-            align-items: center;
-            background-color: var(--input-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 2px 8px;
-            transition: all 0.3s;
-        }
+.divider span {
+    padding: 0 10px;
+}
 
-        .input-wrapper:focus-within {
-            background-color: var(--card-bg);
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 4px rgba(24, 119, 242, 0.1);
-        }
+.form-group {
+    margin-bottom: 16px;
+}
 
-        .input-wrapper i {
-            color: var(--text-secondary);
-            padding: 0 10px;
-            font-size: 16px;
-        }
+.input-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 6px;
+}
 
-        .auth-input {
-            flex: 1;
-            border: none;
-            background: transparent;
-            padding: 12px 6px;
-            font-size: 14px;
-            color: var(--text-color);
-            outline: none;
-            font-family: inherit;
-        }
+/* ইনপুট ফিল্ড ও আইকন সামঞ্জস্যতা */
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 2px 10px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
 
-        .input-suffix {
-            color: var(--text-secondary);
-            font-size: 14px;
-            padding-right: 10px;
-            font-weight: 600;
-        }
+.input-wrapper:focus-within {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.15);
+    background-color: var(--card-bg);
+}
 
-        .password-toggle {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            padding: 10px;
-            font-size: 16px;
-        }
+.input-wrapper i {
+    color: var(--text-secondary);
+    font-size: 15px;
+}
 
-        .forgot-pass {
-            text-align: right;
-            display: block;
-            font-size: 12px;
-            color: var(--primary-color);
-            margin-top: -10px;
-            margin-bottom: 20px;
-            cursor: pointer;
-            font-weight: 600;
-            text-decoration: none;
-        }
+.auth-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 11px 8px;
+    font-size: 14px;
+    color: var(--text-color);
+    outline: none;
+    font-family: inherit;
+}
 
-        .submit-btn {
-            width: 100%;
-            padding: 14px;
-            background: var(--primary-gradient);
-            color: white;
-            border: none;
-            border-radius: 14px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-family: inherit;
-        }
+.input-suffix {
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 600;
+}
 
-        .submit-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 20px rgba(24, 119, 242, 0.3);
-        }
+.password-toggle {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 6px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-        .auth-footer {
-            text-align: center;
-            margin-top: 24px;
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
+.forgot-pass {
+    text-align: right;
+    display: block;
+    font-size: 12px;
+    color: var(--primary-color);
+    margin-top: -8px;
+    margin-bottom: 18px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+}
 
-        .switch-link {
-            color: var(--primary-color);
-            font-weight: 700;
-            cursor: pointer;
-            text-decoration: none;
-            margin-left: 5px;
-        }
+/* সাবমিট বাটন */
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary-gradient);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
 
-        .switch-link:hover {
-            text-decoration: underline;
-        }
+.submit-btn:hover {
+    filter: brightness(0.95);
+}
 
-        /* Back to Home Button */
-        .back-home {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            transition: color 0.2s;
-        }
+.submit-btn:active {
+    transform: scale(0.98);
+}
 
-        .back-home:hover {
-            color: var(--text-color);
-        }
+.auth-footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.switch-link {
+    color: var(--primary-color);
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.switch-link:hover {
+    text-decoration: underline;
+}
+
+.back-home {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    transition: color 0.2s;
+}
+
+.back-home:hover {
+    color: var(--text-color);
+}
     </style>
 </head>
 <body>
 
     <div class="auth-container">
         <a href="index.html" class="back-home"><i class="fas fa-arrow-left"></i> হোমে ফিরে যান</a>
-        
+
         <div class="auth-card">
             <!-- LOGIN VIEW -->
             <div id="loginView">
                 <div class="auth-header">
-                    <div class="brand-icon"><i class="fas fa-feather-alt"></i></div>
+                    <div class="brand-icon">
+    <img src="icon.png" alt="মুক্তলিপি লোগো">
+</div>
                     <h2 class="auth-title">স্বাগতম!</h2>
                     <p class="auth-subtitle">আপনার একাউন্টে লগইন করুন</p>
                 </div>
@@ -303,7 +328,6 @@
                     <div class="input-wrapper">
                         <i class="fas fa-user"></i>
                         <input type="text" id="loginUsername" placeholder="username" class="auth-input" autocomplete="off">
-                        <span class="input-suffix">@gmail.com</span>
                     </div>
                 </div>
 
@@ -332,7 +356,9 @@
             <!-- SIGNUP VIEW -->
             <div id="signupView" style="display: none;">
                 <div class="auth-header">
-                    <div class="brand-icon"><i class="fas fa-user-plus"></i></div>
+<div class="brand-icon">
+    <img src="icon.png" alt="মুক্তলিপি লোগো">
+</div>
                     <h2 class="auth-title">নতুন একাউন্ট</h2>
                     <p class="auth-subtitle">মুক্তলিপিতে যোগ দিতে একাউন্ট তৈরি করুন</p>
                 </div>
@@ -357,7 +383,6 @@
                     <div class="input-wrapper">
                         <i class="fas fa-user"></i>
                         <input type="text" id="signupUsername" placeholder="username" class="auth-input" autocomplete="off">
-                        <span class="input-suffix">@gmail.com</span>
                     </div>
                 </div>
 
@@ -507,26 +532,60 @@
             }
         }
 
-        // Reset Password
-        window.resetPassword = async function() {
-            const { value: username } = await Swal.fire({
-                title: 'পাসওয়ার্ড রিসেট',
-                input: 'text',
-                inputPlaceholder: 'আপনার ইউজারনেমটি লিখুন',
-                showCancelButton: true,
-                confirmButtonText: 'রিসেট লিংক পাঠান'
-            });
-
-            if (username) {
-                const email = `${username.trim()}@gmail.com`;
-                try {
-                    await sendPasswordResetEmail(auth, email);
-                    Swal.fire('সফল', 'পাসওয়ার্ড রিসেট লিংক আপনার ইমেইলে পাঠানো হয়েছে।', 'success');
-                } catch (e) {
-                    Swal.fire('ত্রুটি', 'কোনো একাউন্ট পাওয়া যায়নি', 'error');
-                }
+// Reset Password (উন্নত ও ত্রুটিমুক্ত সংস্করণ)
+window.resetPassword = async function() {
+    const { value: userInput } = await Swal.fire({
+        title: 'পাসওয়ার্ড রিসেট',
+        text: 'আপনার ইউজারনেম অথবা ইমেইল এড্রেসটি লিখুন',
+        input: 'text',
+        inputPlaceholder: 'username অথবা email@gmail.com',
+        showCancelButton: true,
+        confirmButtonText: 'রিসেট লিংক পাঠান',
+        cancelButtonText: 'বাতিল',
+        confirmButtonColor: '#1877f2', // আপনার থিমের সাথে মিল রেখে ব্লু কালার
+        inputValidator: (value) => {
+            if (!value) {
+                return 'অনুগ্রহ করে ইউজারনেম বা ইমেইল লিখুন!';
             }
         }
+    });
+
+    if (userInput) {
+        const trimmedInput = userInput.trim();
+        let email = '';
+
+        // ব্যবহারকারী যদি সম্পূর্ণ ইমেইল লিখেন (@ চিহ্ন থাকে)
+        if (trimmedInput.includes('@')) {
+            email = trimmedInput;
+        } else {
+            // শুধুমাত্র ইউজারনেম লিখলে @gmail.com যোগ হবে
+            email = `${trimmedInput}@gmail.com`;
+        }
+
+        Swal.fire({
+            title: 'লিংক পাঠানো হচ্ছে...',
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading()
+        });
+
+        try {
+            await sendPasswordResetEmail(auth, email);
+            Swal.fire({
+                icon: 'success',
+                title: 'সফল!',
+                text: 'পাসওয়ার্ড রিসেট লিংকটি আপনার ইমেইলে পাঠানো হয়েছে। অনুগ্রহ করে ইনবক্স বা স্প্যাম ফোল্ডার চেক করুন।',
+                confirmButtonColor: '#1877f2'
+            });
+        } catch (e) {
+            Swal.fire({
+                icon: 'error',
+                title: 'ব্যর্থ হয়েছে',
+                text: 'এই তথ্য দিয়ে কোনো অ্যাকাউন্ট খুঁজে পাওয়া যায়নি।',
+                confirmButtonColor: '#1877f2'
+            });
+        }
+    }
+}
     </script>
 </body>
 </html>
