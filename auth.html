@@ -412,7 +412,7 @@ body {
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail, signInWithCredential } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBZtycgadrngON2WEwvIE7ERPYxdkDVfFM",
@@ -460,9 +460,40 @@ body {
 
         // Google Login
         window.loginWithGoogle = async function() {
+            if (window.AndroidInterface) {
+                // অ্যান্ড্রয়েড অ্যাপে থাকলে নেটিভ গুগল সাইন-ইন সচল করবে
+                window.AndroidInterface.triggerGoogleLogin();
+            } else {
+                // সাধারণ ব্রাউজারে থাকলে আগের পপ-আপ লগইন কাজ করবে
+                Swal.fire({title: 'প্রবেশ করা হচ্ছে...', allowOutsideClick: false, didOpen: () => Swal.showLoading()});
+                try {
+                    const result = await signInWithPopup(auth, provider);
+                    const user = result.user;
+                    const userRef = ref(db, 'users/' + user.uid);
+                    const snap = await get(userRef);
+                    if(!snap.exists()) {
+                        await set(userRef, {
+                            displayName: user.displayName,
+                            email: user.email,
+                            photoURL: user.photoURL,
+                            bio: "আমি মুক্তলিপি ব্যবহার করছি।",
+                            createdAt: new Date().toISOString(),
+                            isVerified: false
+                        });
+                    }
+                    Swal.fire({icon: 'success', title: 'সফল লগইন!', timer: 1500, showConfirmButton: false});
+                    setTimeout(() => window.location.href = redirectUrl, 1500);
+                } catch (error) {
+                    Swal.fire('ত্রুটি', 'গুগল দিয়ে প্রবেশ করতে ব্যর্থ হয়েছে', 'error');
+                }
+            }
+        }
+// অ্যান্ড্রয়েড অ্যাপ থেকে প্রাপ্ত গুগল আইডি টোকেন দিয়ে লগইন (নতুন সংযোজন)
+        window.loginWithAndroidGoogleToken = async function(idToken) {
             Swal.fire({title: 'প্রবেশ করা হচ্ছে...', allowOutsideClick: false, didOpen: () => Swal.showLoading()});
             try {
-                const result = await signInWithPopup(auth, provider);
+                const credential = GoogleAuthProvider.credential(idToken);
+                const result = await signInWithCredential(auth, credential);
                 const user = result.user;
                 const userRef = ref(db, 'users/' + user.uid);
                 const snap = await get(userRef);
@@ -479,7 +510,8 @@ body {
                 Swal.fire({icon: 'success', title: 'সফল লগইন!', timer: 1500, showConfirmButton: false});
                 setTimeout(() => window.location.href = redirectUrl, 1500);
             } catch (error) {
-                Swal.fire('ত্রুটি', 'গুগল দিয়ে প্রবেশ করতে ব্যর্থ হয়েছে', 'error');
+                Swal.close();
+                Swal.fire('ত্রুটি', 'গুগল সাইন-ইন করতে ব্যর্থ হয়েছে', 'error');
             }
         }
 
