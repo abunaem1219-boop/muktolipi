@@ -920,6 +920,11 @@ wrapper.innerHTML = `
         set(ref(db, `chats/${activeChatId}/typing/${currentUser.uid}`), false);
     }
     
+    // সক্রিয় ট্র্যাকিং রিমুভ করা (চ্যাট বন্ধ করার সাথে সাথে)
+    if (window.AndroidInterface) {
+        window.AndroidInterface.setActiveChatPartner("");
+    }
+
     // চ্যাট রুম বন্ধ করার সাথে সাথে সকল ফায়ারবেস লিসেনার রিমুভ করা হচ্ছে
     if (unsubscribeMessages) unsubscribeMessages();
     if (unsubscribePresence) unsubscribePresence();
@@ -968,6 +973,11 @@ wrapper.innerHTML = `
                     });
                 });
 
+                // অপর প্রান্তের ব্যবহারকারীকে ওয়ানসিগন্যাল/এফসিএম এর মাধ্যমে নোটিফিকেশন পাঠানো
+                if (window.AndroidInterface) {
+                    window.AndroidInterface.sendChatNotification(activePartnerUid, txt, currentUser.displayName, activeChatId);
+                }
+
                 input.value = '';
                 set(ref(db, `chats/${activeChatId}/typing/${currentUser.uid}`), false);
             });
@@ -987,7 +997,6 @@ wrapper.innerHTML = `
         window.handleFooterEnter = function(e) {
             if (e.key === 'Enter') sendPrivateMessage();
         };
-
         // --- Message Context Actions (Reactions & Unsend) ---
         window.showMessageMenu = function(msgId, senderUid, event) {
             const isMe = senderUid === currentUser.uid;
@@ -1294,6 +1303,10 @@ window.handleChatDeletionProcess = function() {
                 // খ) নিজের ইনবক্স রিসেন্ট কন্টাক্ট নোড ডিলিট
                 remove(ref(db, `user_chats/${currentUser.uid}/${activePartnerUid}`)).then(() => {
                     showToast("চ্যাট মুছে ফেলা হয়েছে 🗑️");
+// সক্রিয় ট্র্যাকিং রিমুভ করা
+if (window.AndroidInterface) {
+    window.AndroidInterface.setActiveChatPartner("");
+}
                     closeActiveChatRoom();
                 });
             });
@@ -1347,6 +1360,10 @@ window.showFriendNoteDetail = function(name, avatar, noteText, partnerUid) {
         hideClass: { popup: 'premium-hide-animation' }
     }).then((result) => {
         if (result.isConfirmed) {
+// চ্যাট পার্টনারকে সক্রিয় ট্র্যাকিংয়ে রাখা (যাতে এই ইউজারের ডাবল নোটিফিকেশন না আসে)
+if (window.AndroidInterface) {
+    window.AndroidInterface.setActiveChatPartner(partnerUid);
+}
             openChatWithPartner(partnerUid);
         }
     });
