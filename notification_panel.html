@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>মুক্তলিপি - নোটিফিকেশন কন্ট্রোল প্যানেল</title>
+    
+    <!-- Tailwind CSS for Styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Inter', 'Hind Siliguri', sans-serif;
+            background-color: #f0f2f5;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="flex items-center gap-4 mb-8 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+            <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-content-center text-blue-600 text-2xl shadow-inner">
+                <i class="fa-solid fa-paper-plane"></i>
+            </div>
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">মুক্তলিপি ডায়েরি</h1>
+                <p class="text-sm text-gray-500 font-medium">পুশ নোটিফিকেশন ব্রডকাস্টার প্যানেল</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left: Input Form Panel -->
+            <div class="lg:col-span-2 bg-white p-6 md:p-8 rounded-3xl border border-gray-200 shadow-sm flex flex-col gap-6">
+                <h2 class="text-lg font-bold text-gray-800 border-b border-gray-100 pb-3"><i class="fa-solid fa-sliders text-blue-600 mr-2"></i> নোটিফিকেশন কনফিগার করুন</h2>
+                
+                <!-- Target Audience Selector -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">কাকে পাঠাতে চান? (Target Audience)</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <button type="button" id="btnTargetAll" onclick="setTarget('all')" class="py-3 px-4 rounded-xl border-2 border-blue-600 bg-blue-50 text-blue-700 font-bold text-sm flex items-center justify-center gap-2 transition-all">
+                            <i class="fa-solid fa-users"></i> সব ব্যবহারকারীকে (Broadcast)
+                        </button>
+                        <button type="button" id="btnTargetSingle" onclick="setTarget('single')" class="py-3 px-4 rounded-xl border border-gray-300 bg-white text-gray-700 font-bold text-sm flex items-center justify-center gap-2 transition-all">
+                            <i class="fa-solid fa-user-tag"></i> নির্দিষ্ট ইউজারকে (Targeted)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Specific User ID Input (Hidden by default) -->
+                <div id="singleUserContainer" class="hidden animate-fadeIn">
+                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">ইউজারের ফায়ারবেস UID (External ID)</label>
+                    <input type="text" id="targetUid" placeholder="যেমন: 5tgxvUP6z9bgC2DSRoi1hsDFvzW2" class="w-100 p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:border-blue-600 focus:bg-white w-full">
+                </div>
+
+                <!-- Notification Title -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">নোটিফিকেশনের শিরোনাম (Title)</label>
+                    <input type="text" id="notifTitle" placeholder="আসসালামুআলাইকুম! শুভ সকাল" oninput="updatePreview()" class="w-100 p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:border-blue-600 focus:bg-white w-full">
+                </div>
+
+                <!-- Notification Message -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">নোটিফিকেশনের বার্তা (Message Body)</label>
+                    <textarea id="notifMessage" rows="3" placeholder="আপনার জন্য একটি বিশেষ অফার অপেক্ষা করছে..." oninput="updatePreview()" class="w-100 p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:border-blue-600 focus:bg-white w-full"></textarea>
+                </div>
+
+                <!-- Launch URL -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">ক্লিক করলে কোন পেজ ওপেন হবে? (Launch URL)</label>
+                    <input type="url" id="notifUrl" placeholder="https://muktolipi-pink.vercel.app?post=optional_id" class="w-100 p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:border-blue-600 focus:bg-white w-full">
+                </div>
+
+                <!-- Big Image URL -->
+                <div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">নোটিফিকেশনের বড় ছবি (Optional Big Image URL)</label>
+                    <input type="url" id="notifImage" placeholder="https://domain.com/banner.png" oninput="updatePreview()" class="w-100 p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:border-blue-600 focus:bg-white w-full">
+                </div>
+
+                <!-- Send Button -->
+                <button type="button" onclick="sendPushNotification()" class="mt-4 w-full py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold rounded-xl shadow-lg shadow-blue-500/25 transition-all transform active:scale-[0.98] flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> নোটিফিকেশন পাঠান (Send Push)
+                </button>
+            </div>
+
+            <!-- Right: Real-time Android Notification Preview -->
+            <div class="flex flex-col gap-6">
+                <!-- Preview Panel -->
+                <div class="bg-gray-800 text-white p-6 rounded-3xl border border-gray-700 shadow-lg">
+                    <h2 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 border-b border-gray-700 pb-2"><i class="fa-solid fa-mobile-screen mr-2 text-green-400"></i> Live Android Preview</h2>
+                    
+                    <!-- Simulated Notification Drawer -->
+                    <div class="bg-[#1f2937] p-4 rounded-2xl border border-gray-700 shadow-md">
+                        <div class="flex items-start gap-3">
+                            <!-- App icon -->
+                            <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+                                <img src="icon.png" class="w-8 h-8 object-contain" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
+                            </div>
+                            
+                            <!-- Texts -->
+                            <div class="flex-1 min-w-0">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-xs font-bold text-gray-300">মুক্তলিপি</span>
+                                    <span class="text-[10px] text-gray-500">Just now</span>
+                                </div>
+                                <h3 id="prevTitle" class="text-sm font-bold text-white truncate">আসসালামুআলাইকুম! শুভ সকাল</h3>
+                                <p id="prevMessage" class="text-xs text-gray-400 line-clamp-3 mt-1">আপনার জন্য আমাদের বিশেষ অফার অপেক্ষা করছে। আজই অ্যাপটি খুলে দেখুন কী কী সারপ্রাইজ আছে আপনার জন্য!</p>
+                            </div>
+                        </div>
+
+                        <!-- Big Image Preview inside notification -->
+                        <div id="prevBigImageContainer" class="mt-3 hidden">
+                            <img id="prevBigImage" src="" class="w-full h-32 object-cover rounded-xl border border-gray-700">
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex gap-4 mt-3 pt-3 border-t border-gray-700/50 text-xs font-bold text-blue-400">
+                            <span class="cursor-pointer hover:underline">Reply</span>
+                            <span class="cursor-pointer hover:underline">Open app</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Response / Console Panel -->
+                <div class="bg-black text-green-400 p-6 rounded-3xl font-mono text-xs shadow-lg border border-gray-900 flex-1 min-h-[180px] flex flex-col">
+                    <h2 class="text-gray-500 font-bold uppercase tracking-wider mb-2 border-b border-gray-900 pb-2"><i class="fa-solid fa-terminal mr-2"></i> Server Response Console</h2>
+                    <div id="consoleLog" class="flex-1 overflow-y-auto whitespace-pre-wrap leading-relaxed">
+[System] কনসোল রেডি। নোটিফিকেশন পাঠানোর পর সার্ভারের রেসপন্স এইখানে দেখতে পাবেন...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Engine -->
+    <script>
+        const ONESIGNAL_APP_ID = "d2470015-4ed1-4274-96bd-1654f86cb54a";
+        const ONESIGNAL_REST_KEY = "os_v2_app_2jdqafko2fbhjfv5czkpq3fvjiqp5yq2byzeeemgeysttodrzyklib3ykxct6c7k6tmdequnkrba5ercnk7kdn6wrsonxnywj2kna5q";
+        
+        let activeTarget = 'all'; // Default target is Broadcast
+
+        function setTarget(type) {
+            activeTarget = type;
+            const btnAll = document.getElementById('btnTargetAll');
+            const btnSingle = document.getElementById('btnTargetSingle');
+            const singleContainer = document.getElementById('singleUserContainer');
+
+            if (type === 'all') {
+                btnAll.className = "py-3 px-4 rounded-xl border-2 border-blue-600 bg-blue-50 text-blue-700 font-bold text-sm flex items-center justify-center gap-2 transition-all";
+                btnSingle.className = "py-3 px-4 rounded-xl border border-gray-300 bg-white text-gray-700 font-bold text-sm flex items-center justify-center gap-2 transition-all";
+                singleContainer.classList.add('hidden');
+            } else {
+                btnSingle.className = "py-3 px-4 rounded-xl border-2 border-blue-600 bg-blue-50 text-blue-700 font-bold text-sm flex items-center justify-center gap-2 transition-all";
+                btnAll.className = "py-3 px-4 rounded-xl border border-gray-300 bg-white text-gray-700 font-bold text-sm flex items-center justify-center gap-2 transition-all";
+                singleContainer.classList.remove('hidden');
+            }
+        }
+
+        // রিয়েল-টাইমে প্রিভিউ আপডেট করার ফাংশন
+        function updatePreview() {
+            const title = document.getElementById('notifTitle').value || 'আসসালামুআলাইকুম! শুভ সকাল';
+            const message = document.getElementById('notifMessage').value || 'আপনার জন্য আমাদের বিশেষ অফার অপেক্ষা করছে। আজই অ্যাপটি খুলে দেখুন কী কী সারপ্রাইজ আছে আপনার জন্য!';
+            const imgUrl = document.getElementById('notifImage').value;
+
+            document.getElementById('prevTitle').innerText = title;
+            document.getElementById('prevMessage').innerText = message;
+
+            const bigImageContainer = document.getElementById('prevBigImageContainer');
+            const bigImage = document.getElementById('prevBigImage');
+
+            if (imgUrl && (imgUrl.startsWith('http://') || imgUrl.startsWith('https://'))) {
+                bigImage.src = imgUrl;
+                bigImageContainer.classList.remove('hidden');
+            } else {
+                bigImageContainer.classList.add('hidden');
+            }
+        }
+
+        function logToConsole(message, isError = false) {
+            const consoleLog = document.getElementById('consoleLog');
+            const colorClass = isError ? 'text-red-400' : 'text-green-400';
+            consoleLog.innerHTML = `<span class="${colorClass}">${message}</span>`;
+            consoleLog.scrollTop = consoleLog.scrollHeight;
+        }
+
+        // ওয়ানসিগন্যাল এপিআই কল ফাংশন
+        async function sendPushNotification() {
+            const title = document.getElementById('notifTitle').value.trim();
+            const message = document.getElementById('notifMessage').value.trim();
+            const launchUrl = document.getElementById('notifUrl').value.trim() || "https://muktolipi-pink.vercel.app";
+            const bigImage = document.getElementById('notifImage').value.trim();
+            const targetUid = document.getElementById('targetUid').value.trim();
+
+            if (!title || !message) {
+                alert("শিরোনাম এবং বার্তা অবশ্যই পূরণ করতে হবে!");
+                return;
+            }
+
+            if (activeTarget === 'single' && !targetUid) {
+                alert("নির্দিষ্ট ইউজারের ফায়ারবেস UID দিতে হবে!");
+                return;
+            }
+
+ logToConsole("[System] ওয়ানসিগন্যাল সার্ভারের সাথে সংযোগ স্থাপন করা হচ্ছে...");
+
+            // ওয়ানসিগন্যাল V5 সঠিক লিঙ্ক এবং প্রক্সি গেটওয়ে (প্যারামিটার হেডারসহ)
+            const targetUrl = "https://api.onesignal.com/notifications";
+            const apiEndpoint = "https://corsproxy.io/?url=" + encodeURIComponent(targetUrl) + 
+                                "&reqHeaders=authorization:Key%20" + ONESIGNAL_REST_KEY +
+                                "&reqHeaders=content-type:application/json";            
+            // পেলোড রিকন্সট্রাকশন
+            let payload = {
+                app_id: ONESIGNAL_APP_ID,
+                target_channel: "push",
+                contents: { en: message },
+                headings: { en: title },
+                url: launchUrl,
+                priority: 10,
+                android_visibility: 1
+            };
+
+            if (bigImage) {
+                payload.big_picture = bigImage;
+            }
+
+            // টার্গেট অনুযায়ী ডেটা স্ট্রাকচার পরিবর্তন
+            if (activeTarget === 'all') {
+                payload.included_segments = ["Subscribed Users"]; // ওয়ানসিগন্যাল গ্লোবাল সেগমেন্ট
+            } else {
+                payload.include_aliases = { external_id: [targetUid] }; // সিঙ্গেল ইউজার
+            }
+
+            try {
+                const response = await fetch(apiEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json; charset=UTF-8',
+                        // ওয়ানসিগন্যাল নতুন V2 চাবির নিয়ম অনুযায়ী "Key" প্রিফিক্স ব্যবহার করা হয়েছে [1.1.4, 2]
+                        'Authorization': 'Key ' + ONESIGNAL_REST_KEY
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    logToConsole(`[Success] নোটিফিকেশন পাঠানো সম্পন্ন হয়েছে!\n\nসার্ভার রেসপন্স:\n${JSON.stringify(data, null, 2)}`);
+                    alert("নোটিফিকেশন সফলভাবে পাঠানো হয়েছে! ✅");
+                } else {
+                    logToConsole(`[Error] ওয়ানসিগন্যাল সার্ভার ত্রুটি!\n\nকোড: ${response.status}\nবার্তা:\n${JSON.stringify(data, null, 2)}`, true);
+                    alert("নোটিফিকেশন পাঠানো ব্যর্থ হয়েছে! ❌");
+                }
+            } catch (error) {
+                logToConsole(`[Network Error] সার্ভারে রিকোয়েস্ট পাঠানো যায়নি!\n\n${error.message}`, true);
+                alert("নেটওয়ার্ক সংযোগ পরীক্ষা করুন! ❌");
+            }
+        }
+    </script>
+</body>
+</html>
