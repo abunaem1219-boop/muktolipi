@@ -2020,7 +2020,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, push, set, onValue, update, remove, get, query, orderByKey, limitToLast, endBefore, equalTo, orderByChild, onChildAdded, onDisconnect, runTransaction, off, startAt, endAt, limitToFirst, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, updateProfile, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, updateProfile, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signInWithCredential } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         // Import External Stories Module
 import { initStoriesSystem, openStoryViewer, closeStoryViewer } from "./stories.js";
         const ADMIN_UID = "5tgxvUP6z9bgC2DSRoi1hsDFvzW2"; 
@@ -2279,14 +2279,14 @@ initStoriesSystem(db, auth);
         });
 
         window.performLogin = () => {
-     if (window.AndroidInterface) {
-         // অ্যান্ড্রয়েডের নেটিভ গুগল লগইন উইন্ডো খোলা হবে (CORS ও ব্রাউজার জ্যাম এড়াতে)
-         window.AndroidInterface.triggerGoogleLogin();
-     } else {
-         // সাধারণ কম্পিউটার বা গুগল ক্রোম ব্রাউজার থেকে চললে আগের পপ-আপ লগইন হবে
-         signInWithPopup(auth, provider).catch(console.error);
-     }
- };
+    if (window.AndroidInterface) {
+        // মোবাইল আইডিই অ্যাপে থাকলে নেটিভ গুগল লগইন উইন্ডো সচল করবে
+        window.AndroidInterface.triggerGoogleLogin();
+    } else {
+        // পিসি বা সাধারণ ব্রাউজার থেকে চললে আগের ফায়ারবেস পপ-আপ কাজ করবে
+        signInWithPopup(auth, provider).catch(console.error);
+    }
+};
 
         window.logoutFunc = () => signOut(auth).then(() => { showToast("লগআউট হয়েছে"); window.location.href = window.location.origin; });
 
@@ -4250,86 +4250,95 @@ if (cachedPostsData && typeof window.renderFeed === 'function') {
     window.renderFeed(window.allPosts); // চোখের পলকে অফলাইন ক্যাশ রেন্ডার হবে
 }
 
-// ব্যাকগ্রাউন্ডে ফায়ারবেস থেকে নতুন ডাটা লোড
-loadPostsChunk(true);
-</script>
- 
-<script>
-// প্রোফাইল ফটোতে ক্লিক করলে নিজের প্রোফাইলে নিয়ে যাওয়ার লজিক
-window.goToMyProfile = function() {
-    if (window.currentUser) {
-        // সরাসরি ডেডিকেটেড profile.html ফাইলে রিডাইরেক্ট করবে
-        window.location.href = `profile.html?uid=${window.currentUser.uid}`;
-    } else {
-        checkAuth();
-    }
-}; 
-// অ্যান্ড্রয়েড অ্যাপ থেকে প্রাপ্ত গুগল আইডি টোকেন দিয়ে ১-ক্লিকে ফায়ারবেসে লগইন
-     window.loginWithAndroidGoogleToken = function(idToken) {
-         Swal.fire({title: 'লগইন করা হচ্ছে...', allowOutsideClick: false, didOpen: () => Swal.showLoading()});
-         const credential = GoogleAuthProvider.credential(idToken);
-         signInWithCredential(auth, credential)
-             .then((result) => {
-                 Swal.close();
-                 Swal.fire({icon: 'success', title: 'সফল লগইন!', timer: 1500, showConfirmButton: false});
-                 setTimeout(() => window.location.reload(), 1500);
-             })
-             .catch(err => {
-                 Swal.close();
-                 Swal.fire('ত্রুটি', 'গুগল সাইন-ইন করতে ব্যর্থ হয়েছে', 'error');
-             });
-     };
-    // --- PWA INSTALLATION LOGIC ---
-    let deferredPrompt;
-    const installBtn = document.getElementById('installAppBtn');
-
-    // 1. Service Worker Register
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js')
-                .then(reg => console.log('Service Worker registered!', reg))
-                .catch(err => console.log('SW registration failed: ', err));
-        });
-    }
-
-    // 2. Capture install prompt
-    window.addEventListener('beforeinstallprompt', (e) => {
-        // Prevent default mini-infobar
-        e.preventDefault();
-        // Store event for later use
-        deferredPrompt = e;
-        // Show the install button
-        if(installBtn) {
-            installBtn.style.display = 'flex';
-            console.log("Install prompt captured, button shown.");
+// ফায়ারবেস ক্র্যাশ এড়ানোর জন্য সেফ ফলব্যাক ফাংশন
+        function syncUserProfile(user) {
+            console.log("ইউজার প্রোফাইল সিঙ্ক হচ্ছে...", user.uid);
         }
-    });
 
-    // 3. Install Function
-    async function installPWA() {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            console.log(`User response to the install prompt: ${outcome}`);
+        // --- অ্যান্ড্রয়েড অ্যাপ থেকে প্রাপ্ত গুগল আইডি টোকেন দিয়ে লগইন ---
+        window.loginWithAndroidGoogleToken = function(idToken) {
+            Swal.fire({title: 'লগইন করা হচ্ছে...', allowOutsideClick: false, didOpen: () => Swal.showLoading()});
+            
+            // মডিউলের ভেতরে থাকার কারণে এখন এটি ফায়ারবেসের 'auth' এবং 'GoogleAuthProvider' সরাসরি অ্যাক্সেস করতে পারবে
+            const credential = GoogleAuthProvider.credential(idToken);
+            signInWithCredential(auth, credential)
+                .then((result) => {
+                    Swal.close();
+                    Swal.fire({icon: 'success', title: 'সফল লগইন!', timer: 1500, showConfirmButton: false});
+                    setTimeout(() => window.location.reload(), 1500);
+                })
+                .catch(err => {
+                    Swal.close();
+                    Swal.fire('ত্রুটি', 'গুগল সাইন-ইন করতে ব্যর্থ হয়েছে', 'error');
+                });
+        };
 
-            // Hide button if accepted
-            if (outcome === 'accepted') {
-                if(installBtn) installBtn.style.display = 'none';
+        // ব্যাকগ্রাউন্ডে ফায়ারবেস থেকে নতুন ডাটা লোড
+        loadPostsChunk(true);
+        </script>
+         
+        <script>
+        // প্রোফাইল ফটোতে ক্লিক করলে নিজের প্রোফাইলে নিয়ে যাওয়ার লজিক
+        window.goToMyProfile = function() {
+            if (window.currentUser) {
+                // সরাসরি ডেডিকেটেড profile.html ফাইলে রিডাইরেক্ট করবে
+                window.location.href = `profile.html?uid=${window.currentUser.uid}`;
+            } else {
+                checkAuth();
             }
-            deferredPrompt = null;
+        }; 
+
+        // --- PWA INSTALLATION LOGIC ---
+        let deferredPrompt;
+        const installBtn = document.getElementById('installAppBtn');
+
+        // 1. Service Worker Register
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker registered!', reg))
+                    .catch(err => console.log('SW registration failed: ', err));
+            });
         }
-    }
 
-    // 4. Hide button if already installed (Standalone mode)
-    window.addEventListener('appinstalled', () => {
-        if(installBtn) installBtn.style.display = 'none';
-        console.log('PWA was installed');
-    });
+        // 2. Capture install prompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent default mini-infobar
+            e.preventDefault();
+            // Store event for later use
+            deferredPrompt = e;
+            // Show the install button
+            if(installBtn) {
+                installBtn.style.display = 'flex';
+                console.log("Install prompt captured, button shown.");
+            }
+        });
 
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-        if(installBtn) installBtn.style.display = 'none';
-    }
-</script>
+        // 3. Install Function
+        async function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+
+                // Hide button if accepted
+                if (outcome === 'accepted') {
+                    if(installBtn) installBtn.style.display = 'none';
+                }
+                deferredPrompt = null;
+            }
+        }
+
+        // 4. Hide button if already installed (Standalone mode)
+        window.addEventListener('appinstalled', () => {
+            if(installBtn) installBtn.style.display = 'none';
+            console.log('PWA was installed');
+        });
+
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            if(installBtn) installBtn.style.display = 'none';
+        }
+        </script>
 <!-- যুক্ত করুন এই লাইনটি -->
     <script src="navbar.js"></script>
 </body>
