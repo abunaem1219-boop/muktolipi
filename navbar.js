@@ -15,6 +15,13 @@ document.addEventListener("DOMContentLoaded", function() {
         body.header-only-tabs {
             padding-top: 48px !important; /* শুধুমাত্র ট্যাব বার থাকলে প্যাডিং কমবে */
         }
+        
+        /* রিলস পেজে নেভিগেশন হাইড থাকলে স্ক্রিনের ফুল ভিউপোর্ট খালি করার জন্য */
+        body.reels-mode {
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+        }
+
         body.page-exit { animation: pageFadeOut 0.15s ease-in forwards; }
         @keyframes pageFadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes pageFadeOut { from { opacity: 1; } to { opacity: 0; } }
@@ -38,6 +45,11 @@ document.addEventListener("DOMContentLoaded", function() {
             border-bottom: 1px solid #e5e5e5;
             transition: transform 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* রিলস পেজে হেডার সম্পূর্ণরূপে ডিজেবল করার ক্লাস */
+        .fb-header-container.reels-hide {
+            display: none !important;
         }
         
         /* প্রফেশনাল চারকোল ডার্ক থিম সিঙ্ক */
@@ -465,6 +477,22 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.body.insertBefore(fbHeader, document.body.firstChild);
 
+    // রিলস পেজে থাকলে বডিতে reels-mode এবং হেডারে reels-hide ক্লাস যুক্ত করা হবে
+    if (isReels) {
+        document.body.classList.add('reels-mode');
+        fbHeader.classList.add('reels-hide');
+
+        // Reels পেজের ব্যাক বাটন (#backNav) ট্রিগার হলে ব্রাউজার হিস্টোরির পরিবর্তে index.html এ মসৃণভাবে রিডাইরেক্ট করা হবে
+        document.addEventListener('click', function(e) {
+            const backNav = e.target.closest('#backNav');
+            if (backNav) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.smoothNavigate('index.html');
+            }
+        }, true); // Event capturing ব্যবহার করা হয়েছে যাতে reels.html এর নিজস্ব ইভেন্ট ওভাররাইড করা যায়
+    }
+
     window.updateIndicator = function() {
         const activeTab = document.querySelector('.fb-tab-item.active');
         const indicator = document.getElementById('fbActiveIndicator');
@@ -496,7 +524,7 @@ document.addEventListener("DOMContentLoaded", function() {
     window.addEventListener('scroll', function() {
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const isOnlyTabs = headerContainer.classList.contains('only-tabs');
-        
+
         // শুধুমাত্র হোমপেজে ডবল হেডার থাকলেই স্ক্রল-হাইড এনিমেশন কাজ করবে
         if (!isOnlyTabs && scrollTop > lastScrollTop && scrollTop > 60) {
             headerContainer.classList.add('header-hide');
@@ -661,7 +689,7 @@ window.showReelsComingSoon = function() {
 window.setHeaderMode = function(onlyTabs) {
     const header = document.getElementById('fbHeaderContainer');
     if (!header) return;
-    
+
     if (onlyTabs) {
         header.classList.add('only-tabs');
         document.body.classList.add('header-only-tabs');
@@ -677,5 +705,9 @@ setTimeout(() => {
     const isProfilePage = new URLSearchParams(window.location.search).get('page') === 'profile';
     // index.html এবং খালি রুট (/) উভয় ক্ষেত্রকেই হোমপেজ হিসেবে ধরা হবে
     const isHomePage = (currentPath === 'index.html' || currentPath === '') && !isProfilePage;
-    window.setHeaderMode(!isHomePage);
+    
+    // reels.html পেজে থাকলে setHeaderMode রান করা পরিহার করা হয়েছে
+    if (currentPath !== 'reels.html') {
+        window.setHeaderMode(!isHomePage);
+    }
 }, 100);
